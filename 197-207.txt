@@ -1,0 +1,3217 @@
+197:
+Narrator: The next component we're going to work on
+
+is going to be a simple dropdown.
+
+Now, as I've repeated so many times throughout this course,
+
+just nonstop, even though this looks simple,
+
+there are going to be some distinct challenges around it.
+
+In particular, there are two big things
+
+we're gonna focus on,
+
+new features of React that we have not discussed before,
+
+as we're putting together this next component.
+
+So we're gonna make a dropdown.
+
+It's pretty much gonna behave
+
+exactly as you would expect a dropdown to work.
+
+A user is going to be prompted with a little box
+
+that looks like so.
+
+By default it will say something like select,
+
+and then we'll have an icon over here
+
+on the right hand side.
+
+When a user clicks on this box
+
+we are going to open a little menu right underneath it,
+
+and inside that little menu,
+
+we'll show a couple of different options
+
+that the user can click on.
+
+If a user then clicks on say, red, right here,
+
+we're going to close that box
+
+and replace the text inside the top box with red.
+
+And that's pretty much it.
+
+So again, looks simple,
+
+but we are going to run into some interesting challenges.
+
+The first thing we're going to discuss
+
+is how we should design the props around this component.
+
+So let's take a look at some props in just a moment.
+
+198:
+Instructor: The first thing we're going to take a look at
+
+is how we should design the props
+
+that are going to flow into this dropdown component.
+
+So as you could probably guess,
+
+we might want to use many different dropdowns
+
+inside of a single application.
+
+So we should probably make these dropdown components
+
+as reusable as we possibly can.
+
+Each of our different dropdowns
+
+we might show inside of one app
+
+are probably gonna have some different options
+
+displayed inside them.
+
+So in other words,
+
+for each dropdown we show in a typical application,
+
+we might want to show a different list of options
+
+that a user can select.
+
+So we should probably allow the list of options
+
+that are going to be displayed
+
+to be customized through the prop system.
+
+If we have some parent component up here,
+
+and it shows Dropdown 1 and Dropdown 2,
+
+two separate dropdowns,
+
+we should allow these dropdowns
+
+to receive the list of options as props.
+
+So this will be some particular list of options,
+
+and this might be
+
+a totally different list of options over here
+
+that the user can click on.
+
+So we need to think a little bit
+
+around what the type of this prop is going to be.
+
+How should we communicate to the dropdown
+
+exactly what options we want to display right there?
+
+I think an array of sorts
+
+is probably gonna make a lot of sense.
+
+But should it be an array of strings,
+
+an array of objects?
+
+How exactly should we communicate the options
+
+down into that dropdown?
+
+I'm gonna show you two different ways
+
+we could go about this.
+
+So here's the first way.
+
+Now, just to be clear,
+
+the way I'm about to show you
+
+is probably not a very good idea,
+
+but I just want you to see this approach
+
+because you might be tempted to do this
+
+on your own personal project.
+
+So in this approach,
+
+we could pass down an options prop
+
+into our dropdown component.
+
+That would be a plain array of strings.
+
+Let's imagine we are building a dropdown component
+
+for some kind of food-ordering application
+
+and a user has to specify what level of spiciness
+
+they want in their food.
+
+So we could pass down an array of strings
+
+that have values like,
+
+I Want Mild, Spicy, Give Me Extra Spicy.
+
+So we could take each of those strings
+
+and put them into our dropdown.
+
+And that's pretty much it.
+
+Now, I would argue
+
+that this is probably not a very good approach
+
+because eventually you and I
+
+are going to want to take a look
+
+at what option a user has selected
+
+and use that in some way inside of our program later on.
+
+So think about how we would do that.
+
+Let's imagine user clicks on Give Me Extra Spicy.
+
+So that is what a user has selected.
+
+And again, at some future point in time,
+
+you and I are going to want to look into that dropdown
+
+and figure out what a user selected
+
+and use that text in some fashion.
+
+So we might have to take a look at this text,
+
+whatever user selected,
+
+and do some comparison on it.
+
+And say, "Okay, did the user click on Give Me Extra Spicy?
+
+"If so, we need to make the food extra spicy."
+
+So that logic might look like this right here.
+
+Selected might be a variable
+
+that tells us exactly what text is displayed right here.
+
+So to figure out if the user selected Give Me Extra Spicy,
+
+we would have to take a look
+
+at some imaginary selected variable
+
+and compare it exactly against a string,
+
+Give Me Extra Spicy.
+
+If those two things are equal,
+
+well, that's a sign
+
+that we want to make the user's food extra spicy.
+
+So the reason that this is not a very good idea
+
+is because we have now written out this really long string
+
+right here and right here,
+
+and our program is only going to work correctly
+
+if that really, really long string
+
+or the two really, really long strings
+
+are exactly equal.
+
+It's incredibly possible
+
+that you and I can make a typo in that string,
+
+incredibly possible.
+
+So if we accidentally make a typo here or over here,
+
+our program is not going to work correctly.
+
+So another approach we might take,
+
+an approach that's probably gonna be better than this,
+
+is gonna be a technique we're gonna see
+
+inside of a lot of different react components
+
+where we are trying to display a user
+
+with a list of different options.
+
+So not only for a dropdown like this,
+
+but many other similar components.
+
+So technique we are going to use,
+
+and, again, you're gonna see this
+
+in many other components in the future,
+
+is a prop structure that looks like this.
+
+So our options prop is going to be an array of objects,
+
+and each object
+
+is going to have a label property and a value property.
+
+The label property is going to be the text
+
+that we're going to show inside the dropdown.
+
+So that's gonna be what a user sees.
+
+Then the value prop, or value property inside there,
+
+is going to be some kind of very short
+
+or relatively short string
+
+that has very special meaning inside of our program.
+
+So we can have one source of information, the label,
+
+that's going to customize what text a user sees,
+
+and then a second piece of information
+
+that's going to be how we figure out
+
+what a user has selected.
+
+And that's really the string that gives meaning
+
+to the option inside of our program.
+
+So if we take this approach
+
+and we want to later on figure out what a user selected
+
+and maybe make the user's food spicy or what have you
+
+we could do something like selected.value.
+
+So selected would probably be that entire object
+
+that the user selected.
+
+And then value would give us just like the text spicy.
+
+So we could look at selected.value.
+
+If that is equal to the string spicy,
+
+that is a sign that the user wants their food spicy.
+
+We would call some imaginary function
+
+called makeFoodSpicy.
+
+Okay, so that's it.
+
+That's the general idea.
+
+So whenever we make use of our dropdown in any way,
+
+we're gonna pass down some props
+
+that includes an options property
+
+that is gonna be an array of objects,
+
+and each object is gonna have a label and a value.
+
+The label is gonna be the text
+
+that gets displayed to the user,
+
+value is going to be some string, number,
+
+or other piece of information
+
+that conveys some special meaning inside of our code.
+199:
+Instructor: Let's start writing out some code
+
+for our dropdown component.
+
+I'm gonna go back over to my editor.
+
+Now in present, inside of our app.js file,
+
+we have a lot of code inside of here
+
+related to our accordion.
+
+We're gonna do the same thing we did last time
+
+around our button component.
+
+So we're gonna create a new page called Accordion page.
+
+We're gonna take all the code outta the app.js file
+
+and paste it into this new accordion page.js file.
+
+So we are going to essentially
+
+just duplicate the current app.js.
+
+We're gonna have kind of a backup of some page that shows
+
+really just our accordion or demos the accordion to the user
+
+on the screen.
+
+Okay, so let's get started.
+
+Inside my pages directory,
+
+I'll make a new file called accordionPage.js.
+
+I'll then go back to app.js,
+
+I'm going to select everything inside of here, copy it,
+
+and then paste it into accordion page.
+
+Here we go.
+
+At the very top of accordion page,
+
+I will update the import statement.
+
+So it should be ../components
+
+to go up one directory and then into components.
+
+I will update the name of the component itself
+
+to AccordionPage, and I will update the name of the export
+
+at the bottom as well.
+
+Very good.
+
+Once I've made those three updates,
+
+I'm gonna close that new page and go back to App.js.
+
+Inside of the app.js file.
+
+I'm gonna delete everything inside the app component
+
+for right now, along with the import statement at the top.
+
+We're gonna come back to this file in just a moment
+
+and show the dropdown inside of here.
+
+But let's first make our dropdown component file.
+
+Inside the components folder,
+
+I will make a new file called dropdown.js.
+
+Inside there, I'm gonna make a function called dropdown.
+
+Right now it'll return a div that says dropdown
+
+and then do an export default dropdown.
+
+Then back inside of app.js, let's import dropdown
+
+from components dropdown.
+
+I'm going to return dropdown, like so.
+
+I'll save this,
+
+and just make sure that I see the text drop down
+
+on the screen.
+
+Yep, definitely do.
+
+So then finally, let's create an example list of props here.
+
+So I want to make an array of objects
+
+that have a label and a value property,
+
+and we're gonna pass those down
+
+as a prop called options into the dropdown.
+
+Okay, so inside the app component,
+
+I'll make a new variable called options.
+
+This is gonna have a couple of objects.
+
+For the first one, I'll give it a label of red
+
+and a value of lowercase red.
+
+I'm gonna copy that twice,
+
+and I'll change these to red and green, green,
+
+blue and blue.
+
+I'll then take that variable right there,
+
+and I'll pass it down into dropdown
+
+as a prop called Options.
+
+And that's it.
+
+Okay, so now back over to dropdown.js.
+
+We can now receive that list of options,
+
+and then our next goal is going to be
+
+to map over that list of options.
+
+And for every option inside there,
+
+we're going to eventually want to render that option
+
+onto the screen.
+
+But of course, we only really want
+
+to show that list of options
+
+when a user has clicked on this thing
+
+and opened the dropdown up.
+
+So yeah, we wanna build up a list,
+
+but first before we build up that list,
+
+we need to figure out how we're going to make this list
+
+appear and disappear over time
+
+as a user clicks on the dropdown.
+
+As usual, we're looking at some content
+
+on the screen changing,
+
+and that means we need to think about the state system.
+
+So we have figured out the prop system,
+
+we've figured out what props our dropdown
+
+is going to receive.
+
+Now it's time to think about the state
+
+and what different properties we want to add to the state.
+200:
+Lecturer: The dropdown component
+
+is definitely going to need an event handler or two
+
+and one or two pieces of state
+
+so that we can control opening and closing this box
+
+and also so we can actually select an item
+
+eventually as well,
+
+To figure out how we should design the state
+
+and the different event handlers around it,
+
+we're going to go through this design process once again.
+
+Now don't worry, we're gonna go through this process
+
+way more quickly than we did last time.
+
+So let's just dive right in.
+
+We're gonna go through each of these steps rather quickly,
+
+and I'm going to abbreviate one or two
+
+rather quickly as well so this should be rather fast.
+
+Okay, so first off, we're gonna take a look at our mockup
+
+and list out everything user is going to do
+
+and what changes they're going to see.
+
+So here we go.
+
+On the left hand side, we're gonna show something like that.
+
+User's gonna click on the box that's gonna open up a menu.
+
+User is then going to click on one of these different items.
+
+That box is going to close,
+
+and the selected option or whatever the user clicked on,
+
+the label for that one is going to be displayed
+
+inside the box.
+
+So I'm going to describe that entire process step by step,
+
+as granular or as detailed as I possibly can.
+
+So we start off with a user clicking the dropdown.
+
+Then a list of options appears.
+
+A user clicks an option.
+
+When they click an option, two things occur.
+
+First, the list of options disappears.
+
+So that little kind of dropdown thing right there,
+
+it goes away entirely.
+
+In addition, the item clicked, appears in the box.
+
+So if I had clicked on Red,
+
+I would expect Red to display right there.
+
+And that's it.
+
+That's how I would describe this component step by step
+
+and a user interacting with it.
+
+Onto step number two,
+
+we're gonna take a look at each of these steps,
+
+categorize them as state or event handler.
+
+Okay, here we go.
+
+So remember, anytime user
+
+sees something changed on the screen,
+
+that's a sign that we need some state.
+
+Anytime user commits some action,
+
+that's a sign we need an event handler.
+
+A user is going to click the dropdown
+
+and they're going to click an option.
+
+Once again, these are user interactions just like we had
+
+when we first went through this design process previously.
+
+So I'm gonna mark both those as needing an event handler.
+
+Then we have content changing,
+
+content changing and content changing.
+
+So all those are signs that we need some state.
+
+So I'll mark that like so, like so, and like so.
+
+Next, we're gonna take a look at
+
+each of those labeled steps.
+
+We're gonna group two together,
+
+any that look really similar or common in nature,
+
+remove duplicates, and simplify the descriptions
+
+as much as possible.
+
+So here's our different steps that have been labeled.
+
+First, a user up here is clicking the dropdown.
+
+There's not really anything else like that.
+
+Down here where user clicks an option,
+
+that is still a click but they're clicking
+
+on something completely and totally different.
+
+So I think that this is not common to any other step really.
+
+I think this is a standalone kind of step right here.
+
+We probably just need an event handler to implement it.
+
+The other event handler, this one right here,
+
+is probably also gonna be a standalone.
+
+It's definitely something we need.
+
+It's not similar to any other part of this entire process,
+
+so we probably really just need an event handler
+
+for that thing as well.
+
+So then how about our three pieces of state?
+
+Well, we have two pieces right here
+
+that look absolutely identical in nature.
+
+We have a list of options appearing and disappearing.
+
+Even though it is the opposite kind of interaction
+
+something is appearing and disappearing,
+
+they're clearly talking about hiding
+
+and showing the exact same element on the screen.
+
+So I think that these two things
+
+should definitely be grouped together.
+
+And then finally, a user is clicking on a item
+
+and it is being, or it appears inside the box.
+
+So that's kinda like a selection
+
+that is appearing inside the box.
+
+That is not similar to anything else inside of here,
+
+so I don't think that needs to be group grouped up at all.
+
+Okay, so there's our groups.
+
+I'm going to remove the only duplicate.
+
+The only duplicate is really that step right there
+
+so I'm gonna delete it.
+
+And then I'll go through
+
+and I'm going to rewrite the description for each of these
+
+and just make them as generalized as I possibly can.
+
+So for the first one, click the dropdown.
+
+I think that's already pretty general in nature
+
+that really describes what's going on.
+
+We are clicking the dropdown.
+
+The second one also pretty general.
+
+I don't think I can simplify that any further.
+
+For the state right here, list of options appears.
+
+A better way to write this or kind of more general in nature
+
+would be to say menu opens and closes.
+
+And then the last piece of state right here,
+
+I think that again is kind of already general nature.
+
+I could say something like an item can be selected.
+
+That's kind of a little bit more descriptive and simple,
+
+but, again, what I had before is still pretty good.
+
+So in this case, we didn't really have to write,
+
+rewrite these descriptions very much,
+
+because each of them was already pretty simple
+
+and straightforward.
+
+Okay, so we have now finished up this first phase
+
+and we've got a good idea of what state we need
+
+and what event handlers we need.
+
+So in total, this is kind of where we are at.
+
+We need a state or a piece of state
+
+to determine which item is selected.
+
+We probably need a piece of state
+
+to dictate whether or not the menu is open or closed.
+
+And then we need an event handler
+
+to deal with clicking on an individual option
+
+and an event handler to deal with clicking on the dropdown.
+
+Now onto a phase two.
+
+This is where we're going to look at our mock-up.
+
+We're gonna simplify it as much as possible.
+
+We're going to replace the elements with text descriptions.
+
+We are gonna skip over step six
+
+because this component is so simple,
+
+there's not really any variations here to think about,
+
+so I'm not gonna worry about step six.
+
+And then step seven,
+
+we're gonna take those text descriptions
+
+and remember this is where we do
+
+kinda that little fun exercise
+
+where we imagine we are writing a function
+
+and we have to guess at what kind of argument we would need
+
+to generate these text descriptions.
+
+Remember, the goal of steps four, five, six and seven
+
+is to really consider the state that we just came up with.
+
+So we said that we were gonna have state
+
+for an item being selected and a menu being open and closed.
+
+And in steps four, five, six and seven,
+
+we're gonna try to come up with a name and a type
+
+for these two pieces of state.
+
+That is the ultimate goal.
+
+So step four, we're gonna take a look at our mockups.
+
+We're going to remove any part
+
+that is not changing over time.
+
+So immediately, I know that the label at the top
+
+is not changing.
+
+Oops, just wanna delete the label.
+
+I know the icon is not changing in any way.
+
+And the text inside of this menu right here,
+
+although it is appearing and disappearing,
+
+the text itself is not changing.
+
+So I'm gonna delete that.
+
+It is really the presence of the dropdown itself
+
+or this menu right here that is changing.
+
+The box right there is opening and closing over time.
+
+So now step five, we're going to imagine
+
+that we are talking to another engineer
+
+who is very familiar with this component.
+
+Maybe we are talking to them on the phone
+
+so they cannot see our screen
+
+and we need to describe to them
+
+over the phone in very simple terms
+
+what you and I are currently seeing with our components.
+
+So how would you tell another engineer
+
+about this thing right here?
+
+Assuming that they are pretty familiar with it,
+
+I might tell another engineer that I see menu closed
+
+and no option selected.
+
+So that's how I would describe it very simply.
+
+With this one I would say menu open, no option selected.
+
+And then over here, menu closed, 'A little spicy' selected.
+
+Onto step number seven,
+
+we're going to skip over step number six.
+
+Remember, step six is where we would normally take a look
+
+at a variation on our component.
+
+In our case, the dropdown is rather simple in nature
+
+so I don't think we need to consider any variations.
+
+So we'll go directly to step seven.
+
+Step seven, remember, this is the confusing one.
+
+This is where we are going to imagine
+
+that we are writing out some imaginary function,
+
+and we need to return basically the strings
+
+that we just came up with during the previous step.
+
+So menu closed, menu open, menu closed, no option selected,
+
+no option selected, a little spicy selected.
+
+The ultimate goal is step number seven,
+
+as confusing as it is, is to decide upon a name
+
+and a type for these two pieces of state.
+
+In our case, we know that this first piece of state
+
+is gonna be all about whether or not
+
+the menu is open or closed.
+
+And the other piece of state is all about whether or not
+
+an item is really selected.
+
+So we're going to repeat step seven.
+
+We're gonna do it two times.
+
+The first time we do it, we're just gonna try to figure out
+
+an appropriate name and type for this piece of state.
+
+The second time we're gonna try
+
+to figure out a name and type for that piece of state.
+
+Okay, let's focus on the first go through
+
+and I'm gonna write out the solution
+
+over here inside my editor.
+
+You do not have to write it out.
+
+I'm just doing this for demonstration purposes.
+
+So I know that I make this entire process
+
+seem kind of weird and mysterious,
+
+but ultimately what we are trying to do here
+
+is extremely simple and straightforward.
+
+We need to provide an argument
+
+and an implementation to this function right here
+
+so that whenever we call it in one case given some argument,
+
+we're going to get back a string of menu closed.
+
+And when we call it with a different argument,
+
+we're going to get back a string of menu open.
+
+There are a ton of different ways we could implement this
+
+and please don't overthink this at all.
+
+It is incredibly simple.
+
+What argument can we put in right here
+
+that will allow us to write out some logic
+
+to in one case return menu closed
+
+and in the other menu open?
+
+One possibility is to put in false and true.
+
+Then inside of our function,
+
+we could receive that argument name something like isOpen.
+
+I think that's a very reasonable name.
+
+And then inside of our function we could say,
+
+if isOpen is true, return menu open,
+
+otherwise return menu closed.
+
+That is one possible answer.
+
+And that's it. That's all we have to do.
+
+What should these types be, what should we call it,
+
+and then kind of guess at a possible implementation.
+
+So now if we ran this code,
+
+if I took all this and ran it in my browser,
+
+this right here,
+
+that would definitely give us back menu closed.
+
+There's no two ways about it.
+
+And if we ran this,
+
+it would definitely give us back menu open.
+
+No two ways about it.
+
+So as simple as this process right here seems,
+
+what has it told us?
+
+What have we learned?
+
+Well, it means that this piece of state right here
+
+that we're trying to design,
+
+we could call this thing something like isOpen
+
+and we can have it be of type Boolean.
+
+So if we create a piece of state called isOpen
+
+and we have it be a Boolean,
+
+that would be an entirely perfect and appropriate design
+
+for this first piece of state right here.
+
+And we could use that piece of state
+
+to dictate whether or not our dropdown is open or closed.
+
+That's it.
+
+Okay.
+
+Now we're gonna repeat the same process
+
+for this other piece of state, same thing.
+
+So we're using this other piece of state
+
+to decide whether or not an item is selected.
+
+And if one is, which item is selected?
+
+This go through
+
+is gonna be just a little bit more complicated.
+
+So let's give it a shot.
+
+So same process here, we're gonna try to figure out
+
+what argument we could pass in that will allow us to,
+
+in some cases, return no item selected,
+
+and then in other cases, something like a little spicy.
+
+And once again, don't overthink this.
+
+So here is one possible solution.
+
+There are many.
+
+This is just one.
+
+We could put in null if nothing is is selected.
+
+And then if something is selected,
+
+how could we decide exactly what label we want to return?
+
+Well, we could put in right here the entire options object.
+
+So I could put in something like ops at one.
+
+So that's the entire object right there
+
+with a label of a little spicy.
+
+Then I can call that argument something like selected option
+
+or maybe just selected for short.
+
+And now we could put in a very simple comparison in here,
+
+a very simple check.
+
+We could say, if we did not get selected.
+
+So if selected is falsy, if it is null
+
+that's what we're really checking right here.
+
+If there is no selected, then return no item selected.
+
+Otherwise, if we get past that if statement,
+
+so we could honestly just do an else case here.
+
+So if something is selected, if we got an object for it,
+
+return selected.label and that's it.
+
+So again, we don't have to overthink this part at all.
+
+So again, what has this told us?
+
+What have we learned here?
+
+Well, we have learned that a very reasonable name
+
+for this piece of state would be something like selected
+
+or alternatively something like selectedOption.
+
+Either one is totally appropriate.
+
+And what should its type be?
+
+What's type should be
+
+either the same structure as the options object.
+
+So I'll say, so kinda like an option object.
+
+So that's gonna be something with a label
+
+and a value property or it can be a null.
+
+So if we get an option,
+
+that means that the user has selected something,
+
+they've clicked on some option.
+
+Otherwise if it's null,
+
+that means no option has been selected yet
+
+and we should display the text that says nothing
+
+or no option selected or whatever else is appropriate.
+
+Okay, so now let's summarize where we are currently at.
+
+So we've got our two pieces of state up here.
+
+An item can be selected.
+
+That's gonna be controlled by some piece of state
+
+that we're going to call selected,
+
+and it's gonna be either an option object or null.
+
+To control whether or not the menu is open or closed,
+
+we're gonna call that a piece of state of isOpen
+
+and it's gonna be a Boolean.
+
+Then we're going to have to name
+
+these two event handlers as well.
+
+Naming the event handlers is always way easier,
+
+so we're not gonna go through an entire process for it.
+
+So whenever a user clicks on an option,
+
+we could call it something like handle option click
+
+or something like that.
+
+But when user clicks on an option,
+
+what they're really doing is selecting something.
+
+When user clicks on one
+
+of the different options in the dropdown,
+
+they are trying to change that selected piece of state.
+
+So I might call that event handler
+
+something like handleSelect.
+
+That might be a reasonable name.
+
+And then clicking the dropdown.
+
+So that's whenever a user clicks the dropdown
+
+to open the menu up.
+
+We could call that, again, something like handleClick.
+
+But if we wanna give it a more descriptive name,
+
+it could be something like handleToggleOpen
+
+or something like that.
+
+That's a little bit long, little bit complex.
+
+Maybe just handleClick is fine.
+
+But definitely we've got some flexibility there.
+
+We could think about the name a little bit more.
+
+Okay, so there we go.
+
+That is our state design.
+
+Now, I know this entire process so long.
+
+It's taken us forever, right?
+
+Taking a long time,
+
+but this design right here, it is rock solid.
+
+If you went to a professional project
+
+and created a dropdown with this kind of design,
+
+everyone's gonna be happy.
+
+Your component's gonna work really well.
+
+Having said that, one last step, we need to decide
+
+where to locate the state and these event handlers.
+
+So we've got our selected piece of state and isOpen.
+
+And then we've got a callback
+
+of something like handleSelect,
+
+another one called like handleClick.
+
+And as you can kind of guess,
+
+these two event handlers are very closely coupled
+
+with these two pieces of state.
+
+So wherever we define the selected piece of state,
+
+we should probably define this handleSelect dropdown
+
+in the same location.
+
+And wherever we define the isOpen piece of state,
+
+we should probably define the handleClick function
+
+in the same location as well.
+
+So we need to decide now
+
+where we are going to define selected and isOpen.
+
+And I put right here string or null.
+
+That should be, or not object, but option.
+
+That's better.
+
+So where should we define the state?
+
+Don't forget the rule we're going to decide or make use of
+
+to decide where to define the state is,
+
+does any other component need to know about the state?
+
+If so, we're going to define that state inside the parent.
+
+Otherwise, if no one else needs to know about the state,
+
+we're going to define it in the child.
+
+And without a doubt, the easiest way to answer this question
+
+is to consider some kind of variation
+
+of your component or your application.
+
+So I'm going to imagine some other application
+
+that might make use of this dropdown component
+
+really quickly and use that other app
+
+to kind of answer this question.
+
+Okay, so here's a little example application
+
+that might eventually one day make use of our dropdown.
+
+We're going to imagine
+
+that we have a kind of shopping cart right here.
+
+The shopping cart is going to be comprised
+
+of multiple different components,
+
+and I've got the component hierarchy on the right hand side.
+
+So at the very top is the app component
+
+that's gonna show ShoppingCartPage.
+
+So that ShoppingCartPage component
+
+is presumably gonna basically be in charge
+
+of displaying all the content on the screen.
+
+I'll then imagine that the top half right here
+
+is going to be displayed by ProductList.
+
+The bottom part down here
+
+where we show the total of all the items
+
+will be displayed by a component called CartTotal.
+
+And ProductList, which is displaying all this stuff,
+
+it's definitely showing two dropdown components.
+
+So ProductList might have two dropdowns
+
+inside of it eventually.
+
+So now take a look at this mockup right here
+
+really, really carefully.
+
+Inside this shopping cart, we have an item.
+
+A user is selecting a quantity and we have a price per item.
+
+So if I have 10 pairs of pants at $50 each,
+
+that is $500 total.
+
+And if I have one pair of shoes at $25, that is $25 total.
+
+And then down here at the bottom,
+
+I want to show the total of all these different items.
+
+And that right there,
+
+the total is being displayed by the CartTotal component.
+
+So the CartTotal component
+
+is probably gonna have to figure out
+
+or understand how many items
+
+the user is currently trying to purchase,
+
+because it needs to display the total.
+
+CartTotal has to understand
+
+what the current value of this dropdown is.
+
+There's no two ways about it.
+
+So in this case, without a doubt,
+
+some other part of our application besides just the dropdown
+
+needs to understand what this selected piece of state is.
+
+What is its current value?
+
+What number is being displayed right now?
+
+What number did a user click on?
+
+So because some other part of my application
+
+needs to understand about this piece of state,
+
+I should define it inside of some parent component.
+
+In this case, we probably define it
+
+inside of shopping cart page.
+
+We won't go into too much detail on that for right now,
+
+but ultimately it's definitely clear
+
+that some other component needs to know
+
+about this piece of state,
+
+so I should not define selected inside the dropdown.
+
+So selected should be defined
+
+inside of some parent component
+
+and then passed down into dropdown as a prop.
+
+How about isOpen?
+
+In this mockup that we're looking at,
+
+is there any other component on the screen here whatsoever
+
+that is reasonably ever going to care
+
+about whether or not a dropdown is open?
+
+I don't think so.
+
+I don't think there's any possibility
+
+that any other component ever caress
+
+about whether or not a dropdown is open.
+
+So that is definitely a good candidate for a piece of state
+
+that should be defined inside the dropdown.
+
+Okay, so at long last, after another one
+
+of these grueling design processes, we're done.
+
+We've got our design.
+
+We know our different piece of state, their types.
+
+We know the callbacks
+
+we know where all the state is gonna be defined,
+
+where all the callbacks are going to be defined.
+
+This looks good.
+
+This was definitely the hardest part this entire component.
+
+There's still one challenge we're gonna look at,
+
+but it's pretty much smooth sailing from here.
+
+So we're gonna come back in just a moment
+
+and start building honestly the vast majority
+
+of this component in one rather quick go.
+201:
+Instructor: We've got a pretty rock solid design here.
+
+So let's start working on the implementation.
+
+We're gonna first begin on the dropdown component itself
+
+and we'll eventually go back up to the parent component
+
+and define the selected piece of state.
+
+Make sure we pass a couple of things down as props.
+
+Okay, so inside the dropdown,
+
+I'm gonna first take a look at this options prop.
+
+Remember that's going to be an array
+
+of different options objects.
+
+Each of those objects will have a label and value.
+
+We want to eventually list those out
+
+on the screen to the user whenever that menu opens up
+
+or essentially whenever a user clicks on our dropdown.
+
+So we need to take that list of options,
+
+map over them and probably return each option
+
+so a user can eventually click on them.
+
+Let's get started there.
+
+So I'm gonna create a new variable called renderedOptions.
+
+This will be options.map.
+
+I'm gonna take a look at each individual option
+
+and return a div that has the options label.
+
+We are creating a list of elements,
+
+which means we need to assign a key prop
+
+to this top level element right here.
+
+Now in this case, our key prop,
+
+traditionally we use the ID property if one is available
+
+off of each object inside the array
+
+that we are mapping over.
+
+In this case, our options objects,
+
+which we are currently defining inside the app
+
+only have a label and a value.
+
+There is no ID.
+
+Usually we only get IDs when we are fetching data
+
+from some kind of database.
+
+So in this case, these are options
+
+that are really just defined inside of our application.
+
+So they're just plain is not an ID available
+
+but when we designate a key, we don't have to use an id.
+
+The only requirements for a key are that we have some value
+
+that is consistent and doesn't really change over time.
+
+So I think that out of each of these options objects
+
+we could probably just use the value property right here.
+
+It is always unique, it's never duplicated
+
+and it's not going to change over time
+
+and that makes it a really good candidate for being a key.
+
+So back inside of dropdown.js
+
+I'll find the div right there.
+
+I'm gonna add in a key prop of option.value.
+
+Next up I'm going to remove the text that says dropdown...
+
+Right there.
+
+I'm going to put in a div that says Select.
+
+So that's gonna be where
+
+a user eventually clicks to open the dropdown up.
+
+And then after that I'll put in
+
+another div that says renderedOptions.
+
+If we go back into the browser
+
+we should now see select red, green, blue.
+
+And I've got nothing inside my console,
+
+so no errors or anything like that.
+
+Okay, so next up we are going to make sure
+
+that this div right here is usually hidden by default.
+
+And then whenever user clicks on that div that says select
+
+we're going to toggle the visibility of that div.
+
+We're going to hide it or show it.
+
+So this is where this isOpen piece of state
+
+is going to come into play.
+
+We're going to define that piece of state.
+
+It's gonna be a Boolean.
+
+By default it will be false.
+
+And that will make our dropdown start off as being closed.
+
+We'll then define an event handler called handleClick
+
+and we're going to assign that click event handler
+
+to this div right here.
+
+So whenever user clicks on that div,
+
+we're gonna toggle our piece of state.
+
+That will cause the second div to be hidden or shown.
+
+Okay, let's get to it.
+
+At the very top
+
+I'm going to import useState from react.
+
+We'll then define our state of IsOpen and set IsOpen.
+
+I will default it to be false.
+
+So again, it's gonna start off as being closed.
+
+I'll then make my event handler.
+
+So I'll call it just handleClick.
+
+Could probably think of a more clever name
+
+but I think handleClick will work just fine.
+
+So now whenever a user clicks on that div right there
+
+we will update IsOpen by calling setIsOpen
+
+and we don't really want to just set it to true per se
+
+because if a user clicks on select right there
+
+to open the dropdown
+
+and then they click on select again,
+
+that's kind of a sign
+
+that the user wants to close the dropdown.
+
+So I think what we really want to do here
+
+is change IsOpen to be the opposite
+
+of whatever it currently is.
+
+So we could do that with something like not IsOpen.
+
+Now when we look at this code right here really carefully
+
+you'll notice that we are updating a piece of state
+
+and we are deciding on what its new value should be based
+
+upon what its current value is.
+
+And you might recall that just a couple videos ago
+
+we had a super long discussion
+
+around functional updates of state.
+
+So because we are updating our state
+
+and its new value is dependent upon the old value
+
+technically we would want to look at
+
+doing a functional update.
+
+So we'd pass in a function
+
+that would receive the current value of IsOpen
+
+and then we would give or return
+
+not current IsOpen.
+
+So that is technically like,
+
+the most correct way of doing this.
+
+However, this is only going to be an issue
+
+if a user clicks on select right there incredibly quickly
+
+multiple times in a row.
+
+So if we left this with just what we had a moment ago
+
+so not IsOpen, that would honestly work just fine
+
+in the vast, vast, vast majority of scenarios.
+
+So if we just do this totally fine.
+
+If we want to use the functional style,
+
+totally fine as well.
+
+I'm gonna stick with the simple style.
+
+So I'll say not IsOpen.
+
+So this is technically not a hundred percent correct,
+
+regardless it's gonna be totally fine
+
+in just the vast majority of scenarios.
+
+Okay, so that's handleClick.
+
+We are now going to take that handler
+
+and assign it to that div right there.
+
+So we'll say onClick call, handleClick.
+
+And then finally we need to make sure
+
+that we hide and show that div
+
+based upon the value of IsOpen.
+
+So we can use another one
+
+of those JavaScript Boolean expressions.
+
+So I'm gonna wrap this thing
+
+with curly braces and then we'll say IsOpen and.
+
+So now if IsOpen is true,
+
+we're going to get back that div
+
+and it will be displayed on the screen.
+
+If IsOpen is false
+
+this entire expression will evaluate to be false
+
+and nothing will be displayed.
+
+So let's save this and try it out.
+
+Okay, if I refresh, nothing's going to be visible
+
+or I should say the menu is not visible by default.
+
+But if I click on select, it opens up.
+
+If I click it again, it goes away.
+
+Very good.
+
+Okay, so that's a good start
+
+but we still have a couple things to take care of
+
+notably around selection of different elements.
+202:
+Instructor: The next thing I would like to take care of
+
+is to make sure that whenever user
+
+selects one of these options or they click on them,
+
+we close the dropdown.
+
+We're not gonna worry about actually
+
+updating the currently selected item just yet,
+
+let's just make sure we can just plain close the dropdown.
+
+Okay, so here we go.
+
+Each of those divs we want to watch for a click event on
+
+is rendered inside this mapping function.
+
+So I'm going to add in an onClick handler to that thing.
+
+Whenever a user clicks on this div,
+
+I'm going to call a function
+
+that I will define or call handleOptionClick
+
+and then I'm going to define handleOptionClick out here.
+
+I'll then put in a console log inside there and say,
+
+I should close.
+
+I'll save this, flip back over.
+
+Now if I open the dropdown and click on red,
+
+I will see that console log.
+
+If I click on green, I see the console log.
+
+So it's definitely working as expected.
+
+So now here's a question.
+
+How would I close the dropdown?
+
+Well, we've got this piece of state called isOpen.
+
+If we want to change whether or not the dropdown is open,
+
+we're just gonna update the value of that piece of state.
+
+So to forcibly close the dropdown
+
+we could remove the console.log,
+
+and replace it with setIsOpen with false.
+
+So now if we save this,
+
+open up the dropdown, click on red, it's going to be closed.
+
+Okay, simple enough.
+
+So now the next thing we need to take care of
+
+whenever a user clicks on one of those options,
+
+whenever they click on a div,
+
+and we run this event handler,
+
+there's actually two things we're going to want to do
+
+inside of here.
+
+We not only want to close dropdown,
+
+we're also going to need to know what option
+
+did the user click on?
+
+Because we're going to eventually
+
+from inside this event handler,
+
+update the currently selected option,
+
+we need to update the piece of state that says
+
+here's the option that is currently selected.
+
+So inside of this function right here,
+
+we need to figure out what the option was.
+
+Now this is an identical problem to
+
+what we ran into just a little bit ago
+
+on the accordion application.
+
+We are building up an event handler
+
+and assigning it to a div
+
+that is being created inside of a mapping function.
+
+And we want to communicate some information
+
+from inside the mapping function to an event handler
+
+that is defined out here.
+
+If we just try to receive this first argument right now,
+
+it would be the event object,
+
+because we are passing off this function
+
+directly into onClick.
+
+So the div is gonna call this function,
+
+and when it calls it, it's gonna give us the event object,
+
+we could prove that very easily,
+
+I could do a console.log of event,
+
+and now if I click on one of these things,
+
+I'll see the event object.
+
+So that's not really what we want,
+
+it's great that there is an event object,
+
+but I don't really care about it.
+
+I wanna know what option a user just clicked on.
+
+So remember how we solved this
+
+back on the accordion application.
+
+Rather than passing in our handler directly to onClick,
+
+we're going to instead put in a wrapped version of it.
+
+So I'm gonna put in an arrow function right here
+
+and then whenever this arrow function gets called
+
+by the div, when the user clicks on it eventually,
+
+we're going to invoke handleOptionClick
+
+and pass in the option.
+
+So now if I save this and I still have
+
+this console.log in here, the event is not,
+
+or this argument is not very well labeled now,
+
+it shouldn't be called event,
+
+'cause it's no longer actually the event,
+
+we will rename it in just a moment.
+
+But just to show you this works, if I now click on red,
+
+I get label red, value red, if I click on green,
+
+I get green, green, and of course blue, blue.
+
+Okay, so once again, not gonna go into
+
+any more detail on this
+
+'cause you spent a ton of time on it back on the accordion,
+
+but it's the exact same idea here.
+
+We are doing our mapping function.
+
+We're going to end up creating multiple copies
+
+of the exact same arrow function.
+
+Different copies are created for every object
+
+inside that options array.
+
+So when we eventually click on a div,
+
+we're gonna find one of those different arrow functions
+
+that gets created. we're gonna call it,
+
+and that's gonna invoke handleOptionClick
+
+with the appropriate option.
+
+Okay, so now last thing.
+
+We shouldn't really call this argument event,
+
+'cause it's not the event, I will call it option instead.
+
+And just to confirm, yep, now we still get the option.
+
+Very good.
+
+Okay, so now we're gonna go back up to the parent
+
+in just a moment.
+
+We're going to define the selected piece of state
+
+inside there.
+
+And whenever a user clicks on an option,
+
+we need to make sure we update that selected piece of state.
+203:
+Instructor: The last thing we have to take care of
+
+is implementing this selected piece
+
+of state inside the parent.
+
+We're also going to implement the
+
+handleSelect event handler.
+
+Now, you might be kinda curious,
+
+why does this piece of state exist?
+
+You know, we went through that kinda long design process,
+
+but why does this state exist?
+
+What is event handler really doing for us?
+
+Well, it turns out
+
+that we are really just following a pattern
+
+that we already learned about earlier on inside the course.
+
+So let me give you a quick reminder
+
+on something we covered on the images application.
+
+It was handling text inputs.
+
+Remember, we handled a text input
+
+in kind of a rather weird and strange way.
+
+And in the process we created something called
+
+a controlled component, or controlled input.
+
+And we went through the five steps you see right here.
+
+Just to help you remember exactly what we did,
+
+we had a setup that looked like this.
+
+So we had our search bar component
+
+which was the parent component,
+
+and we were trying to show a plain text input.
+
+We did not handle this text input
+
+in a way that you might be familiar with
+
+if you're coming from a more traditional
+
+JavaScript background.
+
+Instead, remember we deal with text inputs in React
+
+in kind of this weird fashion.
+
+We defined a piece of state inside of search bar
+
+and we called it term.
+
+That was supposed to be our search term.
+
+We then passed that piece of state
+
+down to the value prop of the text input.
+
+And remember the key part here,
+
+whatever we pass down as the value prop
+
+React is gonna take that value, that prop right there,
+
+and it's gonna forcibly update the text
+
+inside the text input.
+
+We also pass down an event handler
+
+that was called handleChange,
+
+and we pass it down under the prop of onChange.
+
+So then things got really interesting
+
+whenever a user changed the text inside the input.
+
+As soon as that user changed that text,
+
+so they would generate essentially some new search term
+
+by typing something into the input,
+
+we needed to communicate that back
+
+up to the parent component.
+
+So we needed this information to flow back up.
+
+To communicate that information into the parent,
+
+we called handleChange.
+
+I should really kind of be pointing an arrow over here.
+
+So we called the prop that was passed down handleChange,
+
+and that essentially communicated this new value
+
+up into the parent component.
+
+Inside of handleChange, we updated our term piece of state.
+
+Because we updated state, the search bar re-rendered itself,
+
+and a new value, a new search term,
+
+then flowed down into the text input.
+
+Because we passed down a new value prop,
+
+the text input, or the actual text displayed inside of it,
+
+was automatically updated.
+
+So that was the entire process we went through.
+
+It was a little bit confusing.
+
+It was a little bit weird, but remember the entire goal
+
+of it was really to manage the text input
+
+through the state system.
+
+So if we ever needed to know
+
+what value was inside the text input,
+
+we could take a look at the term piece of state.
+
+And if we ever needed to
+
+change the value inside the text input,
+
+we would just change our term piece of state.
+
+And that was it. That was the entire goal.
+
+Using the state system
+
+made it really easy to read the value inside the input
+
+and change it if we needed to.
+
+So what does this have to do with the dropdown?
+
+Everything.
+
+We want to treat the dropdown in the exact same way.
+
+If we can make sure we set up our component
+
+in the exact same fashion,
+
+then inside of our parent component
+
+we could always know exactly
+
+what the user has selected inside the dropdown
+
+by looking at a piece of state,
+
+and we could forcibly change the value in the dropdown
+
+by updating that state.
+
+So here's what we are doing.
+
+Here's our parent component.
+
+For us, it is the app.
+
+Here is the dropdown component.
+
+So we are defining this selection piece of state
+
+and handleSelect.
+
+We are passing selection down as a prop called selection.
+
+And inside of our dropdown component,
+
+when we receive this prop,
+
+we're going to use it to decide
+
+what text to display inside the dropdown.
+
+So that text right there.
+
+We're using it to decide what to show for the label.
+
+Then whenever a user changes the dropdown,
+
+whenever they open it up and click on an option,
+
+we're going to deal with that
+
+by calling this onSelect prop inside the dropdown.
+
+So user is going to click on some option.
+
+So that's gonna be some new selection
+
+that they are generating,
+
+and we're gonna communicate that back up
+
+into the parent component
+
+by calling the handleSelect event handler.
+
+So that's gonna update our data inside the parent.
+
+We're gonna have a new piece of state.
+
+The parent is going to re-render itself.
+
+And that new piece of state is gonna flow down
+
+into the dropdown.
+
+And then the dropdown is gonna show
+
+whatever that newly selected option was.
+
+So again, completely identical to the text input.
+204:
+Instructor: Let's work on this implementation.
+
+To get started we're going to go into our parent component
+
+and define the selection piece of state
+
+and the handleSelect event handler.
+
+Our parent component is the App.jss file
+
+to define a piece of state inside of here
+
+we will begin by importing useState from React at the top.
+
+I will then create a piece of state called selection
+
+and get the setter to go along with it.
+
+And by default I'm gonna have its value be null.
+
+It is null to indicate
+
+that by default nothing has been selected.
+
+Remember we came up with the type
+
+for this piece of state during our design process.
+
+So we had said that selected,
+
+this piece of state right here was gonna be
+
+either an option object,
+
+so one of those objects
+
+outta the options array that has a label and a value.
+
+Or it could be null and it would be null anytime
+
+there is no item currently selected.
+
+So that's why we are defaulting it to be null.
+
+Next we'll make our handleSelect event handler,
+
+and we're going to assume
+
+that this thing is going to be called
+
+with some newly selected option.
+
+So that is gonna be the option object
+
+that the user just clicked on.
+
+And then inside the event handler
+
+we will update our selection piece of state.
+
+So everything that we are doing right here
+
+is exactly what we are seeing on this diagram.
+
+Whenever a user selects an option,
+
+whenever they click on a new one,
+
+we need to communicate that backup
+
+into the parent component and get it to show up
+
+inside the handleSelect event handler.
+
+Then inside of handleSelect
+
+we're going to update the selection piece of state.
+
+So that is what we just implemented.
+
+We are receiving the newly selected option
+
+and then we are updating the selection piece of state.
+
+Alright so now we're going to take that piece of state
+
+and the event handler and pass them down
+
+into our Dropdown components.
+
+So I'm going to pass down selection
+
+as a prop called selection
+
+and the handleSelect event handler,
+
+I'm gonna pass it down as a prop called onSelect.
+
+Alright, I'm gonna save that.
+
+We'll then go over to the Dropdown.js file,
+
+over here I'm going to receive those two props
+
+we are now passing down.
+
+So they are selection and onSelect.
+
+Then to get started,
+
+our event handler right here
+
+handleOptionClick,
+
+we are doing two things inside there.
+
+First we are closing the Dropdown
+
+and then we figured out
+
+what option the user just clicked on.
+
+So this right here,
+
+that is the option object that the user clicked on.
+
+That is the object that one right there,
+
+that we want to communicate back up into handleSelect.
+
+So we can call handleSelect by invoking the onSelect prop,
+
+onSelect is what we called the prop when we passed it down
+
+or what we call the event handler,
+
+when we pass it down into the Dropdown component
+
+it is the handleSelect function.
+
+So instead of doing the console.log right here,
+
+we will instead call onSelect
+
+and pass in the option object.
+
+Alright then last step,
+
+we need to actually make use
+
+of the currently selected item in some way.
+
+So we need to use this selection prop.
+
+Again that is our option object
+
+or possibly it might be null.
+
+So we want to show that thing's text
+
+in place of Select right there.
+
+So we don't always want to show Select...,
+
+we only want to show it if the selection prop is null.
+
+So selections can be either an object or null.
+
+So to handle this right above the return statement
+
+I will declare a new variable,
+
+the let keyword,
+
+I'll just call it content.
+
+And by default I'll have it be Select.
+
+I'll then check to see
+
+if a selection object was passed down.
+
+So this is gonna help us handle the case
+
+in which selection is null.
+
+If selection is null,
+
+if we do not have a selection,
+
+we are not gonna enter the if statement.
+
+If we do enter the if statement,
+
+if we did pass down a selection object,
+
+then we will update the content variable
+
+to be selection.label.
+
+So by default show Select,
+
+if we pass down a selection,
+
+then update it to be the label.
+
+And then finally we can show content
+
+inside that first div like so.
+
+Okay I'm gonna save all this.
+
+I think I have an error right now
+
+so I probably made a typo.
+
+Okay definitely did,
+
+call this thing handleSelection
+
+back over here inside of App.js
+
+it was actually called handleSelect not handleSelection.
+
+That was a typo on my part.
+
+So it should not be handleSelection right there
+
+it should be just handleSelect.
+
+Okay, that's better.
+
+So now by default we see select right here.
+
+If I click it to open up the menu I can then click on red.
+
+Now I have a selected option object,
+
+so I'm going to enter into the if statement right here
+
+and I'm going to update content
+
+to be that object's label property.
+
+And so now I see
+
+that object's labeled property on the screen.
+
+I could do the same thing for green, blue,
+
+and so on.
+
+So that's it.
+
+Now that is the base behavior of our Dropdown
+
+but there are a couple of improvements we're going to make
+
+to it in addition to a little bit of styling.
+
+So still just a little bit of work to get through.
+205:
+Instructor: There are a couple of very small improvements
+
+I would like to make to our dropdown component.
+
+The first one
+
+is rewriting this little block of logic right here.
+
+So once again, we are declaring a variable called content.
+
+We give it a string of Select by default,
+
+and if we did pass down a selection prop,
+
+if it is not null, then we're going to update content
+
+to be the selected options label property.
+
+Writing this all out just takes a couple of lines of code.
+
+It turns out we can write this all out much more concisely
+
+if we use a fancy little bit of JavaScript syntax,
+
+and I want to show you what that syntax is in this video.
+
+So I'm gonna first give you a quick demonstration
+
+over at my browser console on this new little bit of syntax.
+
+To get started, I'm going to make a brand new variable
+
+with the let keyword called colors,
+
+and I'll give it red and green.
+
+Naturally, I can look at the number of elements
+
+inside that array with colors.length,
+
+but common little problem.
+
+Let's imagine that for some reason,
+
+we accidentally assigned null to the variable of colors.
+
+Now if I try to look up the length property,
+
+when colors is null, we can get an error message.
+
+Very classic error message that you see all the time.
+
+Says, "Cannot read properties of null."
+
+Another very common error message that we see
+
+that is very similar
+
+is if we try to look up properties on undefined.
+
+So if colors is undefined,
+
+and we try to access colors.length,
+
+we're gonna see a very similar error message.
+
+So we can use a fancy little bit of syntax
+
+to kinda get around that error message.
+
+We can use a fancy little bit of syntax
+
+to check to see if a variable is null or undefined,
+
+and if it is,
+
+then we'll get back some kind of default value instead.
+
+So here it is.
+
+Here's the fancy bit of syntax.
+
+Colors is still undefined.
+
+I'm gonna write out colors?.length.
+
+So the question mark is the fancy part.
+
+This is going to check to see if colors is defined or not.
+
+If it is not defined, then this entire expression
+
+is going to evaluate to be simply undefined,
+
+and most importantly,
+
+we're not going to get an error message.
+
+So I can run this and I get undefined.
+
+If I do not have the question mark, I get an error.
+
+So question mark is just checking to see
+
+if colors is defined.
+
+The question mark can also work if colors is null.
+
+So now I can do colors?.length and I get undefined.
+
+If I do not have the question mark,
+
+I get an error, which I don't want.
+
+So now we can mix this question mark behavior
+
+together with a little bit of a Boolean expression,
+
+which we learned about a little bit ago
+
+to print out some content right there
+
+much more concisely than what we currently have.
+
+So here's what we could do.
+
+We can say colors?.length or 100.
+
+If if the color's object is not defined or if it is null,
+
+then we're going to return undefined right there
+
+from that entire expression, so something like that.
+
+Because we have the or symbol right here,
+
+we're then going to return the first truthy value
+
+and the first truthy value is 100.
+
+So if I run that, I would get 100,
+
+and I can do the equivalent with the question mark,
+
+and I get 100.
+
+Okay, so we're gonna use this kind of technique
+
+to print out the label right there.
+
+So I'm gonna delete everything you see on 25, 26, 27, 28.
+
+I'm gonna go into this div, and inside the curly braces,
+
+I'm going to remove content
+
+and replace it with
+
+selection?.label or Select, dot, dot, dot.
+
+So now if selection is null,
+
+then that's going to evaluate to be undefined,
+
+and we will get just the text Select.
+
+Otherwise, if selection is defined, if it is an object,
+
+then we're going to print out its labeled property,
+
+so it might be like the string Red,
+
+and now we're going to get the first truthy value,
+
+which would be Red.
+
+And that's it, so let's test this out.
+
+I'm gonna save this.
+
+Back over to the browser.
+
+If I refresh, I now see select.
+
+I can click it, click on Red, Green, Blue.
+
+Everything works.
+
+Alright, so good little improvement.
+
+We're gonna use that technique quite a bit
+
+throughout the remainder of the course.
+206
+Instructor: I would like to make another change
+
+to the dropdown component.
+
+This change is not required,
+
+but it's gonna help us understand
+
+a common community convention
+
+that you're going to see on a lot of professional projects.
+
+So as a reminder,
+
+when we were going through our design process,
+
+we came up with a name for this selected piece of state.
+
+We decided to call it selected.
+
+We also realized we needed an event handler
+
+and we're going to call it handle select.
+
+And that absolutely positively made sense.
+
+When we then realized that we had to pass that state
+
+and that event handler down to the dropdown,
+
+I pretty much decided to call those props.
+
+So the names
+
+of the variables that the dropdown expects to receive,
+
+I decided to call them on select and selection.
+
+And again, totally made sense.
+
+We could write out this code on a professional project,
+
+everything would be A-okay, no problem whatsoever.
+
+But there is a very common pattern you're gonna see
+
+on a lot of professional projects.
+
+And it's all about the names of these props right here.
+
+So it's specifically how we receive this prop
+
+inside the dropdown and this prop inside of selection.
+
+It has nothing to do with what we call the state
+
+and the event handler inside the parent.
+
+Those can always be called whatever we want.
+
+So here's the pattern.
+
+We are currently making a form control component.
+
+A form control component is any kind
+
+of component where a user is entering in a kind of value.
+
+So something like a text area,
+
+text input, drop down, radio buttons, checkbox, and so on.
+
+Many form control components are going
+
+to follow this very common pattern.
+
+And it's all about what we name these props right here.
+
+The common pattern is that we pass
+
+down the prop that tells the component
+
+what its current value is under a name of value.
+
+So instead of selection, we would call this value,
+
+if we want to follow this pattern.
+
+And when we pass down a callback,
+
+that's going to be called whenever user changes the value
+
+inside of that form control component,
+
+we commonly would call it on change.
+
+So again, this pattern has nothing to do
+
+with what we are calling the piece
+
+of state and the event handler inside the parent.
+
+It's just talking about the names
+
+of the props that we are passing down into the child.
+
+So you might be curious, "Why do we have these names?
+
+'Cause the ones we had before were completely reasonable.
+
+And it described what the dropdown did."
+
+It very clearly told us that we have to pass
+
+down something for indicating the current selection
+
+and that there was gonna be an event handler
+
+that was called whenever user selected some new option.
+
+So those names were totally fine, absolutely reasonable.
+
+Why would we ever want to change them?
+
+Well, it's really just all about being consistent.
+
+So let's imagine that we've got some parent component
+
+up here and it is showing a wide variety
+
+of different child components that are all form controls.
+
+So again, components that are going to show some stuff
+
+on the screen that the user can type in,
+
+drag, select, whatever.
+
+If we had a organic design process,
+
+so if we decided to just call all these things
+
+with whatever names first came to mind,
+
+we might eventually have a bunch
+
+of different prop names that are completely different
+
+for all these otherwise similar components.
+
+So our dropdown might expect to receive a prop called
+
+on select and selection.
+
+A text input might expect to receive on change in value.
+
+A checkbox might expect to receive on check
+
+and is checked and so on.
+
+So the only problem here is
+
+that the names of these props are just hard to remember.
+
+That's it, that's honestly it.
+
+It's just hard to remember all the different names
+
+of these props across these otherwise similar components.
+
+So we can improve this by just saying, "Okay, you know what?
+
+For all these different components that all are going
+
+to deal with the user input in some way,
+
+we're going to expect to always receive a prop called value
+
+in every single one of them."
+
+And this value prop is gonna tell that child component
+
+what its current value is.
+
+So what the currently selected item is for a dropdown,
+
+what the current text is for the input,
+
+whether or not the thing is checked for a checkbox,
+
+what the currently selected button is for radio buttons,
+
+what the currently or current position
+
+of a slider is for some kind of range slider.
+
+And then anytime a user changes these things,
+
+well we're always going to call a prop called on change.
+
+So on change, on change, on change, on change, on change.
+
+If we follow this pattern,
+
+it just makes it really easy for us
+
+in the future to remember what the prop names are
+
+for all these similar components.
+
+So again, not required.
+
+We could absolutely stick with our current names
+
+of selection and on select, totally fine,
+
+but you're gonna see this pattern quite a bit.
+
+So I would like to refactor our code and make use
+
+of this pattern because I would like to follow convention
+
+and I would like you to see it as well.
+
+And also just doing refactoring in general
+
+is always good practice.
+
+So let's refactor our dropdown.
+
+We're gonna change the on select
+
+and the selection prop names to be on change
+
+and value instead.
+
+It should be really, really easy.
+
+To get started, I will go over to app.js.
+
+I'm gonna find where we create dropdown right here.
+
+So now instead of passing down a prop called selection,
+
+we're gonna pass down a prop called value.
+
+And instead of on select,
+
+we'll pass down a prop called on change.
+
+So now if another engineer saw this,
+
+they would instantly understand,
+
+"Oh, okay, the current value of the dropdown,
+
+the currently selected item is value.
+
+And chances are anytime a user changes the selection,
+
+whatever I pass down into the on change prop is going
+
+to be called."
+
+Then inside of dropdown, we are no longer receiving props
+
+of selection and on select.
+
+They are now value and on change.
+
+So then we're going to go through our component very quickly
+
+and make one or two updates.
+
+The first one will be inside of handle option click,
+
+no longer do we have an on select.
+
+It is now called on change.
+
+And then down towards the bottom,
+
+we no longer have selection right there it is now value
+
+and that's it.
+
+So let's save this, flip back over, quick test.
+
+I can still open, select something,
+
+everything works just fine.
+
+Okay, so that's it.
+
+Once again, not required change,
+
+what we came up with our design process are these kind
+
+of reasonable names
+
+of something like on select and selection, totally fine,
+
+but very common to see the props
+
+with names of value and on change.
+
+coding challenge:
+Form Controls - Prop Naming Convention
+You are working on an app that has a user input their age using a range slider input.
+
+Another engineer has already created a component called Slider.  It shows a slider when used.  The other engineer has told you that this component expects to receive props that all normal 'form control' components would receive.
+
+You have defined a piece of state and an event handler, but now you need to pass them into the Slider.
+
+Update the <Slider /> tag, passing in the age and handleAgeChange variables as props. It is up to you to figure out what the props should be called.
+
+Hint:
+
+The slider won't work until you finish the exercise
+
+You only need to change one line of code in the App.js file.
+
+The Slider components follows community convention for prop naming
+
+The community convention for prop names around 'form control' components is usually 'onChange' and 'value'.
+
+import React from 'react';
+import { Slider } from './Slider';
+// Udemy's code editor is a little weird... 
+// We do *not* need an 'import {useState}' line
+
+function App() {
+  const [age, setAge] = useState(50);
+  
+  const handleAgeChange = (newAge) => {
+    setAge(newAge);
+  };
+  
+  return <Slider />
+}
+
+const useState = React.useState;
+export default App;
+
+// You do *not* need to change this file
+// You do *not* need to change this file
+
+import React from 'react';
+
+function Slider({ value, onChange }) {
+  return (
+    <div>
+      <h1>Current Age: {value}</h1>
+      <input type="range" min={1} max={120} value={value || 50} onChange={(e) => onChange && onChange(e.target.value)} />
+    </div>
+  );
+}
+
+// Don't change the export
+export { Slider };
+
+207
+Instructor: Let's go through a quick solution
+
+to this exercise.
+
+In this exercise, we have a slider right here
+
+that a user is going to use to select their age.
+
+We've already created an app component.
+
+We've already got a slider component, which is responsible
+
+for showing the slider itself, and we've created a piece
+
+of state to keep track of the age and an event
+
+handler to be called whenever the age is changed as well.
+
+The problem is we don't really know how to take this state
+
+and this event handler
+
+and communicate it down into the slider.
+
+We don't know what the prop names are supposed to be.
+
+We could open up the source code for the slider component.
+
+That would be inside "slider.js",
+
+but we have been told by another engineer
+
+that the slider has been wired up to expect to
+
+receive all the props that any standard form
+
+control component would receive.
+
+So that is a sign to you and I that
+
+the slider component expects to
+
+receive a prop called "value" and a prop called "onChange".
+
+So we're going to take our state
+
+and our event handler and wire those up or pass those
+
+down into the slider as props called
+
+"value" and "onChange".
+
+So on the slider element, I'll write in,
+
+"value" is going to be age and "onChange",
+
+I want to call the handle age change function.
+
+Okay.
+
+So now I can see at current age 50 over here,
+
+I can drag the slider and change the age.
+
+Very good, that means we probably wired
+
+this thing up successfully.
+
+I'm going to click on "check solution" at the bottom right
+
+just to make sure my tests are working.
+
+As usual it's going to take a little bit too long.
+
+Eventually...
+
+There we go.
+
+Solution is correct.

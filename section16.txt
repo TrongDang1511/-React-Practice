@@ -1,0 +1,5239 @@
+262
+Instructor: The last big feature
+
+we're gonna add into our table is sorting functionality.
+
+So we want to show a little set of arrows
+
+next to some of the different header cells
+
+inside of our table.
+
+And if user then clicks on this cell right here
+
+or that little header cell right there,
+
+we want to sort all the data inside of our table.
+
+Now implementing sorting
+
+is gonna be just a little bit involved
+
+'cause there's a lot of different topics going on here.
+
+So here's the general plan on how we're going to cover this.
+
+Right now inside this video,
+
+I'm gonna make sure it's super clear
+
+how the sorting inside this table is supposed to work.
+
+We're then going to do a quick review
+
+on how we sort data in general in plain JavaScript.
+
+So nothing to do with React,
+
+we're just gonna take a look at how we sort data in general.
+
+Then we're going to take a look
+
+at how we're going to add in
+
+or implement sorting inside of our table component
+
+because it turns out there are a couple of different options
+
+and I want you to understand the different options.
+
+And there's one in particular
+
+that I think would be a really good decision.
+
+And as we're going through this process,
+
+something that's super important to keep in mind
+
+is that our table component is supposed to be reusable.
+
+So we should be able to take our table component,
+
+hand it off to another engineer
+
+and they should be able to use our table
+
+with totally different data.
+
+So totally different array of objects
+
+that might not represent fruit,
+
+might be totally different objects entirely.
+
+And this other engineer
+
+should be able to use our table component absolutely a-okay
+
+without any issues whatsoever.
+
+That's really important
+
+because it's gonna have a huge impact
+
+on how we design our component.
+
+So just keep that in mind.
+
+Okay, so let's take a look
+
+at how the table is supposed to work.
+
+By default,
+
+whenever we show our table component to the user initially,
+
+all of our data is gonna be in unsorted order.
+
+So we're gonna show a list of rows in exactly the same order
+
+that we are given this data inside of our data array prop.
+
+Remember we're receiving that data array.
+
+There's an array of objects.
+
+So we're gonna take each of those objects one by one
+
+and just print them out on the screen.
+
+That's exactly what we are doing right now.
+
+So we are already printing out our data in unsorted order.
+
+We're then going to imagine
+
+that user clicks on the score header right there.
+
+When they do so,
+
+we want to sort all the different rows inside of our table.
+
+We're going to show only the up arrow
+
+to indicate the user is then sorting this data inside
+
+or using ascending order.
+
+Ascending order means that we're going to print out
+
+the lowest values first and the highest values last.
+
+So right now I still have the data
+
+in this diagram in unsorted order.
+
+If I want to sort this table based upon the score values
+
+in ascending order,
+
+I would put the highest value at the very end.
+
+So I'm gonna take this row right here,
+
+which has a score of five and put it at the bottom.
+
+Then banana would go up here 'cause it has a score of one.
+
+And that's it.
+
+I'm now in ascending order.
+
+There's something super important here
+
+that I want you to understand and keep in your head.
+
+When a user clicks on a header,
+
+we're going to sort some rows.
+
+And when we are doing the sorting operation,
+
+we are not just sorting the data inside of the score column,
+
+we're using that as our sorting criteria.
+
+But as we sort this data,
+
+we are moving around an entire row.
+
+So we're not just moving the numbers around,
+
+we're not just reordering these scores in some way,
+
+we are moving the entire row.
+
+So Apple is always gonna have a score of five.
+
+It wouldn't make sense to try to only reset
+
+or reorder the score values and all of a sudden say,
+
+well, now the five is gonna be along to banana.
+
+That doesn't make any sense.
+
+So whenever we are doing a sorting operation,
+
+we are moving around the entire row
+
+all the data that belongs to this row.
+
+We are using the score as the sorting criteria.
+
+Okay, so that's ascending order,
+
+so now we're going to imagine
+
+the user clicks on the score header again.
+
+When they do so,
+
+we're then going to sort our data in descending order
+
+and that's where we're going to put the highest value first
+
+and the lowest value last.
+
+We're going to update the icon up here
+
+just to tell the user
+
+they are now sorting in descending order.
+
+And then the actual sort order would be something like this.
+
+Apple would be first
+
+'cause it has the highest score and then it would be lime
+
+'cause that's the second highest,
+
+and then orange and then banana.
+
+So I would do something like this
+
+and there we go.
+
+So once again, we are moving an entire row
+
+and we are using these score values
+
+as our criteria for sorting.
+
+Now right away you can kind of start to tell
+
+that as we click on a single cell multiple times in a row,
+
+we're going to kind of progress from being unsorted,
+
+then to ascending, and then to descending.
+
+So there's kind of a cycle going on here
+
+as a user clicks on a single header cell
+
+multiple times in a row.
+
+Initially we're going to be unsorted.
+
+If a user then clicks on score,
+
+we're gonna sort everything in ascending order
+
+based upon the score.
+
+If a user clicks on score again,
+
+we'll then be in descending order.
+
+And if a user clicks on score for a third time in a row,
+
+we're gonna go back to unsorted.
+
+So we've got a cycle that we go through
+
+as a user clicks on a single cell.
+
+There's one variation here
+
+I wanna take a look at on this behavior.
+
+So what would happen if a user clicks on score one time
+
+or two times and then clicks over here on name?
+
+What would we do then?
+
+Well, here's what we're going to do.
+
+Here's how we're gonna handle that.
+
+If a user is sorting on score
+
+in either ascending or descending,
+
+and then the user clicks on any other header cell,
+
+so any other header cell in this case name,
+
+then we're going to immediately sort an ascending order
+
+on that other cell or on that other column.
+
+Now this right here is not super critical
+
+for you to understand or memorize right now.
+
+All I mean to indicate
+
+is that we need to take into account
+
+what happens when a user clicks on score once or twice
+
+and then clicks on another header cell.
+
+That's all I mean to say.
+
+It's just something we need to think about
+
+at some point in time and we need to take that into account.
+
+Okay, so that's it.
+
+So at this point in time,
+
+we've established that user is going to click
+
+on these header cells to store our data in first ascending,
+
+then descending, and then back to unsorted.
+
+And we've also established
+
+that when we are doing some sorting operation,
+
+we are moving entire rows around.
+
+We're just using the value inside of the column
+
+the user clicked on as our sorting criteria.
+
+So now that we have kind of a basic understanding
+
+of how this table component's supposed to work,
+
+we're gonna take a look and get a review
+
+on how we handle sorting in general in JavaScript
+263
+
+Instructor: The next thing we're going
+
+to do is take a look at how we handle sorting
+
+in plain JavaScript.
+
+So again, no react whatsoever.
+
+We're just thinking about how we sort arrays of data.
+
+So to understand this, to get a quick reminder,
+
+I'm gonna open up a new file inside my editor.
+
+I'm not going to create or save this file,
+
+so I'm just gonna open up a new file
+
+by hitting Command + N or Control + N.
+
+We're gonna write out a little bit
+
+of code inside of here,
+
+and then we're going to copy-paste that code
+
+and run it over inside of our browser console.
+
+And again, we're just taking a look at basic sorting
+
+of simple values inside of an array.
+
+So let's imagine that we've got a variable called data
+
+and it has some plain numbers inside of it
+
+like five, one, four, and three.
+
+And at some point in time, we might want to,
+
+well, sort this data.
+
+So we might want to sort it in ascending order.
+
+We want to go from the lowest value first
+
+to the highest value last.
+
+If you look this up online,
+
+you'll very quickly see some documentation saying,
+
+"Oh, well, you can just call data.sort."
+
+Sort is a function built into every JavaScript array.
+
+It's gonna try to sort the values inside of your array,
+
+but sort doesn't really work the way we expect.
+
+So let me give you a quick demonstration here.
+
+If I try to sort the values of five, one, four, three,
+
+I'm gonna get back something that looks pretty reasonable.
+
+I get one, three, four, and five.
+
+So it looks like it worked.
+
+It looks like my values are in ascending order,
+
+but well, it doesn't quite work the way we expect.
+
+I'm gonna change the one here to a 10.
+
+It's now I've got 5, 10, 4, 3.
+
+And now if I try to sort this data,
+
+I get back something very unexpected.
+
+I now get 10, 3, 4, and 5.
+
+Clearly not sorted in any reasonable way.
+
+So the sort function built
+
+into JavaScript really doesn't work quite the way you expect
+
+right out of the box.
+
+So here's the issue.
+
+Whenever we call the sort function,
+
+JavaScript is gonna do something very specific
+
+behind the scenes for us.
+
+It's gonna take a look at every element inside the array
+
+and try to sort it, but before it does so,
+
+it's gonna convert those values into strings automatically.
+
+And that's something that we can't quite control
+
+if we're only using sort in this very simple fashion.
+
+That's what we're doing right now.
+
+So to sort the numbers of five, one, four, and three,
+
+we can imagine that JavaScript is gonna turn five
+
+into a string that has the character five inside of it,
+
+turn one into a string of one,
+
+four into a string of four and so on,
+
+and then sort those strings.
+
+So again, not really what we expect and we don't really like
+
+that default basic behavior of JavaScript.
+
+So to fix this,
+
+we need to add in something called a comparator function.
+
+A comparator function is a function we're gonna pass in
+
+as the first and only argument to sort.
+
+This comparator function is gonna help JavaScript understand
+
+exactly how we want to sort the values inside of our array.
+
+So let me show you how we would add
+
+in a comparator function.
+
+Okay, back over here,
+
+I'm gonna pass into sort an arrow function.
+
+This is going to receive arguments
+
+that we usually call a and b.
+
+And then inside the function,
+
+I'm going to return a - b like so.
+
+So now I'm gonna copy this, I'm going to run it,
+
+and I'll see that, yep, that appeared to actually fix it.
+
+So I now see my values in ascending order.
+
+I see 3, 4, 5, and 10.
+
+So what's going on here with the comparator function?
+
+Well, quick diagram. Here we go.
+
+So up here, I've got five, one, four, and three.
+
+The comparative function is going
+
+to be called multiple times.
+
+Every time it is called,
+
+it's gonna be given two different elements out of the array.
+
+The first is gonna be the a value and then the b value.
+
+Now it kinda looks like in this diagram,
+
+I swapped the order here because back inside of our editor,
+
+we are receiving these arguments as a and b.
+
+The second element in a pair is the a argument.
+
+So the first time that our comparative function gets called,
+
+if you console.log out a and b,
+
+you'll see that we initially have an a value of one
+
+and a b of five.
+
+So these two values are not exactly mapped
+
+into like first, 5, and then 10.
+
+They're kind of swapped, they're flipped, so to speak.
+
+Our goal inside this comparative function is
+
+to help tell the sorting algorithm whether
+
+or not these two elements should be swapped in order.
+
+So should we put the one before the five,
+
+or should the five stay before the one?
+
+If we want the a value, so the one in this case,
+
+to go before the b value,
+
+then we need to return a negative number.
+
+If we want the b value to go before the a value,
+
+then we're going to return a positive number.
+
+And if they are the same and should not be swapped,
+
+we're supposed to return a zero.
+
+So one way of implementing this is to put in simply a - b.
+
+So now if a is less than b,
+
+in this case, it is in this diagram anyways,
+
+then we're going to be returning a negative number
+
+and that's a sign that we want to put the one
+
+before the five.
+
+So we're going to swap those two elements.
+
+After we have done that swap,
+
+the sorting algorithm is then going
+
+to call our comparator function again,
+
+but now it's going to be given these two elements,
+
+the next two.
+
+So now a is gonna be four, b is gonna be five.
+
+We're gonna do the same check and return a number saying
+
+whether or not we are supposed to swap these elements.
+
+In this case, we would,
+
+then we would move on to the last two.
+
+Should we swap these two elements? Yes, we should.
+
+And that's it, we end up with our sorted array.
+
+So that's what the comparative function is doing.
+
+So we can sort an array
+
+of numbers using this very simple comparative function
+
+that you see right here.
+
+Okay, so that's basic sorting in JavaScript.
+
+Now we're gonna take a look in just a moment
+
+at two variations on this.
+
+First, how do we swap the order?
+
+Right now, we are always getting back numbers
+
+in ascending order.
+
+So how do we get back numbers in descending order?
+
+And the other thing we need to take a look at is
+
+how would we sort other kinds of values,
+
+such as strings or even objects?
+
+So a little bit more on sort in just a moment.
+264
+Instructor: The next thing we're going to take a look at
+
+is how we can sort an array of strings.
+
+So I'm going to update my data array.
+
+I'm gonna change it to T, capital A, lowercase A, capital B,
+
+and lowercase B.
+
+Just a little bit ago,
+
+before we introduced this comparator function,
+
+I had told you that by default
+
+JavaScript is gonna take all the elements
+
+inside of an array, turn them into strings,
+
+and then compare them.
+
+So that might lead you to believe
+
+that JavaScript can sort an array of strings really well.
+
+Once again, not quite the case.
+
+So let me demonstrate that to you very quickly.
+
+I'm going to remove the comparator function
+
+because this one is really only designed
+
+to work with numbers.
+
+So I'm gonna try calling data.sort,
+
+and I'm going to see what I get back.
+
+So I'm going to run that,
+
+and I get back something that definitely looks
+
+like it has changed,
+
+but it's not quite what I think I would be looking for
+
+if I was sorting an array of strings.
+
+I see all the capital letters first,
+
+then the lowercase letters.
+
+And I don't know about you,
+
+but personally, I would really expect to see all the A's,
+
+whether they are uppercase or lowercase,
+
+then the B's, and then everything after that.
+
+So once again, the default sorting behavior
+
+is not quite working out for us.
+
+And to fix this, we're gonna put in, once again,
+
+a comparator function to tell sort
+
+exactly how we want to sort our data.
+
+Now, the sorting function,
+
+or the comparator function we had just used,
+
+was designed to work with numbers.
+
+So we need to put in a slightly different implementation
+
+to tell sort how to work with strings.
+
+Alright, I'm gonna receive the arguments A and B
+
+and here's what we're going to do this time.
+
+I'm going to return a.localeCompare B.
+
+Notice that this is locale, it is not local.
+
+So there's an E between the L and the capital C right there.
+
+This is a built-in function
+
+that belongs to all strings in JavaScript.
+
+It allows us to compare two strings,
+
+and it's gonna return a number
+
+of negative one, zero, or positive one.
+
+So this is a function that is kind of specifically made
+
+to help us compare strings in JavaScript,
+
+and be used inside of a sort compare function.
+
+Let's try run running this
+
+and just see if it solves our issue.
+
+And there we go.
+
+So now we've got a sorted result
+
+that makes a lot more sense.
+
+I've got all the A's, and then all the B's,
+
+and then everything after that.
+
+So no longer are we having to worry
+
+about uppercase or lowercase or anything.
+
+Alright, so we've now got a good idea
+
+on how we can sort numbers and how we can sort strings.
+
+So we're going to start to take a look at one last variation
+
+and that is how do we sort an array of objects
+265
+
+and every object has a weight, a cost, and a name.
+
+What are all the different ways
+
+that we could sort these objects?
+
+Well, it turns out there are many different ways
+
+we could sort them.
+
+We could decide to sort these objects based upon their name,
+
+so we could try to sort them
+
+in ascending alphabetical order
+
+based upon the name property of every object.
+
+So we would take a look at onion, tomato and carrot.
+
+To sort these alphabetically,
+
+we'd end up with carrot, then onion, and then tomato.
+
+So that is one absolutely valid way
+
+of sorting these objects.
+
+We could also sort these objects based upon their cost
+
+in ascending order.
+
+So we have costs of five, two and seven.
+
+To go in ascending order,
+
+we would end up with that like so.
+
+Once again, totally valid way of sorting these objects.
+
+Another completely valid way would be ascending order
+
+based upon their weight.
+
+So we would end up with the four, 10 and 13.
+
+Once again, completely valid way of sorting these.
+
+Now, all three of these sorts
+
+are kind of obvious and straightforward
+
+but it turns out we can also sort these objects
+
+in less obvious ways that are still completely valid.
+
+So here's an example.
+
+We could try to sort all these objects in ascending order
+
+based upon their cost divided by weight ratio.
+
+So to do this sort, we would first have to look at
+
+each object's cost divided by the weight.
+
+That would then give us a number
+
+that we could use for sorting.
+
+So for the first one, the cost to weight ratio
+
+is five divided by 15 which is roughly 0.33, repeating.
+
+The second one is two divided by 10.
+
+So that is 0.2.
+
+And then lastly, cost of eight divided by four.
+
+That is two.
+
+So now we can take these numbers
+
+and use them to sort the objects in ascending order.
+
+So we would end up with 0.2 first,
+
+then 0.33, and then two.
+
+Once again, completely valid way of sorting these.
+
+We could also sort these on slightly more esoteric
+
+or stranger properties.
+
+So for some crazy reason, we could decide
+
+to sort the objects in ascending order based upon the length
+
+or the number of characters in the name property.
+
+So in this case, onion has five characters, tomato has six
+
+and carrot has six.
+
+So in this case it happens that,
+
+well they are already in ascend order, but once again
+
+totally valid way of doing this.
+
+So when we start to look at sorting objects
+
+we've got a lot more options for doing sorting.
+
+And the common thing here
+
+between all these different sorting operations
+
+is that we're kind of doing a little bit of a transform.
+
+So we are taking a look at a single, or in some cases
+
+multiple different properties of the object.
+
+We're then using that to produce
+
+either a number or a string.
+
+For example, when we were trying to sort these based
+
+upon the cost, we were kind of taking this entire object
+
+and then pulling one single property
+
+out of it, just the cost.
+
+So five, two, oops, two and eight.
+
+And then we used these computed values over here
+
+for doing our sort operation.
+
+So when we are left with just numbers and strings
+
+as we saw in the last two videos
+
+we know how to sort these things really, really well.
+
+So to sort objects, all we really have to do
+
+is implement this one additional transformed step.
+
+We're going to do some calculation
+
+on each object and then use that transformed value
+
+as the basis of our sorting criteria.
+
+All right, so now we've got a general idea
+
+on how we're going to sort objects.
+
+We're gonna try to write out some code
+
+that kinda simulates this in just a moment
+266
+-: Back over inside this temporary file,
+
+we're gonna write out a couple of quick examples
+
+and figure out how we can very easily
+
+sort an array of objects.
+
+So I'm gonna begin by updating the data array.
+
+I'm gonna put in an array of three different objects.
+
+They're gonna be just like the vegetable objects
+
+we saw a moment ago on those diagrams.
+
+So I'm going to have a name of, how about Tomato?
+
+A cost of 10 and a weight of five.
+
+I'll then have a name of, I don't know, Carrot.
+
+Cost of 15 and a weight of two.
+
+And then a name of, what I use back over here?
+
+Onion, that's a good one.
+
+With a cost of five and a weight of seven.
+
+So there's my array of objects.
+
+Now that I have an array of objects
+
+I can't use the same kind of comparison we were doing before
+
+because this comparison is meant specifically
+
+for comparing strings.
+
+So we're gonna have to update our sort function
+
+a little bit.
+
+Our sort function is now going to do two different things.
+
+It is first going to transform an object.
+
+So it's gonna take a look at a single object
+
+and it's gonna pull off one single property
+
+that we're going to use for our actual comparison.
+
+So we're going to get back a number or a string
+
+and then we're going to use that as our sorting criteria.
+
+So lemme show you how we're going to do that.
+
+We're gonna first take care of this transform step.
+
+I'm going to create a function called getSortValue.
+
+This is going to be called with one vegetable object
+
+at a time.
+
+And from this function, I'm going to return the property
+
+off the object that I want to use as my sorting criteria.
+
+So if I wanted to compare everything based upon its cost
+
+then my getSortValue function,
+
+which is kind of this transformed step right here,
+
+would pull off and return the cost property.
+
+So right here, getSortValue,
+
+I'm going to return vegetable dot cost.
+
+So I've now got a transform function.
+
+I've got a function
+
+that can take in an entire vegetable object
+
+and return back a simple number or a simple string
+
+that I can use to sort this entire object.
+
+So now here's how we would use it.
+
+Inside the sort function,
+
+I'm going to create two new variables called value A
+
+and that's gonna be getSortValue.
+
+And I'm gonna put in the A argument
+
+and then I'll get value B, which will be getSortValue,
+
+and I'll put in B.
+
+So think about what value A and value B are.
+
+These are now going to be two very simple numbers.
+
+So the numbers over here,
+
+kind of like the five, two and eight,
+
+And we know how we can sort numbers.
+
+It's super easy. All we have to do
+
+is return the difference between them.
+
+So we learned that like two videos ago.
+
+So if I return value A minus value B
+
+I can now use this to sort these different objects.
+
+I've done my transformation step,
+
+I've pulled off one particular property
+
+that I want to use as my sorting criteria
+
+and then I am sorting based upon that criteria.
+
+Okay, let's copy this, run it at our console
+
+and down here if I expand this array of objects
+
+I'm going to expect to see all the objects sorted
+
+in ascent order based upon their cost.
+
+So here we go.
+
+I see cost of five, 10, and 15.
+
+So it definitely worked.
+
+Now the nice thing about this approach is
+
+that if we want to sort by any other property
+
+all we have to do is update this one very
+
+very simple function right here.
+
+So if I want to sort by the weight instead
+
+instead of returning the cost property
+
+I would return the weight property.
+
+If I run this now
+
+I will see my three different objects sorted
+
+in terms of increasing or ascent order on weight.
+
+So two, five, and seven.
+
+If we want to make our code work with strings
+
+we have to make just a very small change
+
+to our sort function.
+
+So remember this comparison right here
+
+is only useful when we are trying to sort numbers.
+
+And if we want to sort strings,
+
+we have to use that locale compare function.
+
+So we're gonna make a very small change
+
+to allow us to sort based upon strings.
+
+Before we do, I want to show you one very quick operator
+
+in JavaScript that you just might not be familiar with.
+
+So if I write out type of, and then a number
+
+I'm going to get back a string that says number.
+
+And if I do type of a string
+
+I get back a string that says string.
+
+So keep that in mind for just a moment.
+
+Okay, so now back inside the sort function.
+
+When we call getSortValue,
+
+we're gonna get back either a number or a string.
+
+We're then gonna take a look at value A
+
+and we're going to use this type of thing
+
+to decide if value A is a number or a string.
+
+If it is a number
+
+then we're going to do our number based comparison.
+
+And if it is a string
+
+we're going to return our string based comparison.
+
+So I'm going to do an if statement right here.
+
+I'll say if type of value A is string
+
+then I'm going to return value A locale, compare value B.
+
+Once again, notice that is locale, there's an E on there.
+
+And then otherwise if it is not a string
+
+I'm going to assume it is a number
+
+and so I would do my number based comparison.
+
+There we go.
+
+So now with this implementation
+
+our getSortValue function can return
+
+either a number or a string,
+
+and we're going to do our sorting operation correctly
+
+based upon either one.
+
+So now for example, we could return the vegetables name.
+
+The vegetables name is a string
+
+so now we're going to do this comparison
+
+and use that for our sorting criteria.
+
+If I copy this and run it,
+
+now we should see in ascending alphabetical order,
+
+carrot, onion, and tomato.
+
+Okay, so that's pretty much it.
+
+This right here, the code that we have,
+
+is a really, really reasonable way
+
+of sorting an array of objects.
+
+If we ever want to change our sorting criteria
+
+the property we're using for sorting
+
+all we have to do is make a very simple update
+
+to one very simple function.
+
+And the only requirement is that from this function
+
+we return either a number or a string
+
+And whatever we return that's gonna be used
+
+to sort the overall array of objects.
+
+One last variation I wanna show you here.
+
+If we wanted to find that cost divided by weight ratio,
+
+it would be vegetable dot cost
+
+divided by vegetable dot weight.
+
+So you can see really quickly how easy it is
+
+to change out our sorting criteria.
+
+So now we can run that and I should see everything sorted
+
+in increasing cost divided by weight.
+
+So the first one right here is five divided by seven
+
+so that's less than one.
+
+That right there would be a ratio of two
+
+and the ratio about 7.5.
+
+So once again, an increasing or ascending order.
+
+Okay, so this is a pretty good solution
+
+for sorting arrays of objects.
+
+There's only one missing thing
+
+and that is making sure that we can flip the sorting order.
+
+So right now we are always going
+
+in ascending or increasing order.
+
+So last thing we have to do
+
+is figure out how we can flip this order
+
+and get either ascending or descending.
+267
+Instructor: The last thing we have to figure out
+
+is how we can change the sort order very easily.
+
+So I want to very easily go from ascending order,
+
+which is what our current sort implementation always does
+
+and I want to very easily be able to change it
+
+out to descending order.
+
+Now to do this, I want you to recall
+
+that from this sort function right here
+
+we are really supposed to return
+
+a negative number, a positive number or zero.
+
+And that is used to decide whether or not
+
+the elements A and B should be swapped
+
+inside the array that we're trying to sort.
+
+So one way that we could very easily swap our order
+
+is to just take the value that we're about to return
+
+and multiply it by negative one.
+
+If we do so, we're going to swap the order.
+
+So lemme give you a very quick example of that.
+
+Down here on the number comparison,
+
+I'm gonna wrap that with a set of parentheses
+
+and then multiply by negative one.
+
+And then I am going to use sorting criteria
+
+of just the vegetable cost.
+
+So now I would expect to see all my vegetables sorted
+
+in descending order based upon the cost.
+
+Let's try that out.
+
+And so now I see decreasing cost.
+
+I start at 15, then 10 and then five.
+
+So to change our order, all we have to do is flip
+
+or multiply these values right here by negative one.
+
+That's pretty much it.
+
+But having to put in a manual negative one right here
+
+is a little bit tedious.
+
+I don't want to have to like, copy paste this
+
+or remove it every time I want to flip the order.
+
+So let's come up with a slightly better solution.
+
+Here's one different way of doing this.
+
+I'm gonna add in a new variable
+
+right above the sort function called sort order.
+
+And I'm gonna have it be a string of ASC
+
+which is short for ascending.
+
+Then right above the if statement,
+
+I'm going to add in another new variable of flip,
+
+how about reverse order?
+
+That's better.
+
+And then this variable is going to be
+
+sort order equal to ASC.
+
+If this is equal,
+
+if sort order is the string ASC
+
+then I'm going to assign a number of one to reverse order.
+
+Otherwise, I'll assign negative one.
+
+I've got a ternary expression right here.
+
+Remember how this works?
+
+If this evaluates to true,
+
+I'm going to get back
+
+whatever is right after the question mark.
+
+Otherwise I will get negative one.
+
+So all we're doing here is saying
+
+if the sort order variable is equal to ASC,
+
+give me back a number one.
+
+Otherwise, gimme back negative one.
+
+Then I can take this reverse order and multiply either that
+
+or that down there by reverse order.
+
+So I'm gonna add in times reverse order
+
+and times reverse order.
+
+And again, make sure you wrap the difference right there,
+
+that calculation in parentheses.
+
+If you don't do so,
+
+That's a very different calculation.
+
+So we definitely want to have the parentheses in there.
+
+Alright, let's now copy this.
+
+I'm gonna run it.
+
+And now I'm gonna see all my objects sorted
+
+in a sending order based upon the cost.
+
+And if I want to get these in descending order
+
+all I have to do is change these sort order variable.
+
+So I'm gonna change it to DESC for descending.
+
+Now if I run this
+
+I will get my objects back in descending cost.
+
+Okay, so this looks good.
+
+So I want to kind of highlight
+
+exactly what we have done here.
+
+We have now come up with a solution
+
+for sorting any kind of array of objects.
+
+It doesn't have to be just vegetables.
+
+This can be any kind of objects
+
+with any different variety of different properties.
+
+And to change these sort order and the sorting criteria
+
+all we have to do is make a very simple change
+
+to the get sort value function.
+
+And if we want to change the order,
+
+all we have to do is toggle
+
+the sort order variable right here
+
+between ASC or DESC.
+
+And that's gonna swap the order entirely.
+
+So this is super powerful.
+
+We've now got the ability to sort anything
+
+in any kind of order.
+
+Really fantastic.
+
+And as you can probably imagine
+
+this is gonna be extremely helpful
+
+when we are trying to sort the data for our table.
+
+So we've now got a really good sorting implementation.
+
+Time to take this back into the world of react
+
+and figure out how we're going to actually implement this
+268
+Instructor: We have completed our review
+
+of handling sorting in JavaScript.
+
+So now we're gonna move on to the next step,
+
+which is to look at some options for adding
+
+and sorting to our table.
+
+Now, as we go over this, I want you to really keep
+
+in your mind that our table component is really supposed
+
+to be reusable in nature.
+
+Okay, so quick review on what is going on
+
+inside of our table.js file right now.
+
+So this is the table.js file right here.
+
+Inside of that component, we've got three general sections.
+
+We've got one section for showing all the header cells,
+
+one for rendering out all the different rows
+
+and then at the bottom of the component,
+
+we create and return our table element.
+
+So, that is the current table component
+
+and it's relatively simple and straightforward in nature.
+
+It's definitely not too bad.
+
+But as we start to add in some sorting logic,
+
+I want you to keep something in mind.
+
+Remember, the table component is supposed to be reusable
+
+so we should be able to have one table component
+
+and use it just about anywhere in our application.
+
+With that in mind, I want you to imagine for just a moment
+
+that we are making some kind of movie review
+
+or movie listing application, and inside of our application
+
+we might need to show different tables
+
+with a bunch of different movies on them.
+
+So inside of our imaginary app,
+
+we might have one table up here at the top
+
+that always shows exactly three different movies.
+
+A table with only three records
+
+probably doesn't need to be sortable.
+
+We definitely could, but we just plain might not
+
+want this table to be sortable in any way.
+
+So, we don't want to allow a user to sort based
+
+on title or year.
+
+But then later on down the page, we might have another table
+
+that has many, many rows inside of it
+
+and we might want this table to be fully sortable,
+
+so we should be able to sort
+
+based upon title, year, revenue, or whatever else.
+
+The takeaway here is that we might want to have
+
+two different versions, so to speak, of our table component.
+
+One that shows a sortable table
+
+and then one that is not sortable at all.
+
+So with that in mind, as we think about adding in
+
+additional code to our table component,
+
+here's what we're really talking about.
+
+We have to add in probably some amount of states
+
+to keep track of all this sorting stuff.
+
+We probably need a click event handler to watch
+
+for a user clicking on header cell.
+
+We probably need to improve the rendering of the headers
+
+to make sure that they also show some sort direction icons.
+
+So that's these little icons right here.
+
+And then we also need to add in some actual sorting logic,
+
+something to actually take the data and actually sort it
+
+so we can render out some rows based upon the assorted data.
+
+So this is a total minimum.
+
+And then if we want to add in some additional functionality
+
+that allows us to show a table that is either sortable
+
+or unsortable, well then for every one of these
+
+little additional bits of code, we might have to put in
+
+some extra if statements, some extra checks.
+
+So for the function that's gonna handle a click on a header,
+
+we might need to put some code inside there
+
+to make sure that sorting actually is enabled
+
+for this table.
+
+When we render out the headers, we might need to put
+
+in an if statement to say that if sorting is enabled,
+
+we want to show some or add in some icons.
+
+And then when we put in the sorting logic,
+
+we only want to run that sorting logic
+
+if sorting actually is enabled and turned on.
+
+So you can see really, really quickly here
+
+that if we want to make a sortable version of our table
+
+and a non-sortable version, well, things are going to get
+
+a little bit confusing inside that component.
+
+So we absolutely can add a ton of sorting logic
+
+to the table.
+
+Absolutely no two ways about it.
+
+We can stuff a ton more logic inside there
+
+but if we want to have a really reusable table
+
+that can be sorted or not sortable at all, well,
+
+maybe there's a better way for us to do this.
+
+Maybe we can think of some better way to organize our code
+
+to still have kind of two separate versions of the table.
+
+One that can be sorted and one that is not sortable at all.
+
+So my question here is, is there a better way to do this?
+
+Can we somehow implement our table without just stuffing
+
+a ton of additional code inside the table.js file?
+
+So that's what we're going to explore.
+
+We're gonna try to figure out a better way of doing this
+269
+Instructor: So the question here is,
+
+can we add in sorting to our table without adding
+
+in a ton of additional code into the table.js file?
+
+And the answer is absolutely yes.
+
+It turns out we can add in sorting,
+
+changing only about three lines of code
+
+to the table component itself.
+
+Now, we are going to add in an additional file
+
+to our project.
+
+So I don't mean to say we can add in sorting
+
+without any code, we definitely have to write some code.
+
+But to the table.js file itself,
+
+we really are only going to change
+
+about three lines of code, and that's it, believe it or not.
+
+So to help you understand what we're gonna do,
+
+we're gonna first make a very small change to our project.
+
+It's gonna seem like a very strange, unimportant,
+
+not relevant change at all, but trust me,
+
+it's super important.
+
+After we make this change,
+
+we're then going to get a deeper dive
+
+into how we're going to approach all this sorting stuff.
+
+So here we go, here's the change.
+
+As a quick reminder, inside of our table page component
+
+we are creating an array of config objects.
+
+These config objects describe the different columns
+
+we want to have inside of our table.
+
+And right now, they all have two different properties,
+
+they have label and render.
+
+Label is being used to decide
+
+what text to put inside the header.
+
+And render is a function that is being used
+
+to decide what values to put inside of every cell
+
+inside that column.
+
+So this is all stuff
+
+that is already happening inside of our project.
+
+There's one little small deficiency inside of our project
+
+right now, inside the table,
+
+and that is that these header cells
+
+are always represented using a plain th element
+
+that shows a columns label directly inside of it.
+
+And that's it, that's the only option we have right now.
+
+And so I got a little question here,
+
+what if we wanted to put in something other
+
+than a th element or just a plain single th element?
+
+Maybe we want to have a th that contains an H1,
+
+that has a columns label inside of it.
+
+Maybe we want to put in a th
+
+that has a button element or something like that.
+
+The point is we might want to customize
+
+this header cell right here in some way,
+
+we might not always want to show just a plain th.
+
+So how could we allow ourselves to customize
+
+these little header cells?
+
+Well, we could take a very similar approach
+
+to what we did with the render function.
+
+So here's what we're gonna do to allow us
+
+to customize these header cells a little bit.
+
+We're gonna allow for an optional extra property
+
+to be provided on those different config objects,
+
+so there's going to be a new optional property.
+
+In other words,
+
+we don't have to add this into every config object,
+
+we're gonna call it header.
+
+And it's going to be a function
+
+that is going to decide what we should display right there.
+
+Ultimately, we are going to always display the label,
+
+but besides the label, is there anything else?
+
+Is there something else we should show right there?
+
+So that's the very small change we're going to make,
+
+we're gonna add in this optional property.
+
+And then inside of our table component,
+
+when we go to render out all these different headers,
+
+we're gonna say, if there is a header function provided
+
+on a given config object,
+
+we're gonna use that function to decide
+
+what to show right here.
+
+Otherwise, we're going to just show the label and that's it.
+
+So that's the plan, that's what we're going to do.
+
+So let's start on the implementation on this
+
+in just a moment.
+270
+Instructor: Alright my friends, let's add in support
+
+for this extra additional optional property
+
+that we can attach to these different config objects.
+
+So our goal here is to be able to customize
+
+this header cell only.
+
+I want to show this header cell with a red background.
+
+And I want all the others
+
+to be pretty much exactly as they are.
+
+So that's our goal.
+
+That's what we're going to try to do.
+
+So to implement this,
+
+I'm gonna first go back to our TablePage.js file.
+
+Here's table page.
+
+I'm gonna find the array of config objects.
+
+I'm gonna find the object
+
+responsible for rendering the score column.
+
+Here it is right here.
+
+So to customize how this column's header cell
+
+is rendered out onto the screen,
+
+I'm gonna add in a new header property.
+
+That's going to be a function.
+
+So this function needs to return the exact JSX
+
+that I want to display as the header cell for this column.
+
+And like I just said,
+
+I want it to be a th element that has a red background.
+
+So I'm going to return a th that has a label of score.
+
+So it's still gonna say score.
+
+And then I'm going to give it a class name of bg-red-500.
+
+That class name is going to give me my red background.
+
+Now, of course, if we save this,
+
+nothing is gonna be different on the screen
+
+because we are not making use of this header property yet.
+
+So we now have to go over to our table component.
+
+And when we are building up our list of headers,
+
+when we are rendering them all out,
+
+we now need to take a look
+
+at these different config objects
+
+and decide whether we should build up
+
+a default standard th element
+
+or try to use this extra custom function
+
+to build up a particular columns header cell.
+
+So to do that, we'll go back over to table.js.
+
+Here's table.js.
+
+Up here at the top,
+
+this is where we build up the list of headers.
+
+So we are mapping over the config array of objects.
+
+We then receive each of those objects
+
+as variable called column.
+
+So now this column object right here
+
+might have a property called header.
+
+And if it does, that's gonna be a function
+
+that we want to call
+
+and we want to return the result
+
+instead of our default th element.
+
+So all we have to add inside of here
+
+is if the column object has a header property
+
+that is defined, then we're going to return
+
+the result of calling column.header.
+
+So this is a super straightforward change.
+
+Once again, all we're doing is saying that when we build up
+
+a th or a header for this object,
+
+we're gonna use the default th,
+
+this is gonna get a default th
+
+but this object when we map over it,
+
+because it has a defined header property,
+
+we're going to call this function.
+
+We're gonna get back a th like that one right there.
+
+And we're going to use that
+
+to represent the header for this column.
+
+Okay, so now if we save this and flip back over,
+
+we are gonna get in a little warning message
+
+around a missing key prop.
+
+We'll take care of that in just a moment.
+
+But more importantly, you'll notice that now
+
+we've got a customized header.
+
+So we've got a hh element that has a red background.
+
+So this seems really not useful at all, right?
+
+Who cares about a red background?
+
+Well, the point is we can now customize
+
+all of the different header cells
+
+displayed inside of our table,
+
+and it really might not seem important at all.
+
+I understand that, it might not seem important at all
+
+but this is going to allow us
+
+to do something very very important.
+
+We can now control exactly what is being displayed
+
+inside of all of these different headers.
+
+And again, I know that might not seem relevant.
+
+So we're gonna take a pause right here.
+
+We're gonna come back in just a moment.
+
+We're gonna fix up this warning message
+
+about a missing key prop
+
+and then we're going to have a deep discussion
+
+and understand why having control
+
+over what is displayed up here is super, super powerful.
+271
+Instructor: We are going to have a discussion
+
+on why being able to customize these header cells
+
+is super important,
+
+but before we do,
+
+let's solve this warning around a missing key prop.
+
+So what is the issue here?
+
+Well, remember, whenever we map over
+
+our list of config objects,
+
+we are returning some different JSX elements
+
+and these JSX elements, because they are part of a list,
+
+must have a key prop assigned to them.
+
+When we return the result of calling column.header,
+
+we are returning this th back over here
+
+inside of TablePage,
+
+and this th does not have a key prop assigned to it,
+
+and that's why we are seeing this warning message.
+
+So to fix this up, one thing we could do,
+
+this isn't very good,
+
+but we could just add in a key prop manually to this th.
+
+So I could put in something like a key of asdf,
+
+and if I save that and refresh,
+
+the warning message will go away.
+
+But I don't really like this solution,
+
+and the reason is simple.
+
+Remember, TablePage is a component that is being created
+
+by some other developer on my project.
+
+I don't want other developers to have to worry
+
+about manually adding in key props like this.
+
+This is just a tedious thing,
+
+and other developers just plain might not know
+
+that if they provide this header function,
+
+they must return an element
+
+that has a key prop assigned to it.
+
+I don't think that's good practice.
+
+I don't want other engineers to have to worry about this.
+
+So even though this works,
+
+I'm not gonna use it as a solution.
+
+We're gonna have to think of something else.
+
+So let's go back over to Table.js.
+
+So our real goal here
+
+is to make sure that every single time this function runs,
+
+we are returning a JSX element
+
+that has a key prop assigned to it.
+
+So another way to fix this
+
+would be to wrap the result of calling column.header
+
+with some other element, like say a div.
+
+I'm going to then wrap column.header with curly braces,
+
+because that is a JavaScript expression,
+
+and now right here I've got a JSX element
+
+that I can assign a key prop to.
+
+So I could give this div a key of column.label.
+
+So now I've got a div with a key prop.
+
+Well, that should work, right?
+
+Well, if we save this and then refresh,
+
+we're going to see a different error message.
+
+This error message is related to something
+
+we spoke about a little bit ago.
+
+Whenever React tries to show a table,
+
+it's gonna validate the HTML structure of your table.
+
+So we're now seeing a warning message coming from React,
+
+saying that we are trying to display a div inside of a tr,
+
+and that is not valid HTML.
+
+We could just let this warning occur
+
+and just not worry about it,
+
+but I think we should try to solve it.
+
+So we should make sure that from this thing right here,
+
+we are ultimately only going to be returning a th element.
+
+So putting a div right here, not gonna work.
+
+Not a good solution.
+
+So let's just try replacing that div with a th instead.
+
+Okay, if we save this and refresh,
+
+well, now we're getting another error.
+
+This error says that we are displaying a th inside of a th.
+
+So this kinda makes sense, right?
+
+Here we are creating a th element
+
+and column.header also returns a th element.
+
+So again, yet again, still not a good solution.
+
+So what it kind of feels like here
+
+is that we need to put in
+
+some kind of JSX element right here
+
+just so we can assign a key prop to it,
+
+but we don't actually want to display
+
+any HTML element inside the dom.
+
+That's what we're really trying to do.
+
+We just want to put something here
+
+so we could assign a key prop,
+
+but we don't want to show anything inside the dom,
+
+because any element we could possibly put right here
+
+is gonna be invalid.
+
+There's no valid element that we could display here.
+
+So here's one possible way we could solve this.
+
+At the top of my file, I'm going to define a new component
+
+just for a moment.
+
+Normally we would not define two components
+
+inside of a single file.
+
+That's just a quick demonstration,
+
+and I'm going to make a component called Echo.
+
+Echo is going to receive some children,
+
+and it's just going to return those children.
+
+So what does this allow me to do?
+
+Well, now I've got something I can use as a JSX element.
+
+I can put in Echo right there.
+
+I can assign it a key prop.
+
+It's gonna take in some children,
+
+and when I render my Echo component,
+
+it's just gonna give me those children back.
+
+So I've now got something that I can assign a key prop to,
+
+but it doesn't actually produce anything
+
+that's gonna be placed into the dom,
+
+so I won't have to worry
+
+about having a valid table structure.
+
+So now if I save this and flip back over,
+
+the error has gone away.
+
+Now fortunately, even though this solves the issue,
+
+we don't have to create
+
+this kind of imaginary Echo component every single time
+
+that we are inside of this kind of situation.
+
+Turns out that React actually provides us by default
+
+with a component that does pretty much exactly this.
+
+This is a built-in component inside of React
+
+called a Fragment.
+
+So at the top of my file,
+
+I'm going to replace Echo with Fragment,
+
+and I'm going to import that from React.
+
+So you can think of this
+
+as being like an extremely simple component
+
+that we're going to use
+
+anytime that we need to provide that key prop
+
+or something like that,
+
+but we don't actually
+
+want to have anything show up in the dom.
+
+So I'm gonna replace Echo right here
+
+with Fragment, and Fragment,
+
+and now if I save this and go back over and refresh again,
+
+I still do not see any error.
+
+So again, Fragment is like
+
+a very, very simple custom component
+
+that we can use
+
+just so we can assign things like a key prop or group,
+
+different child elements together, stuff like that,
+
+without having to make our own kind of custom component.
+
+Okay, so this looks good.
+
+We've now got a good solution.
+
+Now that we are no longer getting these key errors,
+
+we can start to investigate
+
+why being able to customize these header cells
+
+is so important.
+272
+Instructor: All right my friends, I'm really excited
+
+because in this video we get to do the big reveal.
+
+We're gonna understand how we're going
+
+to implement sorting inside of our table,
+
+and here is the amazing part.
+
+We are not gonna change the Table component at all.
+
+That's right, the Table.js file, it is done.
+
+We're not making any changes to this.
+
+You can close this file and never reopen it.
+
+We don't have to change anything
+
+inside there to implement sorting.
+
+So, that's the big magic, that's the big reveal.
+
+And this is really gonna be fantastic
+
+'cause we're gonna learn a lot around reusing components
+
+in React by putting this stuff together.
+
+Okay, so to help you understand
+
+how we're gonna implement sorting
+
+without changing the Table component at all
+
+I'm gonna walk you through a couple of things we've learned
+
+over the last few videos,
+
+and at the end I'm gonna show you
+
+exactly what we're going to do.
+
+Okay, so here's the first thing that we absolutely know
+
+for sure inside of our current project,
+
+we have a Table component.
+
+It receives an array of objects called data
+
+that we want to render out on the screen.
+
+We also pass down an array of objects called config.
+
+Each object inside of here describes
+
+how to display a different column inside the table.
+
+The Table component very critically
+
+doesn't really care anything about this array of objects.
+
+All it knows is give me an array of objects,
+
+I will render it as a table, that's it.
+
+Okay, next thing we learned.
+
+So, we went over sorting of objects in great detail.
+
+We learned that given any kind of array of objects
+
+we can sort this array of objects
+
+in any way we can possibly imagine
+
+by implementing this getSortValue function.
+
+Remember going over that?
+
+I've still got the code snippet we wrote out right here.
+
+So, we realized that by changing this
+
+very, very simple function right here
+
+we could sort our table in dramatically different ways.
+
+We also learned that we could change the sort order
+
+by very easily changing this variable called sortOrder.
+
+So, this would determine whether we are going
+
+to sort our table in ascending or descending order.
+
+Okay, so now using this whole revelation right here,
+
+just thinking about this for a moment,
+
+I want to point out something
+
+around our table really quickly.
+
+So, here's our table.
+
+We eventually want to be able to sort
+
+the values inside of this table
+
+whenever a user clicks on the Name column
+
+or the Score column.
+
+If a user clicks on the Score column
+
+we want to sort all these different rows
+
+based upon these values, based upon the score.
+
+And if a user clicks on the Name column
+
+we want to sort all the rows based upon the names.
+
+So, that kind of implies that whenever a user clicks on Name
+
+we definitely need to have a function around,
+
+a getSortValue function.
+
+That's gonna look like this.
+
+So, a function that is going to be executed
+
+with every object inside our data array,
+
+and we're gonna pull off and return fruit.name.
+
+That will allow us to sort all the different rows,
+
+all the different objects inside of the data array,
+
+based upon the Name property.
+
+And likewise over here, whenever a user clicks on Score,
+
+same exact thing.
+
+We probably need a getSortValue function
+
+that's going to allow us to pull off the score
+
+of every object inside of data
+
+and sort the table based upon the Score property.
+
+So, we definitely need a function like that,
+
+and a function like that.
+
+So, I just wanna think for a moment,
+
+where would it make sense to define a function like that?
+
+We're talking about describing what should happen,
+
+or the general behavior of a column.
+
+Well, I think we kind of know the answer here.
+
+We've got these config objects.
+
+These config objects have several different properties
+
+that describe exactly what a column should look like,
+
+what content it should display.
+
+And now possibly we could add in an additional property
+
+to these config objects, and that's what we're going to do.
+
+So, we're gonna add in another optional property
+
+to the config objects called sortValue.
+
+This is the getSortValue function we've been talking about.
+
+I'm just giving it a slightly different name here,
+
+a simpler one called sortValue.
+
+So, this is going to be an optional function,
+
+and it's gonna describe how to extract values
+
+from every object inside of our data array
+
+whenever this column right here is clicked.
+
+So, this column, the object described in that column,
+
+is probably gonna have a sortValue function.
+
+And the Name one over here probably will as well
+
+so that we understand exactly how to sort our data
+
+whenever a user clicks on one of these different headers.
+
+Okay, so now using this knowledge,
+
+understanding that we probably are going to make
+
+one last update to these config objects.
+
+Here's now where everything gets tied together,
+
+here's the true big reveal.
+
+So, here's the magic, at the top up here
+
+I've got the TablePage component.
+
+Down here at the bottom of this diagram
+
+I've got our Table component.
+
+We're going to create a new
+
+custom component called SortableTable.
+
+SortableTable is gonna have a ton of logic inside of it
+
+dedicated to just sorting our data,
+
+showing header cells that are going to be clickable,
+
+and whenever a user clicks on one of those header cells
+
+it's gonna sort our data.
+
+Internally, SortableTable is going to use
+
+the Table component.
+
+So, we're going to reuse the exact same Table component
+
+exactly as it is right now inside the Table.js file.
+
+We're going to use that component
+
+from inside of this new SortableTable.
+
+So, the only thing that SortableTable does
+
+is add in some, through kind of a fancy process,
+
+it adds in some additional sorting functionality.
+
+And it's gonna do this using the following technique.
+
+So, here we go, here's what's gonna happen.
+
+Inside of TablePage we're going to still have our data array
+
+and our array of config objects.
+
+These config objects are now going to have this
+
+brand new sortValue property I just mentioned,
+
+so that's gonna be a function that describes
+
+how to extract values from these data objects over here
+
+and use those values to sort our data.
+
+We're gonna pass down data and config
+
+into this new component called SortableTable.
+
+SortableTable really is not a component
+
+around displaying fancy content on the screen.
+
+Instead, all SortableTable really does is modify
+
+some props that are going to go down to the Table component
+
+and add in a click event handler here or there
+
+and implement the actual sorting logic.
+
+So, in particular, here's what SortableTable is going to do.
+
+SortableTable is going to receive
+
+the config array of objects.
+
+It's gonna look at each object inside of that array,
+
+and it's gonna check to see if each of those objects
+
+has a sortValue function.
+
+If an object does have that sortValue function
+
+then we're going to assume this column should be sortable.
+
+Some columns inside of our application
+
+are gonna be sortable and some aren't.
+
+So, Score and Name are sortable, but Color isn't.
+
+So, if a column is sortable
+
+because it has that sortValue function
+
+then here's where the magic occurs.
+
+The SortableTable is gonna update the config object
+
+for that particular column, and it's gonna add in
+
+a header property, that header function,
+
+that function that returns a header cell.
+
+And that header property, that header function,
+
+is gonna return a header cell that is clickable.
+
+Inside of SortableTable we're going to attach
+
+a click event handler to that header cell.
+
+So, whenever a user clicks on that header cell
+
+SortableTable is going to know about that click,
+
+it's gonna receive that click.
+
+It's gonna say, "Oh, someone just clicked on this
+
+little header cell I created."
+
+So, SortableTable is then going to sort the data
+
+in response to that user click
+
+and pass down the updated sortedData
+
+down to our Table component down here.
+
+And that's it, that's the magic.
+
+So, the one part here that I think
+
+immediately is a little bit confusing
+
+is to clarify one thing.
+
+So, here's the clarification,
+
+here's the part that I think is a little bit unexpected.
+
+Back inside of TablePage
+
+here's our array of config objects,
+
+and we just went through this process of adding in support
+
+for this header property right here.
+
+I'm saying, this is the goal,
+
+I do not want TablePage to define
+
+this header property anymore.
+
+Instead, if I want to mark this column as being sortable
+
+all I should have to do is add in a function
+
+of something like sortValue,
+
+and this is going to describe how to take an object
+
+out of our data array and extract a property
+
+that we can sort on, so like fruit.score.
+
+Because this object now has a sortValue property
+
+as soon as SortableTable sees that object SortableTable,
+
+so inside SortableTable we are going to add in
+
+a header property that's going to return a th
+
+that shows the text score.
+
+And whenever a user clicks on this thing
+
+we're going to run some logic
+
+that is going to do our actual sorting.
+
+So, this property right here, this is going to be added
+
+onto this object inside of SortableTable.
+
+That's kind of the magic part,
+
+that's why we added in this header property.
+
+So, now SortableTable is gonna understand
+
+whenever a user clicks on one of these different th's.
+
+It can immediately see that a user clicked on one,
+
+it can do the sorting operation,
+
+it can update this th element
+
+to show some little appropriate icon in here.
+
+So, like a little uptick to say,
+
+"Hey, we're currently sorting
+
+in ascending order based upon score."
+
+That's the magic part.
+
+So, that's all logic that's going to be implemented
+
+inside of SortableTable.
+
+So, ultimately, all SortableTable does
+
+is kind of process this config object,
+
+add in that additional property
+
+for some of our different columns,
+
+and then watch for those click events.
+
+Whenever a click event occurs
+
+it's gonna do the sorting operation
+
+and then pass the sortedData down into Table.
+
+And Table ultimately is responsible
+
+for actually showing content on the screen.
+
+I'm gonna undo those changes I just made back over here.
+
+That was just a quick demonstration.
+
+Okay, so that's it, that's the general plan.
+
+Now, the absolute benefit to this approach
+
+is that we're going to be left with two separate components.
+
+We're going to have SortableTable,
+
+which we can use anytime that we want to show a table
+
+that should be sortable.
+
+And we're also gonna have the original Table component
+
+exactly as it stands right now,
+
+and it's gonna show a simple table
+
+with no sorting attached to it whatsoever.
+
+So, we're going to have implemented our original goal here
+
+where we can show inside of our table, or excuse me,
+
+our application a table that is not sortable
+
+and a table that is sortable.
+
+So, this should be a lot of fun.
+
+This is gonna be a great exercise
+
+in how we can get fantastic code reuse in React.
+
+If you can't tell, I'm really excited
+
+so let's get started in just a moment
+273
+Instructor: Refactoring our code
+
+to add in this SortableTable component
+
+is not gonna be super complicated,
+
+but there's just a lot of little steps.
+
+So I put together a little set of guides here
+
+on exactly what we're gonna do step by step.
+
+So step one, we're gonna create a new component
+
+called SortableTable.
+
+This is going to be displayed by the TablePage component.
+
+For right now, we're going to take all the props
+
+that SortableTable is going to receive
+
+and pass them directly through to the Table component.
+
+So right now, again,
+
+SortableTable is really just gonna receive some props,
+
+show Table, and pass all the props along to Table.
+
+All right, to get started back, inside my editor,
+
+inside the components directory,
+
+I'm gonna make a new file called SortableTable.js.
+
+Inside of here, I'm going to declare my component.
+
+I'm going to export it.
+
+I want SortableTable to show the Table component.
+
+So at the top,
+
+I will immediately import Table from ./Table.
+
+And then inside of SortableTable,
+
+we're gonna take the entire props object.
+
+So notice I do not have any curly braces here.
+
+I'm taking the entire object,
+
+I'm going to return an instance of Table,
+
+and I'm just gonna pass all these properties
+
+through to Table.
+
+And remember, I can do that very easily
+
+by putting down {...props}.
+
+I'm then going to save this file,
+
+and that's pretty much it for step one.
+
+So now step two,
+
+we're gonna make sure that TablePage shows SortableTable.
+
+So TablePage is no longer going
+
+to show the Table component directly.
+
+We are trying to make our Table sortable,
+
+so we're gonna show SortableTable instead.
+
+Back inside of TablePage.js, at the very top,
+
+I'm no longer going to import the Table component.
+
+I'm now going to import SortableTable
+
+from ../components/SortableTable.
+
+I'm gonna comment out Table for right now.
+
+We're eventually gonna use it again just to prove,
+
+hey, yeah, we can still show a Table that is unsortable.
+
+But for right now,
+
+we're only going to be making use of SortableTable.
+
+Then down at the bottom of this file,
+
+I'm not gonna show a Table,
+
+I'm going to show SortableTable.
+
+Okay, let's save this.
+
+Back inside the browser,
+
+we should still have the exact same table on the screen.
+
+So right now all we've done
+
+is added in this additional component
+
+that does absolutely nothing.
+
+It doesn't do anything whatsoever.
+
+It just takes some props and passes them through
+
+to another component.
+
+So now here is where things are going
+
+to get a little bit more interesting.
+
+We're gonna go back to the TablePage component.
+
+We're gonna find our column config array of objects
+
+and we're going to add in a sortValue function
+
+to every config object that should be sortable,
+
+every column that should be sortable.
+
+So for you and I, for what we are trying to build right now,
+
+only name and score are supposed to be sortable.
+
+Whenever a user clicks on the name column right here,
+
+we want to extract the name property off
+
+of every fruit object
+
+and we're going to use those names as our sorting criteria.
+
+So the sortValue function, for this column,
+
+is gonna receive a fruit object and return just the name.
+
+We're gonna do the same thing for score as well,
+
+but this function is going to take in
+
+the entire fruit object and return just the score.
+
+All right, so back inside of TablePage,
+
+I'm gonna find our config objects right here.
+
+On Name, I'm going to add in a sortValue function.
+
+So this is going to take a fruit
+
+and it's going to return the value that we want to sort on
+
+so that's gonna be fruit.name.
+
+And then for Score down here, I'm gonna add on sortValue.
+
+This is going to receive a fruit and return fruit.score.
+
+And now right away, you're going to notice that yes,
+
+the render function and the sortValue functions
+
+look very, very similar.
+
+Shockingly similar you might say.
+
+And so you're probably immediately curious,
+
+do we really need both functions?
+
+And the answer is, in my opinion, absolutely yes.
+
+Because, eventually, if we are trying to customize
+
+how the score is displayed on the screen,
+
+this function might not just return just the score,
+
+nothing else.
+
+If we want to display the score really large with bold text,
+
+we might wrap this thing with, say,
+
+an h1 element or something similar.
+
+And so now we can no longer use the result,
+
+this render function, as sorting criteria.
+
+So even though right now, yes,
+
+render and sortValue look very, very similar,
+
+eventually for a more complicated Table,
+
+it's extremely possible
+
+that eventually they will return
+
+very different kinds of data.
+
+And so, and h1, not something we can sort on very easily.
+
+So we probably do need to have two separate functions.
+
+Okay, there we go.
+
+So now all of our different objects have only label,
+
+label, there we go, render and sortValue.
+
+The second one has only label and render
+
+because it is not going to be sortable.
+
+And then down here, label, render, sortValue.
+
+Okay, back to our steps.
+
+I already removed the header property from the last video.
+
+I removed the header property
+
+because the header is gonna be set up
+
+by the SortableTable now.
+
+The SortableTable is setting up that header cell
+
+so that it can watch for click events on it.
+
+So it's the SortableTable component's job
+
+to set up the headers on these different config objects.
+
+So make sure you do not have a header function defined
+
+on these anymore.
+
+Onto step four.
+
+So inside of SortableTable,
+
+we're now going to add in a little bit of logic.
+
+We're going to receive the config prop
+
+and we're going to take a look at all the objects
+
+inside there.
+
+We're gonna find the objects that have a sortValue property.
+
+If they have a sortValue property,
+
+we're going to assume that means
+
+that this column should be sortable.
+
+So we want to add in a custom header function
+
+to describe exactly how that column's header cell
+
+should be rendered.
+
+And we're doing this specifically
+
+so we can display an element as each header
+
+where we can attach a click event handler.
+
+That's why we're doing this.
+
+Okay, so let's do that back inside of SortableTable.
+
+So now I do want to access some values inside
+
+of my props object,
+
+but I still want to take all the remaining props
+
+and pass them through to Table.
+
+So to do this, I'm going to add in a line right after this.
+
+I'm gonna pull out config from props like so.
+
+So now I've got the config array of objects,
+
+but I still got the entire props reference
+
+and I'm still gonna pass all the props through to Table.
+
+Now, one thing I wanna clarify on this step,
+
+I'm saying that we're going to look
+
+at all these different column config objects
+
+and we're gonna find the ones with the sortValue property
+
+and we're going to add a header function to them.
+
+To be really precise here,
+
+we're not going to modify our props in any way.
+
+In React, we do not modify props ever for any reason.
+
+So when I say "add," what I really mean to say here
+
+is we are going to map over these column config objects.
+
+And if we find a column config object
+
+with a sortValue property,
+
+we're going to return a new object
+
+that has all the same properties
+
+as the existing column config object,
+
+but it's gonna have an additional property as well.
+
+It's gonna have this header function.
+
+So all I mean to say is that we are not trying
+
+to modify this variable right here.
+
+We're not modifying that array.
+
+We're not modifying the objects inside there.
+
+We're going to take those and use those objects
+
+as the basis for a new set of config objects.
+
+So here's how we're gonna do that.
+
+I'm going to put down a new variable called updatedConfig.
+
+I'm going to map over all those config objects.
+
+I'm going to receive each object one at a time.
+
+I'm going to call them column.
+
+So column is going to be one of those config objects
+
+that we had defined back inside of TablePage.
+
+Then inside of here, I'm gonna say if there is not,
+
+so if not column.sortValue.
+
+So if this column is not supposed to be sortable, great.
+
+I don't care about this object.
+
+So just immediately return it. I don't care.
+
+But if it does have a sortValue property,
+
+then I want to return a brand new object
+
+that has all the same properties,
+
+all the same keys and values as this column object,
+
+but it's also going to have a header function,
+
+aa header function to customize the header
+
+that gets displayed.
+
+So here's how we're going to do that.
+
+I'm going to return a new object
+
+that's gonna have all the keys and values
+
+of the existing column object,
+
+but now it's also going to have a header function as well.
+
+And remember, this header function is going to return a TH
+
+and this is what is going to be used
+
+to display some content right there.
+
+So for right now,
+
+I'm going to try to print out the columns label.
+
+So column.label, and then I'm going to add in IS SORTABLE.
+
+So when we eventually display this on screen,
+
+the columns that are sortable should say Name is sortable,
+
+Score is sortable, but Color should not be sortable.
+
+So this is going to be evidence
+
+that we can kind of customize these headers
+
+and detect which ones should be sortable
+
+and which ones shouldn't.
+
+Okay, that's all we have to do right now
+
+for generating these new config objects.
+
+We're gonna add in some click event handlers
+
+to these THs in just a moment.
+
+Right now, we won't worry about it.
+
+Let's just kind of test what we have for right now.
+
+So we've got updatedConfig here.
+
+This is our updated list of config objects.
+
+So now we need to make sure we pass that list down
+
+into our Table component.
+
+So the Table component uses these new config objects
+
+we have put together.
+
+So at Table down here, I'm gonna pass down a config prop
+
+and it's gonna be the updatedConfig.
+
+...props right here, that has a config property,
+
+but because we are listing out the config prop
+
+later on inside this element,
+
+the config property that is present inside of props
+
+will be overwritten.
+
+So there's two sets of config.
+
+We are overriding the previous one
+
+by adding in config right there after ...props.
+
+Okay, let's save this.
+
+Now if I go back over.
+
+Exactly what we want, exactly what we want.
+
+So we see Name is sortable,
+
+Color is not gonna be sortable, Score is sortable.
+
+So this is a huge and very, very good step.
+
+This is evidence that we can kind of inject
+
+or insert this additional component inside
+
+of our component hierarchy
+
+that's gonna read in some props,
+
+massage them a little bit in some way,
+
+and then pass those props on to another component.
+
+So fantastic progress.
+
+All we really have to do now
+
+like you would be kind of surprised
+
+at how little work we have to do from here.
+
+All we really have to do is watch for click events
+
+on that header TH.
+
+Whenever a user clicks on it,
+
+we need to simply sort our data
+
+and pass the result down into Table.
+
+That's pretty much it.
+
+There's gonna be a couple of extra steps here.
+
+Showing the actual icons
+
+is gonna be just a little bit of work.
+
+You know, those little up and down icons
+
+to indicate the current sort direction.
+
+Believe it or not, that's gonna be a little bit of work.
+
+But as far as the basic functionality of sorting data,
+
+we are shockingly close, believe it or not.
+
+So not a lot to go here.
+274
+Instructor: Onto step number five, we need to watch
+
+for click events on the TH elements that are being returned
+
+from those header functions that we are attaching
+
+to inside of SortableTable.
+
+So back inside of SortableTable,
+
+we want to detect a user clicking
+
+on these different TH elements.
+
+I'm gonna first begin by adding in a click event handler
+
+called handleClick and I'm going to assume
+
+that this function is going to be called
+
+with a label of the column that the user just clicked on.
+
+So I'm going to receive that label.
+
+And for right now, I'm just gonna console.log it.
+
+So when we call handleClick
+
+we need to make sure that we pass in the label
+
+of the column that the user just clicked on.
+
+All right, so down here on the TH
+
+I'm going to attach a onClick prop.
+
+I'm gonna put in an arrow function
+
+and whenever this arrow function gets called
+
+I'm going to invoke handleClick,
+
+and to pass in the label of the column
+
+that was just clicked on,
+
+when I call handleClick
+
+I'm gonna take that column argument right there,
+
+that we are receiving inside of our mapping function,
+
+and I'm gonna pass in column.label, like so.
+
+So now whenever a user clicks on a TH
+
+we're gonna run handleClick
+
+and we're passing in the columns label.
+
+So if I save this and go back over to the browser,
+
+now I should be able to click on Name IS SORTABLE
+
+and I'll see Name.
+
+I should be able to click on Color
+
+and see nothing happen because that column is not sortable,
+
+so I don't want to watch for click events on it.
+
+And then if I click on Score IS SORTABLE, I will see Score.
+
+So I can click on both those
+
+and I see the appropriate console logs.
+
+Very good.
+275
+Instructor: Onto step number six.
+
+Whenever a user clicks on our TH,
+
+we need to sort our data
+
+and get it visible on the screen.
+
+Put another way, whenever we click on a TH,
+
+our expectation is that the content
+
+on the screen should change.
+
+And so right away, as usual,
+
+it's a sign that we need some states.
+
+So we need to add some state
+
+to our sortable table component.
+
+We are adding the state in just to make sure
+
+that whenever a user clicks on header,
+
+we somehow re-render our component
+
+and get some different data visible on the table.
+
+Now we need to figure out what state we should have.
+
+We need to design our state.
+
+I'm not gonna make us go through
+
+that entire state design process,
+
+but I do want to consider two different options
+
+for our state design.
+
+And we're gonna look at two different options
+
+because I think the first option is something
+
+that you might decide to do if you are a beginner
+
+and I want to help you understand
+
+why this first option is not a very good idea.
+
+Okay, so here's one possible way
+
+that we could add in some state
+
+to our sortable table component.
+
+And again, the goal of the state is to make sure
+
+that whenever a user clicks on header,
+
+we update some content on the screen
+
+and we show some newly sorted data.
+
+So in option number one,
+
+we could have our state be the sorted version
+
+of the data array.
+
+So here's the data array.
+
+That is the array of fruit objects.
+
+It's gonna come down as a prop into sortable table.
+
+So we could have this sorted data piece of state.
+
+This would be the sorted version of data.
+
+Whenever a user clicks on a header,
+
+we're going to re-sort data in some different way,
+
+update our state and then pass the state
+
+as a prop down into the table component.
+
+Now again, this is probably not a good idea
+
+and again, I want to help you understand why.
+
+So here's the first reminder I want to give you.
+
+The first reminder is that whenever a user clicks on a cell
+
+multiple times in a row,
+
+we're gonna go through a little sorting progression.
+
+So initially, every cell,
+
+every header cell is going to be unsorted.
+
+So the entire table, not sorted at all.
+
+If a user then clicks on a single header cell,
+
+we're then going to sort all the data
+
+based upon that column in ascending order.
+
+If the user clicks on the same header cell again,
+
+we're then going to sort in descending order.
+
+And if user clicks on the same cell yet again,
+
+we go back to unsorted order.
+
+So this really, really implies
+
+that inside of our handle click function right here
+
+or kind of somewhere inside of our component,
+
+we need to recognize or understand
+
+what the current sort order is
+
+so that we can figure out
+
+that when a user clicks on this cell again,
+
+what we should change it to.
+
+In other words,
+
+if we don't know what the current sort order is,
+
+how could we progress to the next step in the cycle?
+
+If you don't know that we're currently in ascending order,
+
+how could you progress to descending?
+
+And if you don't know that we are in descending order,
+
+how could you progress over to unsorted?
+
+So this is immediately pointing to the fact
+
+that we need to have something inside of our component
+
+that keeps track of what the current sort order is.
+
+And that is not really being captured
+
+by having a piece of state called sorted data.
+
+The other thing I wanna point out
+
+is that whenever a user clicks on one of these headers,
+
+we want to modify these little icons.
+
+So these icons are meant to tell the user
+
+what the current sort order is.
+
+If a user clicks on score in particular,
+
+then we should be sorting our table
+
+in ascending order
+
+based upon the score column.
+
+And so I would want to show
+
+only the little up icon on score.
+
+All the other columns
+
+should still have all their different icons.
+
+Only score should have the little up one
+
+because that is a sign that it is specifically score
+
+that we are sorting on right now.
+
+So again, this is kind of implying
+
+that there's something inside of our component,
+
+something somewhere
+
+that says we are currently sorting on this column
+
+as opposed to that column
+
+or any other that is visible on our table.
+
+So I think that for these two reasons,
+
+I think it's kind of clear
+
+that this state design right here is not going to work
+
+because with this state design,
+
+the only thing we have access to is the sorted data
+
+and we can't really figure out
+
+what order this data is sorted in
+
+and we can't really figure out
+
+what column it is sorted by either.
+
+So I think it's kind of clear
+
+that this is not a very good solution
+
+and we need to come up with another solution,
+
+something different.
+
+So we're going to go with option number two.
+
+So in option number two,
+
+we're gonna have two different pieces of state.
+
+One piece of state is gonna be called sort order.
+
+And this is going to keep track
+
+of what the current sort order is of our data.
+
+The possible values of sort order are going to be null,
+
+asc, short for ascending
+
+or desc, short for descending.
+
+These are the possible values right here.
+
+So at any given time, it can only be null
+
+or asc or desc, only one of those three.
+
+Again, null means that we are not doing
+
+any sorting right now whatsoever.
+
+So the sort order piece of state
+
+is what's going to help us keep track
+
+of what the next click is going to do.
+
+It is what's going to help us realize
+
+that we're gonna go from unsorted
+
+to ascending to descending,
+
+and then back to unsorted.
+
+It is also gonna help us keep track of the fact
+
+that we want to show say, just an up arrow
+
+or both up and down arrows or just the down arrow.
+
+The other piece of state we're gonna have is sort by.
+
+Sort by is gonna keep track
+
+of which column we are currently sorting by.
+
+The possible values are going to be null,
+
+which in the case we're doing no sorting,
+
+name or score.
+
+Name and score are the label properties
+
+off these different config objects.
+
+So if sort by is equal to name,
+
+it's a sign that we are currently sorting
+
+by this column right here.
+
+And we want to use this sort value function
+
+for doing our sorting operation.
+
+If sort by is equal to score,
+
+that's a sign that we are currently sorting by
+
+this config object right here.
+
+And we want to use that sort value function
+
+for doing our sorting.
+
+So as you kind of guess,
+
+if we had different labels on here
+
+like my name and ASDF,
+
+then the possible values of sort by
+
+would be my name and ASDF.
+
+Okay, so that's the general idea.
+
+Now, the kind of takeaway from this
+
+is that since we have these two pieces of state,
+
+we're not actually gonna have any state
+
+that keeps track of the sorted data.
+
+And that means that while we are rendering our component,
+
+when we're actually rendering sortable table,
+
+we're going to do our sorting operation
+
+and then pass the sorted data down to table.
+
+Now that might not sound super important,
+
+might not make sense right now, totally fine,
+
+but I just wanna point out that maybe we have
+
+to think about our sorting operation a little bit more.
+
+So this is a solution that's definitely gonna be good
+
+and it's gonna work for right now,
+
+but it's something we're gonna revisit a little bit
+
+and just make sure
+
+that this is a good and correct
+
+and most importantly, performant solution.
+
+So we will revisit this a little bit.
+
+Okay, enough on state design.
+
+We can come back in just a moment
+
+and implement this stuff.
+276
+Instructor: Let's define
+
+these two different pieces of state
+
+inside of our sortable table component.
+
+We're gonna update them whenever a user clicks
+
+on one of those different th elements.
+
+So I'm back inside of SortableTable.
+
+At the very top I'm going to import useState from react.
+
+I'm then going to define my two pieces of state.
+
+So we're gonna have sortOrder.
+
+I'm gonna give that a default value of null to indicate that
+
+by default our table is unsorted
+
+and then we're going to have sortBy,
+
+that will also start off as null again
+
+to indicate that we are currently not doing any sorting
+
+by default.
+
+Then inside of handleClick
+
+we're going to update these pieces of state.
+
+So inside of here we need to take a look at what
+
+the current sortOrder is.
+
+'Cause the current sortOrder is gonna modify
+
+or change how we update our state.
+
+And it's all gonna go according to this cycle right here.
+
+So if sortOrder is currently null,
+
+that means we are unsorted.
+
+If sortOrder is null,
+
+then we're going to change to ascending.
+
+If sortOrder is ascending, we're gonna go to descending.
+
+And if sortOrder is descending,
+
+we're gonna go back to null.
+
+So let's code that in just to get started.
+
+So couple if statements here,
+
+I'm gonna say if sortOrder is null,
+
+then I want to update sortOrder to be ascending.
+
+Otherwise if sortOrder is ascending,
+
+I'm gonna setSortOrder to descending
+
+and then otherwise if sortOrder is descending
+
+I'm going to revert it back to null.
+
+So that handles that cycle.
+
+The next thing we need to do is update the sortBy
+
+piece of state.
+
+So sortBy is gonna keep track
+
+of what column we are currently sorting by.
+
+It's gonna be the label essentially that's coming
+
+into this argument
+
+or this the argument that's coming into this function.
+
+So if we are changing to a sortOrder of ascending
+
+that means we need to know which column we are sorting by.
+
+So I will do setSortBy and update it to the label.
+
+If we are changing to descending
+
+we also need to know which column we are sorting by.
+
+So I'll do setSortBy with label
+
+and then if we are currently going from
+
+a sortOrder of descending to a sortOrder of null
+
+it doesn't really matter
+
+which column the user just clicked on
+
+'cause we're trying to revert back
+
+to our initial state so to speak.
+
+So in this case
+
+when we are going back to a null sortOrder
+
+we're also gonna change setSortBy to be null as well
+
+to indicate right now no sorting should exist whatsoever
+
+and it doesn't really matter
+
+what column user just clicked on
+
+because we're just planning to go back to no sorting.
+
+So this looks good,
+
+as a little bit of debugging
+
+down at the bottom of sortable table,
+
+very temporarily I'm gonna add in a div to wrap our table.
+
+I'm gonna make sure I clean up up the semicolon
+
+at the end of the table JSX element.
+
+And then right above the table I'm going to print out
+
+sortOrder and then a dash and sortBy.
+
+And we're just gonna make sure
+
+that these things are being updated appropriately.
+
+Okay, I'm gonna save that.
+
+By default we're gonna see just a dash
+
+because the value null,
+
+which is what our state defaults to
+
+does not actually produce anything visible on the screen.
+
+So right now sortOrder and sortBy are both null.
+
+So now we can click on our header cells
+
+and we'll see that we should be sorting
+
+an ascending order based upon name.
+
+If I click on name again,
+
+now I'm descending order based on name
+
+and if I click again,
+
+I'm back to the initial state.
+
+If I click on score,
+
+I'm ascending order based on score,
+
+descending order based on score,
+
+and back to the initial state.
+
+Okay I'd say this looks pretty good
+
+with one very small exception.
+
+And this really comes down to how you personally
+
+as a developer expect a table to work.
+
+Me personally,
+
+I would like to make sure that if I am say
+
+descending on score,
+
+if I click on the score column again
+
+I would want to go to unsorted and that's what we're doing.
+
+But if I click on name is sortable,
+
+if I click on the name column right now
+
+I don't really want to go to being unsorted.
+
+I should go to being ascending order on name.
+
+And that's not what is happening.
+
+We are going back to unsorted.
+
+So in other words,
+
+if I'm somewhere in the middle of this cycle
+
+on one column and I click on a different column entirely,
+
+I want to immediately go to ascending order
+
+based on that other column.
+
+And this is something I mentioned very briefly
+
+when we first started talking about sorting.
+
+So just a very small adjustment.
+
+We're gonna come back
+
+and make this adjustment a little bit later.
+
+All it's gonna take is a very small update to handle click
+
+but I want to finish up
+
+our table first just to make sure it's super clear
+
+the behavior that I'm looking for.
+
+Because otherwise we're just gonna be making a change
+
+and it's not really gonna be obvious why
+
+and I just wanna make sure it's super clear why
+
+we're making that change.
+
+Alright at any rate we're kind of on the right track here.
+
+So now the last real thing we have to do is sort our data
+
+and pass the sorted data down into our table components.
+277
+Instructor: Whenever sortOrder changes or sortBy changes,
+
+our component is going to re-render
+
+and we need to sort our data and pass that sorted data
+
+into the table component down here.
+
+So lemme give you a couple
+
+of quick reminders before we start this.
+
+So the first quick reminder is
+
+that our table page component is passing
+
+down a prop into sortable table called data.
+
+That is the array of objects that we want to sort.
+
+So we need to take the data array
+
+and sort it based upon the current value
+
+of sortOrder and sortBy.
+
+That's gonna give us a sorted version
+
+of our data, which we're then gonna pass down
+
+into the table component so it gets displayed on the screen.
+
+Now as we go through this process, there's gonna be two
+
+or three things that are just a little bit confusing.
+
+So inside of sortable table I'm gonna go
+
+down towards the bottom,
+
+right above our final return statement right there
+
+and I'm going to write out a couple
+
+of comments just to guide us
+
+and help us just think of and try to understand these very,
+
+very small kind of confusing items.
+
+So the first thing we need to do is we need to
+
+make sure we only sort data
+
+if sortOrder and sortBy are not null.
+
+So if those things are null,
+
+that means that we should not be doing any sorting.
+
+It means we should display our data in an unsorted order.
+
+So we need to take a look at those two pieces
+
+of state and we're only gonna do any sorting
+
+if those things aren't null.
+
+If they are not null, the next thing we need to do
+
+is make a copy of the data prop.
+
+So we didn't really go into great detail on this
+
+but you might have noticed back over here inside
+
+of that little sample file we had put together,
+
+when we were talking about sorting objects,
+
+whenever you call the sort function on an array
+
+in JavaScript, it modifies the array that you call it on.
+
+And that's a huge big deal inside of React.
+
+Remember earlier on inside the course, like many,
+
+many sections ago, there were a couple videos
+
+in a row where we said in great detail,
+
+never directly modify an array if that array is a part
+
+of the prop system or the state system.
+
+So if we call sort on our data prop that is flowing
+
+down into sortable table right here.
+
+If we call sort on that, we are going to be modifying a prop
+
+and that is something we absolutely do not want to do.
+
+So the next little comment I'm gonna put in right here,
+
+well I guess I already did.
+
+We need to make a copy of that data prop.
+
+That's pretty much it.
+
+So we're gonna create a new array
+
+and we're gonna copy all the items
+
+from the data prop array into our brand new array
+
+and then we can safely sort our new array
+
+'cause we're not modifying a prop anymore.
+
+Then after that, the next thing we need to do
+
+is the last confusing thing, I promise.
+
+We need to figure out what our sortValue function is.
+
+So just quick reminder once again.
+
+Okay, here's the sample code we have put together
+
+for sorting arrays of objects.
+
+Here is our comparative function.
+
+So remember that whole discussion
+
+around sorting arrays of objects doesn't really
+
+make sense to compare objects against each other.
+
+We have to pick a property or a combination
+
+of properties to use to sort our objects
+
+and that was the goal of this whole getSortValue function.
+
+So inside the comparative function we had to make use
+
+of getSortValue to pull off one individual property
+
+or combination of properties off these objects
+
+and we used those as our actual sorting criteria.
+
+Inside of our application,
+
+these sortValue functions exist
+
+inside this on this config array.
+
+So in order to find our sortValue function,
+
+the function we're going to use to figure
+
+out how to sort these different objects,
+
+we have to look at the sortBy piece of state.
+
+So that's gonna be either null, 'Name', or 'Score'.
+
+We're gonna go up into our config array right here
+
+and we're gonna find an object that has the same label
+
+as whatever the current sortBy state is.
+
+So if our state of sortBy is name, we need to go
+
+up into this config array and find that object right there
+
+because it also has a label of name.
+
+And then we're gonna use that object's sortValue function
+
+to take all of our different objects we're trying to sort
+
+so all these ones over here
+
+and pull off some single property that we're gonna use
+
+as our sorting criteria.
+
+So we basically just have to do a little binding operation
+
+using this sortBy piece of state.
+
+Okay, and that's it.
+
+I promise that is the last confusing part.
+
+So I'm just gonna put a comment
+
+in here that says, "Find the correct sortValue function
+
+and use it for sorting."
+
+Ooh, okay, I apologize for all that explanation
+
+but I just wanna make sure it was super clear what was going
+
+on because outta this entire process I didn't
+
+want everything to fall apart at the very last second.
+
+Okay, so let's implement this.
+
+The actual implementation is not gonna go quite
+
+in the same order as these comments right here
+
+but we're basically doing the same thing.
+
+So first off, I'm gonna create a new variable
+
+using the let keyword and I'm gonna call it sortedData.
+
+And by default I'm gonna have it be our data prop
+
+and I'm gonna go up towards the top.
+
+I'm gonna make sure I destructure the data prop off
+
+of our props object.
+
+There we go. That's better.
+
+So by default sortedData is gonna be data.
+
+I'll then check and see is sortOrder and sort
+
+by defined are they not null?
+
+So if they are not null, that's what this if statement right
+
+here is doing.
+
+Then that is a sign that yeah, we need to go ahead
+
+and actually do the sorting operation.
+
+So inside the if statement, the first thing I'm going to
+
+do is try to find the correct sortValue function to use.
+
+So for that I'm going to take a look at the config array
+
+that's coming from our props object.
+
+I'm gonna do a find operation on it.
+
+And for every one of those column objects I'm gonna
+
+try to find a column object
+
+with a label equal to our current sortBy piece of state.
+
+So that find operation right there, that is hopefully
+
+gonna find us the correct object out of all these.
+
+I'm going to assign the result
+
+of this to a variable called column.
+
+So column is gonna be the entire column object
+
+and the only property
+
+on that we actually care about is the sortValue property.
+
+So I think I'll just destructure off sortValue.
+
+So that is our function
+
+that we are using for doing the sorting operation.
+
+And then finally, once we find that sortValue function,
+
+now we can actually do the sorts.
+
+So I'm going to update the sortedData variable.
+
+I'm going to have it be, and this is where we're going
+
+to take care of making that copy.
+
+So I'm going to make a copy
+
+of the data prop by writing out a new array with ...data.
+
+So that's gonna make a new array
+
+and copy all the elements from data into it.
+
+So now we can freely modify this array as much
+
+as we want and we are not modifying a prop.
+
+So I'm gonna do my sort operation on this.
+
+And the actual sorting code is gonna be pretty
+
+much identical to what we had written out
+
+as we were talking about sorting objects previously.
+
+So we're gonna receive A and B.
+
+I'm gonna create value A and I'm gonna produce value A
+
+by calling that sortValue function
+
+and putting in argument A.
+
+So remember A right here, that is one of our data objects,
+
+it's one of the fruit objects.
+
+So we're going to pass the fruit object
+
+into sortValue and hopefully get
+
+out just the fruit's name or its score or whatever else.
+
+And we'll do the same thing for the B argument as well.
+
+Then we're going to take account or factor in
+
+whether or not we should reverse the sortOrder
+
+by doing something basically identical
+
+to what we have right there.
+
+So I'm gonna declare a new variable called reverseOrder
+
+and that's going to be the result of sortOrder.
+
+That's our piece of state.
+
+And I'm gonna say, is this thing equal to asc?
+
+If it is, I'm gonna get back 1,
+
+otherwise I'll get negative 1.
+
+Then I'm gonna take a look
+
+at the type of value A, so typeof valueA.
+
+If that is equal to string
+
+then I'm going to assume both these things are strings
+
+and I'm gonna do a string based comparison.
+
+So I will return valueA.localeCompare.
+
+And again, don't forget for the third time, let's locale,
+
+there's an E on there and I'll put
+
+in value B and then multiply the results by reverseOrder.
+
+Otherwise I'm gonna assume this is a number
+
+and I will return, what is it?
+
+Parentheses, valueA minus valueB.
+
+Again, don't forget the parentheses
+
+otherwise the order of operations will not be correct.
+
+I'm gonna multiply that by reverseOrder.
+
+Okay, so now the last step,
+
+sortedData is now the sorted version of our data array.
+
+So last thing we have to do, at long last,
+
+we're gonna take sortedData
+
+and we're gonna pass it off into our table component.
+
+And we're gonna tell the table component
+
+use this as your data.
+
+So we'll say data is sortedData.
+
+So now the table's gonna render itself
+
+using the sorted version of our data array.
+
+Okay, so let's save this.
+
+Here's the moment of truth.
+
+Is it gonna work? I really have no idea.
+
+I don't really know.
+
+Let's just see what happens.
+
+So if I click on score IS SORTABLE;
+
+oh my gosh, it actually worked.
+
+Look at that, ascending based on score.
+
+If I click it again, we get descending based on score.
+
+If I click it again, I am unsorted.
+
+And if I click on name IS SORTABLE,
+
+yes, name sortable descending.
+
+Oh, I can't believe it.
+
+It actually worked. I'm really thrilled.
+
+Honestly I am, believe it or not,
+
+this series of sorting videos
+
+like the last 10 I've recorded four times now.
+
+It's taken many, many days to put together and I
+
+think this version is the one that we're actually gonna use.
+
+'Cause the previous versions of this content I put together,
+
+I think were too confusing.
+
+I don't think this is perfect
+
+but I think this is a better way of presenting stuff
+
+than what I've been doing previously.
+
+So I'm really thrilled here
+
+because we got these sorting stuff done.
+
+So last thing we really need to take care of.
+
+These header cells. Very simple.
+
+They just need to show some arrows.
+
+That's pretty much it.
+
+So if we are sorting based on score in ascending,
+
+I wanna show a little up arrow next to it.
+
+If we are descending based on score,
+
+I wanna show a little down arrow.
+
+If we are not sorted based on that column at all,
+
+we're gonna show both arrows and that's it.
+
+That's the last step.
+
+So that shouldn't be too bad.
+
+I'm sure we could figure that out.
+
+It's just gonna be kind of couple different
+
+if statements and whatnot.
+
+Okay, last part.
+
+Take care of that in just a moment.
+278
+Instructor: Let's fix up these header cells.
+
+So instead of saying something is sortable,
+
+I wanna show some icons that tell the user
+
+whether or not we are currently sorting
+
+on that given column.
+
+So remember the original goal here,
+
+if our table is in an unsorted state,
+
+we're gonna show both of these little icons
+
+at every single column header cell,
+
+if that column is actually sortable.
+
+And then if user is sorting the table,
+
+based upon the values in that given column,
+
+in ascending order, we're gonna show only the up icon.
+
+And if we're sorting on the values
+
+based inside of this column,
+
+then we're going to use a little descending icon.
+
+Alright, so back over inside of my sortable table file,
+
+I'm gonna find where we build up our custom th element
+
+right here.
+
+We don't need to display IS SORTABLE anymore,
+
+so I'm going to delete that text.
+
+So right here, right before column.label,
+
+right here is where we want to place some icons.
+
+Now the actual logic for this, it's gonna be pretty simple,
+
+deciding which icons to display, it won't be that hard,
+
+but it's just going to involve a couple of different
+
+IF statements
+
+and we're gonna have to write out a decent amount of JSX.
+
+So although we could write all the icon related stuff
+
+for this right here, it would just be a little bit messy.
+
+So to keep this file a little bit clean,
+
+I'm going to create a separate function inside this file,
+
+which I'm going to use to decide
+
+which set of icons I want to display.
+
+So I'm going to assume that I'm going to have a function
+
+called getIcons inside of this file.
+
+So I'm gonna call it and hopefully return some
+
+icons to place right here.
+
+When I call this function to decide what icons
+
+we're going to display for each different th
+
+we are rendering onto the screen,
+
+we need to know three different things.
+
+We need to know which column
+
+we are currently trying to create the icons for,
+
+we need to know whether or not
+
+we are sorting by that column,
+
+and we need to know what the current sort direction is.
+
+So we're gonna pass in arguments to getIcons right here,
+
+of column.label, of sortBy and sortDirection, excuse me,
+
+sortOrder is what we called it.
+
+So then inside of getIcons, we're gonna say,
+
+okay, is this label, is this column that
+
+we're currently trying to create the icons for,
+
+is it equal to sortBy?
+
+SortBy is the label of the column
+
+we're currently trying to sort our data by.
+
+So if those two things right there are not equal,
+
+it means that immediately we know we want to show
+
+both of the little up and down icons,
+
+because we're currently not sorting by this column.
+
+If these things are equal,
+
+then we're gonna take a look at sortOrder
+
+and if sortOrder is null,
+
+that means we're gonna show both icons.
+
+If sortOrder is asc, ascending,
+
+we're gonna show only the up icon,
+
+and if it is descending, we're gonna show the down icon.
+
+So that's pretty much the entire implementation
+
+of getIcons.
+
+So let's write out this function at the bottom of our file.
+
+I'm gonna go down towards the bottom,
+
+I'm gonna find export default down here,
+
+and right above it I'm gonna add in getIcons.
+
+And this is going to receive the label, the sortBy,
+
+and the sortOrder.
+
+So then once again, right away we know that if
+
+the label is not equal to sortBy,
+
+that means we are currently not sorting by this column.
+
+So I'm going to want to show some icons
+
+that include both the up arrow and down arrow.
+
+We'll put in some icons here in just a moment.
+
+But for right now,
+
+I'm just gonna return a string that pretty much says
+
+show both icons.
+
+We will come back in just a moment
+
+and replace this with some actual JSX.
+
+For right now we'll just return a string,
+
+we'll make sure that we always see the correct string
+
+inside of our table over here.
+
+So then if we get past that check,
+
+we're going to assume that
+
+yep, we are currently sorting by this column
+
+that we are trying to get the icons for.
+
+So now we need to take a look at sortOrder.
+
+If sortOrder.
+
+Oops, if sortOrder is null,
+
+then I'm going to return show both icons,
+
+'cause right now we are not doing any sorting whatsoever,
+
+so we're gonna fall into this case right here,
+
+we wanna show both icons.
+
+Otherwise if sortOrder is asc, we are in ascending order,
+
+we're gonna show up icon.
+
+And finally, if sortOrder is descending,
+
+I'll return show down icon.
+
+Okay, that should be it.
+
+So let's save this, flip back over, and see how we're doing.
+
+If I refresh, I correctly initially see
+
+that we're going to show both icons for both these columns.
+
+If I then click on the score over here
+
+on the right hand side
+
+I'm gonna show an up icon only for that,
+
+if I click on it again, I'm gonna show it down icon only,
+
+and if I click on it again, I go back to showing both icons,
+
+so that's perfect, that's exactly what we want.
+
+So now all we really have to do
+
+is make sure that rather than returning
+
+these plain strings, we return the actual icons.
+279
+Instructor: We need to show some actual icons
+
+as opposed to these simple strings.
+
+So we're gonna once again go over
+
+to the documentation for that React icon's project.
+
+Once here, I'm gonna go to the GitHub Octicons section,
+
+and then I think some very appropriate icons
+
+to use would be GoArrowSmallUp
+
+and GoArrowSmallDown.
+
+So I'm going to import those
+
+into the SortableTable file.
+
+At the very top, I'm gonna add
+
+in an import for GoArrowSmallDown,
+
+and GoArrowSmallUp.
+
+And I'm going to import those from react-icons/go.
+
+Then down at the very bottom of the file, once again,
+
+I'm going to update each
+
+of these different return statements
+
+and return the appropriate set of icons.
+
+So on this first one I'm going to return a div,
+
+and this is going to show first GoArrowSmallUp,
+
+and then GoArrowSmallDown.
+
+I'm going to copy that
+
+at the next return statement right here.
+
+I'm gonna delete the string and replace it
+
+with that same exact div 'cause we wanna show both icons.
+
+On the next return statement,
+
+I'm gonna paste that same div in,
+
+and then delete the GoArrowSmallDown,
+
+'cause we'll only wanna show the up one.
+
+And then as you guess, replace that last one,
+
+and in this case only show GoArrowSmallDown.
+
+Alright, let's save this.
+
+And then once again, if we flip back over,
+
+well, not quite right just yet,
+
+so we're gonna solve this
+
+with a little bit of CSS, but we're definitely close.
+
+So again, if I start to click
+
+on these different headers, yep,
+
+the arrows are definitely updating appropriately.
+
+So we're definitely on the right track.
+
+We just need to make sure
+
+that these things actually show up on the same line.
+
+So to do so, I'm gonna go back up inside of sortable table.
+
+I'm gonna find where we create our TH element.
+
+I'm going to wrap both these things right here
+
+with another div, and I'm going to get that class,
+
+that div, a class name of flex and items-center, like so.
+
+And now I can see, yeah, definitely very good icons
+
+are showing up next to the actual labels.
+
+And so I can click on these things and yeah,
+
+I'd say that looks reasonable.
+
+Now the only other thing I would like to do is make it
+
+a little bit more obvious to our users that they can click
+
+on these things and sort the table.
+
+So to do so, I'm gonna find the TH element right here.
+
+I'm going to give it a class name as well.
+
+And in this case I'm going to give it a class name
+
+of first cursor-pointer,
+
+and then hover:bg-gray-100.
+
+So now if we hover over these header cells,
+
+we're gonna get that nice kind of gray background
+
+and the cursor is gonna turn into a little hand.
+
+Again, just helps indicate to the user
+
+that they can click on this thing and start with the table.
+
+Okay, so this looks pretty good.
+
+I think we're off to a great start here.
+
+I think we've got our sortable table.
+
+There's really just one last big topic I want to discuss
+
+around this thing.
+280
+Instructor: The last UI related item I want to fix.
+
+You'll notice right now that if we sort
+
+based upon score in ascending order
+
+and then descending order
+
+and then what would happen if we click on name over here?
+
+Well my expectation would be that I should now sort
+
+in ascend order based upon name
+
+but if I click on it, I just go back to unsorted.
+
+This is because of our current
+
+implementation of handleClick.
+
+We are always going through that same cycle
+
+by going from unsorted to ascending
+
+to descending back to unsorted regardless
+
+of whether or not we are clicking
+
+on the same header cell or not.
+
+So again, just a little bit unexpected.
+
+I want to make sure that if I am ever sorting
+
+by one column and I click on a different column header cell
+
+I should immediately sort on that column
+
+in ascending order no matter what.
+
+So in other words, when we click on one column
+
+and then go to another, we always reset
+
+that cycle back to being in ascending order.
+
+So to handle this, all we should have to do
+
+is make a little small update to handleClick.
+
+Inside of handleClick, inside of SortableTable,
+
+we're gonna take a look at whatever a user
+
+just clicked on and we're gonna going to check to see
+
+if it is equal to the current sortBy piece of state.
+
+Remember sortBy is whatever column label
+
+we are currently sorting by.
+
+If those things are not equal to each other,
+
+that means that we are now trying to sort
+
+by some other column and so we're going to want
+
+to try to sort by that new column,
+
+this new label in ascending order.
+
+So here's what we're gonna do.
+
+We're gonna say if sortBy is defined,
+
+so if we are currently sorting by one column
+
+and label is not equal to sortBy,
+
+so if we're now trying to sort by a new column
+
+then we're going to setSortOrder
+
+to ascending and we'll setSortBy to the new label,
+
+the one that the user just clicked on,
+
+and I'm going to return early
+
+so I don't go through any of these other checks down here.
+
+All right, I'm gonna save this,
+
+and now once again, a quick test.
+
+I'm gonna refresh first and then if I go by score
+
+and then click on name, I go to ascending based upon name.
+
+I can then go to descending on name
+
+and then if I click on score,
+
+I should go to ascending on score.
+
+Yep, I definitely do.
+
+All right, so I'd say that is looking pretty good.
+
+Let's also remove this little kind of debug statement
+
+up here at the top.
+
+I don't think we really need that anymore.
+
+So at the bottom of SortableTable
+
+I'm gonna find where we return from our component
+
+right here and I'm gonna delete
+
+that little debug statement right there.
+
+Again, just don't need it.
+
+We now no longer need the wrapping div either
+
+so we can delete that wrapping div as well
+
+and we're left with just our table element.
+281
+Instructor: Our sortable table page component
+
+is now complete.
+
+There are some extra little topics we're gonna go over
+
+but they are completely optional.
+
+Just some stuff around understanding performance
+
+of our table and stuff like that.
+
+So this is kind of the end of the sortable table
+
+unless you want to watch those extra videos
+
+which are gonna come right after this.
+
+Before we wrap up on this component, however,
+
+there's one last thing I wanna show you.
+
+We do really truly have a very reusable component
+
+at our fingertips now.
+
+So back inside of table page, if we ever wanted to say
+
+add in an additional column or something like that
+
+all we'd have to do is go to our config array right here.
+
+We could then add in a brand new object anywhere
+
+inside of here with some label, like, I dunno, ASDF
+
+or how about let's do something actually realistic.
+
+How about score squared?
+
+So we're gonna print out the score
+
+but we're gonna square the value.
+
+So we would render fruit and then take fruit.score
+
+and we want to multiply it by itself.
+
+So we could either do times fruit.score
+
+or another way to express this
+
+in JavaScript would be to write out star, star times two.
+
+That's how we raise something to a power in JavaScript.
+
+So if we say that, there we go.
+
+There's our new column.
+
+It is not sortable right now
+
+so we didn't put a sort value function inside there
+
+so we can't sort based upon it.
+
+But yeah, it definitely shows up.
+
+If we did want to sort based upon it
+
+we could add in the sort value function
+
+and then our sorting criteria would be fruit.score
+
+times times two as well.
+
+So now we can sort based upon that
+
+and that's as easy as it is to make a change to our table.
+
+Of course if we ever wanted to use different data,
+
+all we would have to do
+
+is update our data array right there.
+
+So we could very easily add in a new object to this thing.
+
+How about a cherry with a color of bg-red-700
+
+and a score of, I dunno, 2.5.
+
+Now if we save this, there we go.
+
+There's our new row inside of our table.
+
+So again, truly reusable table
+
+it's pretty great and we can make changes
+
+to it super easily and it's pretty easy
+
+for other engineers to understand how to use this as well.
+
+In addition to our sortable table, we still
+
+have a plain table component that can show very
+
+simple data that is never going to be sortable
+
+and we can use it exactly with the same exact props
+
+that our sortable table expects to receive.
+
+So for example, if I uncomment table at the top
+
+then down at the bottom of this table page component
+
+right above sortable table, I'm gonna show my plane table.
+
+I'm gonna put in data,
+
+the config array and that key function as well.
+
+So now we can show a plain unsorted table up here
+
+and a sorted version down here.
+
+So we've got two kind of different components with rather
+
+different maybe, maybe not super different functionality.
+
+I guess they're pretty much the same
+
+but it's very clear that we got a fantastic amount
+
+of code reuse out of the playing table component.
+
+We didn't have to create a totally different table
+
+to add in sorting functionality.
+
+I'm going to remove that import
+
+and the table element from the bottom.
+
+So I'm gonna be left with just sortable table.
+
+Okay, so this looks good.
+
+The CSS could be improved a little bit.
+
+It's a little bit cramped right now up in these headers
+
+but I'm kind of okay with it for right now.
+
+If you want to you could definitely add in
+
+some additional CSS.
+
+So we're gonna add in a couple of extra small topics.
+
+Again, these are totally optional,
+
+but I want to touch on some things around the performance
+
+of our table
+
+and some different ways we could improve our code base
+
+specifically sortable table, even more, so totally optional
+
+if you want to watch 'em.
+
+Otherwise, totally, absolutely feel free to skip over
+
+
+

@@ -1,0 +1,2310 @@
+249
+Instructor: I'm really excited about this next component
+
+we're gonna work on, because we're gonna make a component
+
+that you're going to use
+
+on almost every project you ever work on.
+
+We're gonna make a table,
+
+a really fully featured, very reusable table component.
+
+So by default, we're gonna have it showing a list of fruits,
+
+so we'll have the name of a fruit, the color of that fruit,
+
+and then just some score,
+
+just a total random made-up number, essentially.
+
+Now, this is the data we're gonna show in the table,
+
+but we're gonna make a table component
+
+that is very reusable in nature,
+
+so you will be able to reuse this table component
+
+with other kinds of data as well.
+
+So you could have a list of users in here,
+
+a list of messages, a list of just about anything
+
+you could possibly imagine, we will be able to display
+
+with our reusable table component.
+
+The component itself is gonna have a lot of features
+
+that you'd expect to have in a table,
+
+so we will allow users to click on the headers up here
+
+and sort all the different rows based upon the value
+
+inside of some column.
+
+Now, to get started on our table,
+
+we're gonna go through the same series of tasks
+
+that we went through back on our modal component.
+
+So we're gonna make a table component,
+
+we're gonna make a table page to display the component,
+
+we're gonna add a route to our App.js file,
+
+and we're gonna add a link to this sidebar component.
+
+So we know all these tasks pretty well,
+
+so let's just get them all done right now in this video.
+
+Okay, so to get started, inside my components directory,
+
+I will make a new file called Table.js.
+
+Inside there, I'll make my table component.
+
+I'll just say return a div that says table right now,
+
+and then I will export that.
+
+Next up, inside of our pages directory,
+
+I'll make a new file called TablePage.js.
+
+Inside of here, I'm going to import
+
+the table component we just created,
+
+so up one directory, components, table.
+
+I'll then make table page.
+
+I'm going to return a div that will display our table,
+
+and then I will export this at the bottom.
+
+Okay, next up, let's open the App.js file.
+
+So here's App.js inside of our root SRC directory.
+
+I'm going to import the table page we just created
+
+and add in a new route.
+
+So I'll make a new route right after our modal one.
+
+Whenever a user goes to slash table,
+
+we're going to display the table page component.
+
+And then finally, we need to add a link to our sidebar,
+
+so back inside the components directory,
+
+I will find Sidebar.js,
+
+and all we have to do is add in a new object
+
+to this array of objects, so I'll give it a label of table.
+
+And whenever someone clicks on this,
+
+we're gonna take them to a path of slash table.
+
+Okay, so that's it.
+
+Let's save all these different files
+
+we just made changes to, then back inside of our browser,
+
+we should see a new link right there.
+
+I'll click on table,
+
+and I'll see just the text table for right now.
+
+Okay, looks good.
+
+Good place to get started.
+
+So now let's take a pause here.
+
+We're gonna come back in just a moment
+
+and start going into some details
+
+around how React treats tables.
+250
+Instructor: The goal of our table component
+
+is to show some data to the user.
+
+So, we need to make sure that our table component
+
+actually receives some data, and we need to think about
+
+what the structure of that data is going to be.
+
+So we're gonna make a little assumption right now.
+
+We're going to assume that our table component
+
+is going to display data
+
+that is coming from an array of objects.
+
+Every object is gonna represent one row inside of our table.
+
+So, the first object is going to correspond
+
+to the first row right here that has the name of orange.
+
+Second object, right there,
+
+is gonna correspond to the second row.
+
+These different objects are gonna have
+
+a couple of different properties assigned to them.
+
+So they'll have a name, a color that we're going to use
+
+to figure out what color of little box to show right here,
+
+and then a score property as well.
+
+We're going to define all this data
+
+inside of our parent component,
+
+which, for you and I, is the table page component.
+
+So we're gonna define that as a list of fruits.
+
+It's gonna be 100% hard coded for right now.
+
+It's not really gonna change over time.
+
+We're then gonna pass this list of fruits
+
+down into our table component using the prop system.
+
+And then our table component is gonna figure out
+
+how to display that list.
+
+So, let's open up our table page component.
+
+We're gonna write out pretty much
+
+that exact structure you see right there
+
+and then pass it down as props into our table.
+
+Okay, so here's my table page component.
+
+At the top, I'm going to create a new variable called data.
+
+This is going to be an array of objects.
+
+The first object I'm gonna write out here
+
+is going to have a name of everything you see right there.
+
+So the first one is going to be orange,
+
+apple, banana, and so on.
+
+So orange with a color of bg orange 500 and a score of five.
+
+Then, to save a little bit of time,
+
+I'm gonna copy that object and paste it down a few times.
+
+I'll then update each object one at a time.
+
+So, on the second object,
+
+I'm gonna have a name of apple,
+
+a color of bg red 500, and a score of three.
+
+On the third object, I'll have a banana
+
+with a color of bg yellow 500 and a score of one.
+
+And then, on the last object, I'll have a name of lime,
+
+a color of bg green 500, and a score of four.
+
+Okay, so that's the data we're gonna pass down
+
+into our table component.
+
+So now I'm gonna go down to my table element right there.
+
+I'm gonna pass this data down as a prop called data.
+
+There's nothing special about the prop name of data;
+
+I just think it makes sense
+
+to pass down a prop with that particular name.
+
+It's now inside of our Table.js file.
+
+We can receive that prop.
+
+And for right now,
+
+let's just print out the number of objects inside there.
+
+So I'm gonna print out data.length.
+
+And back inside of our browser,
+
+we should see the number four.
+251
+Instructor: We've got our data
+
+inside of the table component.
+
+So now, inside of here,
+
+instead of returning a div,
+
+I'm going to return a plain table element.
+
+So notice now that we have a component called table,
+
+and we have a JSX element called table.
+
+This is going to create a HTML table element,
+
+which is a standard HTML element.
+
+Now, whenever we make a HTML table,
+
+React is going to enforce a certain structure
+
+of elements inside of here.
+
+So, let me tell you what that means.
+
+Whenever I show a table element in normal HTML,
+
+I can show a thead inside there,
+
+along with a tbody.
+
+I'll explain what these elements do in just a moment.
+
+If I save this, and go back over to my browser,
+
+I don't see any content on the screen,
+
+but you'll notice I also don't see any errors.
+
+That's because showing a thead and a tbody inside of a table
+
+is absolutely okay and expected.
+
+One thing I'm not allowed to do inside of a table
+
+is show a div.
+
+This is not valid HTML.
+
+Your browser will display it,
+
+but it's not really intended to show a div
+
+inside of a table element.
+
+So if I save this,
+
+React is actually gonna show us a little warning message.
+
+It says that a div cannot appear as a child of a table.
+
+Now, our content is still going to be displayed
+
+on the screen.
+
+It's totally fine,
+
+but React is kind of complaining to us, and it's saying,
+
+"Hey, you're really not supposed to show a div
+
+inside of a table element."
+
+So in order to show a table with React,
+
+we really have to understand a little bit around basic HTML
+
+and how an HTML table is supposed to work.
+
+So let me give you a quick refresher.
+
+Okay, here we go.
+
+So we're gonna go over some different common elements
+
+that we use inside of a table element.
+
+And again, this is really plain HTML stuff.
+
+This is not particular to React.
+
+So inside of a table element,
+
+we can show a thead and a tbody.
+
+The thead is gonna serve as the header of our table,
+
+and the tbody is gonna serve
+
+as a collection of different rows.
+
+Inside of a thead,
+
+we're going to have a tr.
+
+The tr represents one row of headers.
+
+Each individual header column,
+
+so like, Fruits, Color, and Score,
+
+is gonna be represented by a th element.
+
+So, I've got one th for fruits, another th for color,
+
+and another th for score.
+
+Then for the body, here's tbody,
+
+each individual row will be represented with a tr element.
+
+So, I've got a tr for the first fruit.
+
+I've got another tr for the second fruit down here.
+
+Within a tr, we will have a collection of td elements.
+
+Each td represents a single cell or single column
+
+within that row.
+
+So I've got a td of Orange for Orange right there.
+
+I've then got a second td for the next cell,
+
+and a third td for the third cell over here.
+
+So this is the general structure we're going to use
+
+anytime we try to show a table with React.
+
+And if you don't follow this structure, well, like you saw,
+
+React is gonna show a warning message in the console
+
+and tell you you're not really doing things correctly.
+
+You do not really have to memorize this structure,
+
+because, to be honest with you
+
+there are a collection,
+
+just hundreds and thousands of different resources online,
+
+that will remind you on exactly how you can create a table.
+
+So you really don't have to memorize this.
+
+Anytime you need to make a table,
+
+recommend you just do a quick search
+
+and you'll get a quick reminder
+
+on the different elements you are expected to display.
+
+Okay, so let's now take this knowledge,
+
+we're gonna go back over to our component
+
+and we're gonna write out some HTML
+
+that looks very similar to what you see right here.
+
+And for right now,
+
+we're just gonna worry about showing the header.
+
+So showing a thead with a single tr
+
+that's gonna have a th with Fruits, Color, and Score.
+
+So back inside of Table.js,
+
+inside of thead, I'm gonna add in a tr,
+
+then a th with Fruit.
+
+I think I called,
+
+what'd I call that one?
+
+I called it Fruits over here, we call it Fruits.
+
+Fruit doesn't really make a big difference.
+
+Then the second one will be Color, and Score.
+
+If I then save this, and go back over,
+
+I still see the warning.
+
+That's the same warning we saw previously.
+
+So if you refresh the page,
+
+you should not see a warning message anymore.
+
+And now I've got my three columns.
+
+So I've got Fruit, Color and Score.
+252
+Instructor: The next thing we need to work on
+
+is showing a separate row inside of our tbody element
+
+for every object inside of our data array.
+
+We can do this very easily by using a mapping function
+
+as we've done several times inside the course already.
+
+So up here at the top,
+
+I've got each object inside of our data array.
+
+We're going to pass each one into a mapping function.
+
+Inside the mapping function,
+
+we're then going to return a TR element
+
+that has a couple of TDs inside of it.
+
+Each TD is gonna print out
+
+one individual column worth of information.
+
+So the first one will be the name of the fruit,
+
+then the color, and then the score of that fruit.
+
+This mapping function is gonna run on every single object
+
+and produce a new TR for each one.
+
+We can then show all these different TRs
+
+and see it side of our tbody element.
+
+And that should display our rows on the screen.
+
+So let's give this a shot.
+
+Back over here, at the very top,
+
+I'm gonna create a new variable called renderedRows.
+
+And this will be the result of data.map.
+
+So I'm gonna receive every fruit object.
+
+And for every fruit,
+
+I'm going to return a TR
+
+that's gonna have three TDs inside of it.
+
+In the first TD, I'm gonna print out the fruit's name.
+
+In the second one, I'm gonna print out the fruit color.
+
+And then in the third one, the fruit score.
+
+Now, at present,
+
+we're just printing out the color of the fruit.
+
+And our goal is to eventually, actually,
+
+print a little square that shows the color.
+
+So right now, we're just printing out a string.
+
+We are gonna have to come back
+
+and make sure we kinda update this rendering process
+
+just a little bit to get our desired result.
+
+Because we are building up a list
+
+of elements inside of a mapping function,
+
+we do have to assign a key prop to the TR right here.
+
+Our fruit data does not have an ID that we can use as a key,
+
+but each fruit object does have a name property
+
+that is consistent and unique.
+
+So we can use the name as our key instead.
+
+So for TR, I'll add in a key prop of fruit.name.
+
+Finally,
+
+we can show the list
+
+of renderedRows inside of our tbody element.
+
+So down here, I'll find tbody.
+
+And inside there, I'll print out renderedRows.
+
+Let's save this.
+
+If we flip back over, there's our table.
+
+So we can now see all of our different records.
+
+So at this point in time, this is kinda basic stuff.
+
+We're just doing the same kind of list building exercise
+
+that we've done several times inside the course already.
+
+So this is where we're gonna start
+
+to go off the deep end a little bit.
+
+I'm gonna point out some big issues with our table
+
+as it stands right now
+
+and we're gonna start to make a couple of fixes
+
+to this thing
+253
+Instructor: We've got our table displayed on the screen
+
+but it's not looking great.
+
+It needs first a little bit of styling.
+
+We're then gonna make sure that the color column
+
+shows an actual little color square
+
+instead of just this plain string.
+
+And then we're going to start to address some big issues
+
+around the fact that right now
+
+our table component is not very reusable in nature.
+
+So first off, a little bit of styling.
+
+To get started on styling
+
+I'm gonna find my three td's inside the mapping function.
+
+And on each td,
+
+I'm gonna add in a class name of p-3.
+
+So there's one, two, and three.
+
+Then on the tr I'm gonna add in a class name
+
+of border-b.
+
+Then down towards the bottom
+
+I'm gonna find the table element and give it a class name
+
+of table-auto and border spacing two.
+
+Then on the tr inside the T head body, excuse me, the T
+
+the tr inside the T head element.
+
+A lot of repetitive terms here.
+
+I'm gonna add in a class name of border b two.
+
+If I save this,
+
+I'll then end up with a much better looking table.
+
+So now let's work on making sure that
+
+the second column shows an actual little color square
+
+as opposed to just the string.
+
+So these different strings you see right here
+
+are actual tailwind css class names.
+
+If we give an element a class name of BG Orange 500,
+
+that element will have a background
+
+that kind of looks orange in nature.
+
+Same thing with the red one, yellow and green one.
+
+So up here at render rows, I'm gonna find our second td.
+
+Inside there I'm going to place, instead of fruit.color
+
+I'm gonna delete that
+
+and I'm going to replace it with a div.
+
+This is going to have no content at all
+
+but I'm gonna give it a class name.
+
+I'm gonna do a little computation for the class name here.
+
+So I'm gonna put in curly braces
+
+and then use a template string.
+
+So back ticks once again, not single quotes here.
+
+I'll then put in p-3, m-2,
+
+and then dollar sign curly braces, fruit.color, like so.
+
+Now if I save this and flip back over.
+
+There we go.
+
+I've got the little squares with a little color.
+
+Just to demonstrate the color
+
+of each of these individual fruits.
+
+I'd say the banana looks a little bit too ripe
+
+and the lime looks a little bit too green.
+
+We could always play around with the colors a little bit
+
+but for the most part I would say this looks
+
+kind of reasonable for right now.
+
+Okay, so our table looks better.
+
+It looks good and it definitely looks like
+
+what we originally set out to do
+
+but it's definitely missing some really big features.
+
+For example, I cannot sort anything.
+
+That's what these little arrows right here
+
+is supposed to be.
+
+We're supposed to have the ability to
+
+sort the individual rows inside the table.
+
+In addition,
+
+my table component itself is not at all reusable.
+
+The table component assumes that we always get
+
+an array of objects that has a name property,
+
+a color property, and a score.
+
+And further it assumes that the second column
+
+is always going to display a little div that is
+
+supposed to have a little color inside of it.
+
+So we have to do a lot of work here
+
+on our table component to actually make it reusable.
+
+So we can use the table again in the future
+
+with totally different data that doesn't represent fruits
+254
+Lecturer: Time to confront
+
+the real issue with our table component.
+
+And that is the fact that it is not at all reusable.
+
+The table component right now is 100% programmed
+
+to only work with fruit objects.
+
+And we can recognize this because it's trying to access
+
+specific properties that might only belong
+
+to a fruit object, like name, color, and score.
+
+Eventually we might want to have an application
+
+that shows a list of fruits and we can definitely do that,
+
+but we also might want to show a table that has a list
+
+of maybe vehicles and a vehicle object
+
+might have a name, a price, a discount rate,
+
+and maybe an image to display inside the table.
+
+So we need to make sure that our table component
+
+can show either an array of fruit objects
+
+or an array of vehicle objects
+
+or really any other kind of array that contains objects.
+
+So our table component clearly needs
+
+a lot of work to make it reusable.
+
+To really clarify what we need to do,
+
+we're going to come up with a list of requirements.
+
+I'm gonna say here are the things
+
+we want our table to be able to do.
+
+So I've got two examples here of tables
+
+that I want to eventually be able to produce.
+
+On the left hand side, I've got the table
+
+we already put together.
+
+We've got really everything shown inside here
+
+with the exception of sorting.
+
+So I want to be able to click on this header right here
+
+and sort all the different rows based upon the score.
+
+And then we're gonna work along
+
+with a second example over here,
+
+a table that's gonna show a listing of different vehicles.
+
+So a truck, a car, a boat.
+
+Every vehicle is gonna have a price.
+
+We're also gonna show a discounted price,
+
+and we'll imagine that we might also want to display
+
+an image for the vehicle as well.
+
+Okay, so here's the list of requirements.
+
+Here's what our table needs to be able to do.
+
+This list of requirements right here is really important
+
+because it's going to really dictate
+
+what we're doing in the coming videos.
+
+So we need to make sure that our table
+
+can have a variable number of rows.
+
+Well, we've kind of already got that, right?
+
+We are mapping over our data array
+
+for every object inside there.
+
+We are creating a separate row.
+
+So that one, kind of already done.
+
+Next, our table must be able to support
+
+a variable number of columns.
+
+So right now it is definitely hard coded.
+
+It can only have three columns exactly.
+
+One column is fruit, color, and then score.
+
+So we need to make sure we can have
+
+as many or as few columns as we wish.
+
+In addition, just as clarification, the number of columns
+
+we're gonna end up with should not have to match
+
+the number of properties inside of our object.
+
+So our vehicle objects down here, which might have
+
+a name, price, discount, image.
+
+For properties, there are four columns,
+
+but I don't want to be locked into that.
+
+I might have four properties
+
+but only want to show two columns.
+
+So I should be able to dictate very easily
+
+the number of columns my table's going to have.
+
+Some of our columns should be sortable, but not all of them.
+
+So it doesn't really make a lot of sense
+
+to try to sort an image column.
+
+Really doesn't make, maybe we want to sort
+
+on image size or something like that, I don't know.
+
+But for this example, I don't think
+
+I'd really want to be able to sort by an image.
+
+In addition, if a column is sortable,
+
+we should be able to sort different kinds of values.
+
+So a sortable column, we might need to sort
+
+based upon alphabet characters or an actual number.
+
+So I should be able to sort on either kind of data.
+
+Sales should also be able to be calculated
+
+using multiple different properties.
+
+So let me explain that one really quickly.
+
+Notice how inside of our vehicle object down here,
+
+I've got a price property and a discount property.
+
+The discount is gonna be a fraction that we would take off
+
+of the price to come up with a discounted price.
+
+So if my price is 15,000 and I have a discount of 0.1,
+
+to come up the discounted price,
+
+I would do something like 15,000 times one minus 0.1.
+
+So that's a calculation that I would do and that would
+
+leave me with a final discounted price of 13,500.
+
+So what I really mean to say here is that
+
+the value in each individual cell, if I want to,
+
+I should be able to kind of calculate it on the fly.
+
+Now this is gonna be calculated by us, a developer,
+
+a user is not gonna be able to go in here
+
+and type in an actual calculation.
+
+We're not making an actual spreadsheet.
+
+And then finally, cells should be able to display
+
+any kind of arbitrary data.
+
+So I should be able to have cells that can display text
+
+or numbers or images or as we saw on the last table
+
+over here, a simple color square and so on.
+
+So I should not just be taking properties directly
+
+out of an object and trying to display them as text.
+
+'Cause that would not work with, say,
+
+this image property down here.
+
+Okay, so that's it.
+
+That's the requirements for our table.
+
+Now I want to be kind of clear right away.
+
+This is pretty ambitious.
+
+We've got a lot of work ahead of us.
+
+Ultimately, we don't really have to write out a lot of code.
+
+The real challenge is just understanding
+
+how we're gonna build a table.
+
+That's the real challenge.
+
+Fortunately, I think we could probably
+
+make our way through it.
+
+So let's start building up this reusable version
+
+of our table in just a moment.
+255
+nstructor: My friends time for the big reveal.
+
+We're gonna understand how we're gonna make
+
+our table component far more reusable in nature.
+
+So let's get to it.
+
+Alright, so here's our table component at the bottom.
+
+Right now, we are passing down a data prop.
+
+That is an array
+
+of objects that has all the data we want to show inside
+
+of our table.
+
+To make our table more reusable,
+
+we're also gonna pass down a second array of objects.
+
+This second array of objects is gonna be called config.
+
+Each object is gonna have some information
+
+that tells our component how we want
+
+to render out the table.
+
+Understanding this array of objects
+
+and the different properties
+
+on each object is gonna be a little bit challenging.
+
+So we're gonna just take it really slowly step by step.
+
+So, first, two very basic ideas.
+
+The first basic idea is that every single object
+
+inside this configure A is going to tell our component,
+
+our table component, how we want to represent
+
+or show one column inside the table.
+
+So right now, this configure A has three objects inside
+
+of it that's gonna tell our table component
+
+that we want to show three columns in total.
+
+How we display the first column is going to be controlled
+
+by the first object, how we control or how we display
+
+the second column will be controlled
+
+by the second object, and so on.
+
+So for every object we have inside the configure A,
+
+we're gonna have a separate column.
+
+These objects are gonna have several different
+
+properties assigned to them.
+
+For right now, we're just gonna focus
+
+on a very simple property that's gonna be very easy
+
+for us to implement, and that is the label property.
+
+So you'll see
+
+that every object has a label, a label, and a label.
+
+Those labels are going to be used very simply
+
+to just decide what to put
+
+inside the header of every single column.
+
+So you'll see I have a label
+
+of fruits right there on the first object.
+
+That means right here in the very first
+
+TH inside the header, I went to print out fruits.
+
+Then the second column says color.
+
+That's because it has a label of color,
+
+and the third one has a label of score.
+
+That's because the object over here has a label of score.
+
+Okay, so for right now,
+
+we're just gonna focus on implementing this config object
+
+and putting in this idea of this label property.
+
+We'll then come back in a little bit,
+
+and we'll start to add in some additional properties
+
+to these config objects such as render and sort.
+
+And those are what are going to allow us
+
+to show more complex values
+
+and eventually sort some different columns as well.
+
+But for right now,
+
+we're just gonna worry about implementing label.
+256
+Instructor: Let's start adding in the idea
+
+of this config array into our table component.
+
+So we're going to create the config array
+
+inside of table page.
+
+We're gonna make it inside the parent component.
+
+The parent component is going to create this config array
+
+so it can customize the table component
+
+and tell it exactly how it wants to display some data.
+
+For right now, the only property we're gonna worry about
+
+inside of this configure is the label
+
+inside of each of these different objects.
+
+So we're gonna define an array of objects,
+
+there's gonna be three in total.
+
+Each is gonna have a label property
+
+of Fruits, Color, and Score.
+
+Fruits, Color, and Score are going to be used to produce
+
+the th elements at the very top of our table.
+
+So rather than hard coding these
+
+inside of our table component,
+
+we're now going to generate them on the fly
+
+by using this array of objects.
+
+So right now, this is pretty much
+
+a simple and straightforward refactor.
+
+Inside of our table component, so Table.js,
+
+if you scroll down to the bottom,
+
+right now those th elements are hard coded in.
+
+So all we're doing right now
+
+is generating these th elements on the fly
+
+using some configuration passed down
+
+from the parent component.
+
+That's all we're doing right now.
+
+Okay, so to get started, I'm gonna open up TablePage.js.
+
+Here's TablePage, here's what we define all of our data.
+
+Right after that,
+
+I'm gonna make a new variable called config.
+
+I'm gonna put in three objects.
+
+The first one is gonna have a label of Name,
+
+then Color, and then Score.
+
+Eventually these will have some additional properties
+
+but again, for right now, we're staying very simple.
+
+We're just worrying about adding in this label property.
+
+So I'm going to then take the config array
+
+and pass it down as a prop into table, also called config.
+
+Next, I'll go into Table.js.
+
+I'm going to receive that config prop at the very top.
+
+And then once again, the only goal right now
+
+is to produce these ths on the fly
+
+instead of having them hard-coded inside of here.
+
+So I can produce those ths
+
+by mapping over the config array of objects.
+
+And for every object inside there,
+
+I can really just pull off that label property.
+
+So let's try doing that right now.
+
+At the very top,
+
+I'm gonna add in a new variable called renderedHeaders.
+
+This will be config map.
+
+Every object inside the config array
+
+is kind of like a column configuration object.
+
+So I'm gonna call the argument right here, column.
+
+We could also call it columnConfig.
+
+Either one is totally fine.
+
+I'm just gonna call it simply column.
+
+So this column argument right here
+
+is gonna be each of the different objects
+
+we just created back inside of table page.
+
+So inside of our mapping function,
+
+we can return a th that prints out this columns label.
+
+We need a key prop on this thing.
+
+I'm gonna use a key of the columns label as well
+
+because that is consistent
+
+and doesn't really change over time,
+
+and it's probably gonna be unique as well.
+
+I'm probably not gonna have duplicate column names
+
+inside of my table.
+
+All right, so now we're going to display
+
+rendered headers down inside of our table
+
+instead of these three hard-coded ths.
+
+So I will delete the three hard-coded ths
+
+and replace it with rendered headers.
+
+And that's it.
+
+So now if we save this, we can go back over
+
+and I'll see my three different column headers
+
+of Name, Color, and Score.
+
+So now if we go back to table page
+
+we can change those headers very easily
+
+without having to change our table component.
+
+So let's say, for example,
+
+I don't want the first column to say Name anymore.
+
+Maybe I want it to say Fruits or something like that.
+
+If I put in Fruits right there,
+
+for the first object and then flip back over.
+
+Now the first column is gonna say Fruits if you want.
+
+If I want it to be something like Name of Fruit,
+
+you get the idea, we can change it to be whatever we want
+
+and we can make our table appear slightly differently
+
+without having to change the table component itself.
+
+And this also means we can now display
+
+different table components
+
+and give them each different sets of config,
+
+and each table component
+
+is going to display slightly differently on the screen.
+
+So I think we're definitely going down
+
+the right path right now.
+
+We can now configure our table component
+
+without directly changing it.
+
+It's definitely more reusable in nature,
+
+so we're going down the right path.
+
+So all we have to do now
+
+is start to introduce these additional properties
+
+that are going to change our table a little bit more
+
+than what we're currently doing.
+257
+Instructor: We've taken care of the headers on our table.
+
+So now we're going to try to generate the contents
+
+of the table using some configuration
+
+passed from the parent component.
+
+So this is where things get just a little bit challenging
+
+but don't sweat it.
+
+We're gonna go over this one step at a time.
+
+Okay, so once again
+
+we've got our config array that has a couple
+
+of different objects inside of it.
+
+Each object controls how one entire column
+
+is going to be displayed on the screen.
+
+Now we just took care of the label property.
+
+So now we're gonna move on to another property
+
+that each of these objects are going to have.
+
+It's called the render function.
+
+So each object has a render function.
+
+These render functions describe how we are going to
+
+produce all the content that is displayed inside
+
+of one column.
+
+So that first render function is gonna tell us
+
+how to make all this content.
+
+The second render function,
+
+so the one right here inside the second object,
+
+is gonna tell us how to produce all this content.
+
+And then the same one with the third object.
+
+So let's take a look at a kind of complex diagram
+
+and understand how the render function is gonna work
+
+in a little bit more detail.
+
+Alright, here we go.
+
+So on the left hand side of this diagram
+
+I've got our data array.
+
+So that has each of our different data objects.
+
+I've got the apple object,
+
+the orange object right here, banana, and lime.
+
+In the middle, I've got the configure.
+
+So this has a couple of different objects,
+
+each of which controls how an entire column
+
+is going to be displayed.
+
+Then we're gonna walk through the process
+
+of how we're going to eventually come up
+
+with all the different values to show inside of our table.
+
+So we already took care of the columns,
+
+we've got the columns taken care of.
+
+Now we need to figure out how we're going to show some value
+
+inside this cell, that cell, that cell, and so on.
+
+So here's what's going to happen.
+
+Right now, inside of our existing table component
+
+we are mapping over each object inside the data array.
+
+Let's go and find that really quick.
+
+Here's table.js.
+
+Here's the table component.
+
+So we are mapping over the data array right here.
+
+So we are already doing a little bit of a mapping statement.
+
+We're taking a look at each individual fruit object.
+
+So we're taking an entire fruit object
+
+and we're using it to produce all the different td's
+
+that we need to show inside of one row.
+
+We're gonna do something almost identical.
+
+We're just adding in one additional step here.
+
+So we're still going to map over
+
+each of these objects one at a time.
+
+We're gonna take the first object
+
+and we're gonna pass it into the first functions
+
+or excuse me the first objects render function.
+
+So this argument of fruit right here
+
+we're going to receive this entire big fruit object.
+
+We're then going to return fruit.name
+
+which is gonna give us back a string of apple.
+
+We're then gonna take that string
+
+and put it into the first cell right here.
+
+So I would end up with apple.
+
+Then we are still mapping over the same apple object.
+
+We're gonna move on to the next render function.
+
+So the render function down here for the second column.
+
+This render function is
+
+going to receive the current fruit object we are working on
+
+which is the same apple object.
+
+This render function is going to dictate what
+
+content we show inside of the second column right here.
+
+So in this case, we receive the fruit object.
+
+We then return a div that uses the fruits
+
+fruit objects, color property.
+
+So that's what's going to show some kind
+
+of colored box right there.
+
+So in this case, we're gonna return a div that has a fruit
+
+or a class name of BG red 500.
+
+So we're gonna end up with a red cell right there.
+
+Then we're still mapping over the same apple object.
+
+We're gonna move on to the third render function.
+
+So the apple object is gonna flow
+
+into that render function right there.
+
+We're gonna pull off the score property and return it.
+
+And so over here we're going to display the number three.
+
+So we built up each value inside this one row.
+
+Now that we've taken care of everything inside of that row
+
+we are all done with the apple object.
+
+So we're gonna throw it away
+
+and we're gonna move on to the next object, which is orange.
+
+So we're gonna repeat the exact same process.
+
+We're going to go to the first render function.
+
+Orange is gonna show up as the fruit argument.
+
+We're gonna pull off the name property
+
+and show it inside this first cell right here,
+
+so we'll end up with orange.
+
+Then we're gonna move on to the next render function,
+
+right here.
+
+It's gonna receive this orange object
+
+and we're gonna use the returned result
+
+to decide what to display right there.
+
+So yeah, it's gonna be a orange box
+
+and I think you understand where this is going.
+
+We're gonna move on to the third render function down here.
+
+It's gonna receive the orange fruit object
+
+and that's going to dictate what we show
+
+inside the third column over here.
+
+So it'll be a score of five and that's it.
+
+Now this diagram and my explanation of it
+
+I think is probably more complex than the actual code.
+
+So let's go and write some code
+
+and I think it's gonna really clarify what's going on here
+
+because honestly the code we have to change
+
+is really not gonna be that bad.
+258
+Instructor: Let's add this idea of a render function
+
+into each of our different config objects.
+
+So back inside my editor, I'm gonna find TablePage.js.
+
+Here's our config array.
+
+The first object right here controls the first column.
+
+I gave it a label of name of fruit,
+
+that was just a quick example.
+
+I'm gonna change it back to name
+
+because I think that's more appropriate for our table.
+
+So then on this first object
+
+I'm gonna add in a render property,
+
+that's gonna be a function.
+
+It's going to receive a fruit
+
+and then return some value that we want to display
+
+inside of this first column.
+
+So this first render function controls each value
+
+we're showing in just the first column.
+
+So the first render function will return fruit.name.
+
+All right?
+
+Then the second one is gonna receive a fruit object.
+
+And then eventually we want to return a div
+
+that has some class name.
+
+For right now we're gonna keep it simple,
+
+we're just going to display a color property.
+
+Just the color property.
+
+So bg, yellow, red, or whatever it is.
+
+So the second render function will return fruit.color
+
+and then the third one, excuse me,
+
+is going to return fruit.score.
+
+There we go.
+
+Okay, so at this point in time, not too bad, right?
+
+These are really just kind of simple functions
+
+that we're passing down into the table components.
+
+So now let's open up the table and we're going to make sure
+
+that our actual values inside the table are being generated
+
+by using these functions.
+
+We're gonna do this in a two-step process.
+
+So we're gonna do a immediate refactor right now
+
+that's not great, it's gonna work,
+
+but it's not perfect code.
+
+The reason we're gonna do this intermediate refactor
+
+is just to make sure it's super clear what is going on.
+
+Okay? So inside of table.js
+
+we've got the renderRows variable.
+
+We are mapping over every object inside of our data array,
+
+so we're getting those fruit objects.
+
+Then inside of here
+
+we are producing the three different TD elements.
+
+So these three different TD elements
+
+dictate what we're gonna show right there, right there
+
+and right there for the first fruit object.
+
+And then right there, right there, right there
+
+for the second fruit object and so on.
+
+We do not want to have these hard-coded TDs anymore
+
+where we directly try to access properties
+
+like name, color, and score.
+
+Instead, we want to decide what to show inside
+
+of these TDs by using the render functions we just
+
+put together a moment ago back inside of table page.
+
+So here's the intermediate refactor.
+
+This is not perfect code,
+
+just meant for demonstration purposes,
+
+and we're gonna change this into a kind of final version
+
+in just a moment.
+
+So for the first TD right here
+
+I do not want to have a hard-coded fruit.name.
+
+Instead, I want to use the config arrays
+
+first objects render function.
+
+And so I'm gonna call exactly that function right there
+
+instead of putting in fruit.name.
+
+So I'm gonna write in config at zero.render
+
+and then pass in the fruit object.
+
+So think about what that does.
+
+This is ultimately very simple
+
+and straightforward JavaScript.
+
+We're gonna take the fruit object
+
+that we are currently mapping over
+
+and we're gonna pass it into this function right here.
+
+We're gonna get back exactly the fruit's name
+
+and that's what's gonna be displayed inside the first TD.
+
+And that's it, that's all that's going on there.
+
+Now we're gonna repeat the process
+
+for the other two TDs as well.
+
+So for the second TD,
+
+instead of displaying this huge div right here,
+
+I'm gonna put in config at one dot render fruit.
+
+So once again, this is really just plain JavaScript.
+
+We are calling the second render function right here.
+
+So returning the fruit objects color property
+
+and then here's the third TD.
+
+Instead of doing fruit.score
+
+we're gonna do config at two render fruit.
+
+All right, now if we save this
+
+we're gonna see our content appear
+
+and we are back to kind of the string version of color.
+
+Not perfect, but hey, it works.
+
+So it's very clear that inside of renderedRows
+
+we can reference our config object.
+
+We can pull out a particular render function,
+
+put a fruit object into it, and get back some property,
+
+or some value that we want to show in each individual TD.
+
+Now again, this is an intermediate refactor,
+
+so this is not perfect code.
+
+The reason it is not perfect is that we're still assuming
+
+that we're always gonna have exactly three different columns
+
+inside of our table.
+
+So if we ever want to show a table with two columns,
+
+or one column or five columns,
+
+this code isn't going to work.
+
+So we're gonna have to do one last refactor here
+
+and make sure that the number of TDs that we show is equal
+
+to the number of config objects inside of our config pro.
+
+So that's the last step,
+
+and don't worry that part isn't too bad.
+259
+Instructor: Time for the second part of our refactor.
+
+So right now,
+
+we are assuming that we're always
+
+gonna have exactly three TD elements.
+
+Not good because we can only ever show tables
+
+with exactly three TDs.
+
+So we're gonna fix this up
+
+by doing a mapping function inside of a mapping function.
+
+Now, this is gonna sound really kind of crazy, really nasty.
+
+All we are doing here is producing this exact JSX
+
+using a second mapping function
+
+that we're gonna nest inside of this one.
+
+So we're going to map over our config array.
+
+For every object inside there,
+
+we're gonna call the render function
+
+and pass in the current fruit that we are iterating over.
+
+And we're gonna use that to produce a new TD element.
+
+So essentially,
+
+all we're doing is replacing exactly this code right here.
+
+So I'm going to delete that.
+
+Above the return statement,
+
+I'm gonna create a new variable called renderedCells,
+
+and that's gonna come from config.map.
+
+So we are mapping over our config array.
+
+I'm going to receive the configuration object,
+
+which I'm going to call column.
+
+So the column object is gonna be each of the config objects
+
+that we put together inside the config array.
+
+Then inside of renderedCells,
+
+I'm going to return a TD
+
+where I call this column object's render function
+
+and then pass in the current fruit that we are mapping over.
+
+The TD must have a key
+
+because we are building up a list of elements here.
+
+So I'm gonna give it a key
+
+of the column objects, label property.
+
+So column.label because that is unique and consistent.
+
+So now,
+
+we're going to have a list of TD elements
+
+exactly equal to the number of config objects.
+
+So we're going to take renderedCells
+
+and display it inside the TR.
+
+Now,
+
+this part that we just did I feel is a little bit nasty.
+
+I feel like this is kinda confusing.
+
+This is probably the worst part
+
+of this entire table project.
+
+So all we just did was instead
+
+of writing out each individual TD one by one,
+
+we produce them on the fly
+
+by mapping over that config array.
+
+We want to map over the config array
+
+because we always want to have a number of columns
+
+or number of TDs equal to the number
+
+of objects inside of this array.
+
+So we have three objects inside of here.
+
+That means we want to have three columns.
+
+That means we want to have three TD elements inside
+
+of each row.
+
+So now,
+
+if we save this and flip back over, hey, it actually works.
+
+You'll notice some styling is a little bit off.
+
+That's just because we did not place
+
+a class name property on the TD right here.
+
+If we add in the same classname
+
+we had before of p-2, now,
+
+we should end up with something
+
+just like what we had before.
+
+So that's it.
+
+That's the challenging part.
+
+That's probably the hardest part
+
+of this entire table component,
+
+but now, we're done with it.
+
+Whew, kind of over it.
+
+So now,
+
+the nice thing about this is that outside of sorting,
+
+our table is actually pretty full-featured.
+
+If we want to add in additional columns to the table,
+
+all we have to do is go back to tablepage.js
+
+and we can add in an additional configuration object.
+
+So if I want to add in another column
+
+at the very end of the table, so the very right-hand side,
+
+I can add in another object right here
+
+with a label of name again.
+
+So I'm just gonna print out the name again of a fruit.
+
+And if I want to print out the name,
+
+I would then give it a render function
+
+that's gonna take a fruit
+
+and return that fruit's name.
+
+So now,
+
+just because I added in that object right there,
+
+if I go back over, I'll see name again,
+
+and I get the name of the fruit.
+
+If I wanna do something crazy, like score squared...
+
+so if I want to just take a fruit's score
+
+and square it as in raise it to the power of two,
+
+I could do fruit.score times times two.
+
+That's how we do power of two in JavaScript.
+
+So now, if I save that,
+
+I'll see five times five is 25, three times three is nine,
+
+one times one is one, and so on.
+
+So using this technique,
+
+we can now add
+
+or remove columns from our table at will.
+
+And we can very easily customize the label of the column
+
+and what content is displayed inside of every cell
+
+of that column as well by using the render function.
+
+So this is pretty fantastic.
+
+I'm going to remove that last column
+
+'cause we don't really need it.
+260
+Instructor: The last big thing we need to add
+
+into our table is sorting functionality.
+
+But before we do so, I forgot one last thing.
+
+I need to make sure that the second column right here
+
+displays a little box with a color inside of it.
+
+So I'm gonna take care of that really quickly.
+
+We can change what the second column displays
+
+if we change these second configuration object
+
+inside of our config array.
+
+So instead of returning the fruit's color right there,
+
+I'm going to return a div that has a class name
+
+that uses back ticks inside of a set of curly braces.
+
+And I want it to be p-3 m-2 ${fruit.color}.
+
+So that's exactly what we had a little bit ago
+
+back inside of our table component.
+
+I'm gonna save this, and then if we go back over,
+
+we're back to seeing the actual color on here again.
+
+Very good.
+
+All right, last thing I would like to add
+
+into our table is sorting functionality.
+261
+-: Before we move on to sorting,
+
+there's one other quick thing I would like to take care of
+
+Remember, the goal of our table component
+
+is to be able to receive any kind of data
+
+and render it out as a table.
+
+Right now, we're definitely making good strides
+
+in that direction,
+
+but if we look at the source code of our table component,
+
+you'll notice that there are still a couple of references
+
+to variables called fruit.
+
+So one right here, one right here
+
+and one down here as well.
+
+So ideally, we would not have any references
+
+to any variable called fruit because that kind of implies
+
+that this component only works with fruit objects.
+
+So let's rename this variable
+
+because it's being received inside of a mapping function,
+
+we can call it anything we want.
+
+I'm gonna call it rowData instead
+
+because that's kind of what this thing represents.
+
+It is all the data for one particular row of the table.
+
+So I'm gonna change the name right there.
+
+I'm going to change the name right here.
+
+And then finally, we need to change the name down here
+
+when we pass the key prop into the tr.
+
+So it should be rowData.
+
+But before we move on from this,
+
+there's one small issue here.
+
+Remember what I said just a moment ago.
+
+We're trying to make our table component
+
+able to receive any kind of data
+
+and show it inside of a table.
+
+So right here, we have some code
+
+that is making a huge assumption
+
+around the data that our table is receiving.
+
+This is assuming
+
+that our different records that we're receiving
+
+are always gonna have a name prop
+
+that is suitable for use as a key property
+
+and that might not be reality.
+
+Right now our fruit objects do have a name
+
+but we eventually might try to show a table with some data
+
+that doesn't have a name prop at all.
+
+So we really can't assume
+
+that we're always gonna have a name property.
+
+So we need to come up with some solution here.
+
+We need to figure out some way to generate a key
+
+and pass it as a prop to this tr.
+
+But we can't really make any assumptions whatsoever
+
+on the form or structure
+
+of the data that our table component is going to receive.
+
+So here's how we're gonna fix this.
+
+We're gonna put the burden of coming up with a key
+
+on the developer who is using our table component.
+
+So let me show you what that means.
+
+I'm gonna go back over to table page.
+
+Here's TablePage js.
+
+Then down towards the bottom,
+
+I'm going to create a new function called keyFn.
+
+Fn right here is short for function.
+
+So I just need to indicate that this is a function
+
+being used to generate a key.
+
+I'm going to assume that this is going to be called
+
+with each of our different fruit objects.
+
+And then from this function, I'm going to return some value
+
+that is suitable for use as a key.
+
+So for us, fruit.name absolutely works.
+
+I'm then going to pass this as a prop into Table
+
+called keyFn.
+
+Then inside of our table component,
+
+I'm going to receive that prop.
+
+So that's a function that we can use
+
+to get a key to use for each individual row
+
+inside of our table.
+
+So now instead of us trying to come up with a key
+
+inside of our table component,
+
+because we really can't come up with one
+
+because we can't make any assumptions
+
+on the data we are receiving.
+
+We're going to instead use keyFn right here
+
+and then pass in the current row data object
+
+that we are mapping over.
+
+And that's how we're gonna fix it.
+
+So again, we're kind of putting the burden
+
+on coming up with a key
+
+on the person who is using our component.
+
+If you're gonna use our table component,
+
+you have to give us a key function
+
+or a function we can use to generate a key.
+
+Now if we save both these files
+
+and flip back over and refresh,
+
+I don't see any errors and that means
+
+that our key function is definitely working correctly.
+
+Alright, so now inside of Table.js,
+
+I'm just gonna do a quick scan inside of here.
+
+I should no longer have any references to fruit whatsoever.
+
+It looks like I don't with the one exception of,
+
+nope, column.label.
+
+That's good.
+
+Yeah, so now we don't really have any assumptions
+
+on the data that has been passed into our table component
+
+with the one exception of it must be an array of objects.
+
+That's pretty much it.
+
+So we're well on way
+
+to making this thing actually truly reusable.
+
+Like I said, last step here is sorting.
