@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production / Bundler outputs
+build/
+dist/
+.parcel-cache/
+coverage/
+
+# Misc / OS Junk
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment / Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE config
+.vscode/
+.idea/
+
+# Ghi chú & transcript cá nhân
+note/
+**/note/
+*.txt
