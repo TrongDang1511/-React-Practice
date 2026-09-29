@@ -1,0 +1,4140 @@
+301
+Instructor: We have spent a lot of time on React.
+
+It is now time to move into the world of Redux.
+
+We're gonna first discuss exactly what Redux is.
+
+So Redux is a JavaScript library
+
+and it turns out
+
+that it is remarkably similar
+
+to that use reducer hook
+
+that we just learned about in the last section.
+
+So Redux is a library.
+
+We use it to maintain state
+
+for our entire application
+
+and it uses the same techniques as useReducer.
+
+We still have the dispatch function,
+
+we still have reducers,
+
+we still have actions, all that same stuff.
+
+So in this video, I'm gonna show you a couple of ways
+
+in which Redux and useReducer are very similar
+
+and a couple of ways in which they are slightly different.
+
+First, quick reminder on useReducer.
+
+So we were making use of this hook
+
+to produce some state inside of a component.
+
+Anytime we wanted to change that state,
+
+we sent an action object into the dispatch function.
+
+The action was automatically sent along to a reducer
+
+and that caused us to create some new state.
+
+So it's the exact same thing
+
+in the world of Redux as well.
+
+With Redux, we still have action objects,
+
+we still have dispatch functions,
+
+we still have reducer functions,
+
+and we are still creating some state
+
+that we're going to eventually use
+
+inside of our components.
+
+So again, same exact idea.
+
+Now as I mentioned, there are a couple of ways
+
+in which things are different.
+
+So let me show you exactly how Redux and useReducer differ.
+
+With useReducer, we were trying to create some state
+
+that we were going to use inside of a component
+
+and its children.
+
+So for example, we might make an app component,
+
+produce some state inside there with useReducer
+
+and we can use that state
+
+inside the app component
+
+in all of its children as well.
+
+When we start making use of Redux, however,
+
+we are going to create a separate object
+
+called the Redux Store.
+
+This Redux store lives separately
+
+or kind of apart from our React application.
+
+So you can think of this Redux store
+
+as being completely outside of our hierarchy of components.
+
+Anytime a component needs to get access to state,
+
+it's gonna reach out to the Redux store
+
+and access the state that we have defined inside there.
+
+So we have to form very distinct connections
+
+between our individual components
+
+and this Redux store.
+
+To make this connection a little bit easier,
+
+we're going to be using a library called React Redux.
+
+So it turns out that Redux itself doesn't really assume
+
+that you are making use of React at all.
+
+And if you actually look at the source code for Redux,
+
+you're not gonna really see a lot inside the source code
+
+that says, hey, I'm specifically being made for React
+
+or anything like that.
+
+So in order to form really nice connections between Redux
+
+and our React application,
+
+we're going to use this additional JavaScript library.
+
+And again, it is called React Redux.
+
+This library is 100% optional,
+
+but you are going to see
+
+a vast majority of projects using it.
+
+Just so you know, the React Redux library
+
+pretty much just forms a connection between Redux
+
+and the React side of your application
+
+using the same kind of techniques
+
+we have already learned about, specifically context.
+
+That is how the Redux data is being shared
+
+with the React side of our app.
+
+It is using context under the hood.
+
+So it's not like it's doing
+
+any kind of amazingly original stuff.
+
+It is just automating some techniques
+
+that you and I have already learned about.
+
+Another way in which useReducer
+
+and Redux are slightly different is that with useReducer,
+
+we made one single reducer function
+
+and we used that one function
+
+to manage all of our states.
+
+When we go into the world of Redux,
+
+we're going to often have
+
+multiple different reducer functions
+
+and each different reducer function
+
+is usually going to be in charge
+
+of managing a different part of our state.
+
+So we might have one reducer
+
+that is responsible for dealing with data related to users,
+
+another one responsible
+
+for dealing with data related to videos
+
+and another one for messages.
+
+A typical Redux application will usually have
+
+several different reducer functions inside of it.
+
+If you only have one reducer function,
+
+that's usually a sign
+
+that your application might not be at the size
+
+where you need to have Redux at all.
+
+One other way
+
+in which Redux is a little bit different
+
+is that our state objects are usually gonna end up being
+
+a little bit more complicated,
+
+so they're usually going to have
+
+several different properties inside them.
+
+In this example,
+
+I've got three kind of different subsections
+
+inside the state object.
+
+So the overall state object has some users property,
+
+a videos property, and a messages property.
+
+Each of these different areas
+
+or these sections of the state object,
+
+are going to be created by a different reducer.
+
+So the users right here might be related
+
+or kind of controlled by our users reducer,
+
+videos might be controlled by the second reducer
+
+and messages by the third one down here.
+
+We use this technique
+
+to kinda split up the responsibility
+
+of managing state inside of our application,
+
+so we don't end up with one reducer
+
+that just has a huge amount of code inside of it.
+
+We like to split up our state
+
+between these different reducers
+
+just to make things a little bit easier
+
+to understand and manage.
+
+Okay, so that's a couple of ways
+
+in which useReducer and Redux are similar and dissimilar.
+
+So for right now,
+
+I really just want you to have it in your head
+
+that useReducer and Redux,
+
+yeah, they're kind of similar
+
+and we're going to see
+
+that a lot of techniques are shared between them.
+302
+Instructor: When I told you a moment ago that
+
+Redux is awfully similar to useReducer,
+
+you might've been a little bit surprised.
+
+If this is your first time looking at Redux,
+
+you might've heard of Redux before and heard,
+
+Hey, it's this great library, it helps us
+
+with React applications and whatnot,
+
+and so it might be a little bit of a surprise
+
+that we're using the same techniques as useReducer.
+
+And the reason I think that might be surprising is that,
+
+well, useReducer, it just wasn't the most
+
+convenient thing in the world.
+
+You know, this dispatch function, these action objects,
+
+it seemed like things were just kind of really complicated
+
+without really having any purpose for being so complicated.
+
+I don't know, that's just kinda what I think.
+
+So in this video, I want to help you understand why
+
+this pattern of action objects, dispatch functions,
+
+reducers, all this stuff, seems to be kind of popular.
+
+Why does useReducer exist, why does Redux exist?
+
+Why do they both use the same kind of technique?
+
+There are many reasons that Redux is very popular,
+
+but in this video, I want to focus on one reason,
+
+in particular, that this pattern really seems
+
+to come up really often in the React world.
+
+And I would say that one very popular reason,
+
+one really big reason we use Redux,
+
+really boils down to the dispatch function.
+
+So anytime we want to change our state in any way,
+
+when we are using Redux or useReducer,
+
+we have to call that dispatch function.
+
+And it turns out that this is a huge strength
+
+of this pattern, but it's also a little bit
+
+of a weakness, as well.
+
+So I want to help you understand why this dispatch
+
+function is so important, and some challenges around it.
+
+Okay, so the first thing I want you to think of is that
+
+you are working on a really, really large React project,
+
+and you've got just tons and tons of React components.
+
+And at a certain point, it's kind of hard
+
+to keep track of all the different components
+
+that exist inside of your application.
+
+So we might not really have a clear mental model
+
+of how all these different components are hooked up.
+
+We might have several hundred different components
+
+inside of a single app, and so at some point in time,
+
+it just plain gets confusing.
+
+All these different components are going to be
+
+responding to user events, so as usual, a user typing,
+
+clicking, doing whatever they do.
+
+And so all these different components, at certain points
+
+in time, might be needing to say,
+
+Hey, some state needs to be updated, a user clicked,
+
+they typed, they did whatever.
+
+And it turns out that, as we start to get a lot
+
+of components, keeping track of all these updates
+
+we need to make, it just gets really, really confusing.
+
+It's really hard for us as engineers to understand
+
+why state is updating, and what component is
+
+initiating that update.
+
+So a huge, big important reason that we make use of Redux
+
+is this central point of changing any state,
+
+the dispatch function.
+
+Anytime we want to change any state inside
+
+of a Redux app, we have to dispatch an action,
+
+just as we saw with useReducer.
+
+This is a really, really good thing,
+
+because it makes it really easy for us, as engineers,
+
+to understand why state is changing.
+
+We can very easily take a look at the dispatch function.
+
+We can try to understand why it is being called.
+
+And that's kind of a sign to us of,
+
+Hey, dispatch is being called,
+
+that's why our state is updating.
+
+And so it makes it a lot easier for us
+
+to just plain understand why state is updating,
+
+and what component is triggering that update.
+
+We're also gonna see really quickly that by having
+
+this one central point of change, it becomes really easy
+
+to add in additional debugging features.
+
+For example, we're going to see that eventually,
+
+it's really easy for us to add in a little bit of code
+
+that does a simple console log of every action object
+
+that ever gets dispatched.
+
+So we can add in a very simple amount, very small amount,
+
+of code that's gonna console.log(), and tell us,
+
+"Hey, an action was just dispatched,
+
+here's what the action is."
+
+And so once again, it becomes really easy for us
+
+to understand why our state is changing,
+
+even if we have a big, messy pile of React components.
+
+So to kind of sum this up, one really good thing
+
+about this pattern, where we have this dispatch function,
+
+is that it's really easy for us to understand
+
+why our state is changing.
+
+That's a really big deal when we are working
+
+on very complicated applications.
+
+So now let me show you kind of a downside
+
+of the dispatch function, something that's not quite
+
+so great when it comes to how we deal with it as engineers.
+
+So I want you to think back to the CounterPage example
+
+that we went through a little bit ago,
+
+when we were first talking about useReducer.
+
+So we did not immediately come up with that idea
+
+of dispatching an action object that had a type.
+
+Remember, we kind of had to figure that out, so to speak,
+
+a couple of videos in, as we were talking about useReducer.
+
+And so there was a point in time at which I had told you
+
+that we call the dispatch function,
+
+and that causes our reducer to run.
+
+And you might recall that there was a video in there
+
+where we realized, okay, anytime we want to change
+
+our state, we call dispatch, that runs the reducer,
+
+but the reducer has to be told why it is being executed.
+
+It has to be told what state update it needs to make.
+
+And that's the point in time at which
+
+we came up with this idea of action objects.
+
+Objects would have a type, and the sole purpose
+
+of that type was to communicate from calling dispatch
+
+inside the event handler over to the reducer,
+
+why we are running the reducer,
+
+and what state update we want it to make.
+
+That was the only purpose of action types,
+
+that's the only reason we did it.
+
+And so I would argue that a little bit of a downside
+
+of this entire idea of adding in action types, and whatnot,
+
+well, we just have to write in a ton of extra code.
+
+We have to define all these action types as constant
+
+variables, we eventually have to import them,
+
+export them around between different files,
+
+if we ever want to reuse them, we have to refer to them
+
+inside of our reducers, and even inside the reducer,
+
+we also have to write out all this extra code
+
+for these switch statements, as well.
+
+So this is ultimately a lot of extra boilerplate.
+
+It's a lot of extra code just to communicate
+
+to the reducer why it is being called.
+
+So that's not the greatest thing in the world,
+
+it's kind of a downside, I would argue.
+
+So the entire point of this video is just to highlight
+
+that, hey, having this central point of change
+
+inside of our application, it's really good,
+
+but on the other hand, well, having to write out
+
+all this boilerplate to deal with the fact that we have
+
+a central point of change is also kind of not great.
+
+So where does that leave us?
+
+Well, that leaves us with one last diagram here,
+
+something that's going to add in just a little bit
+
+of complexity to the situation.
+
+Here we go.
+
+So this is gonna seem very unrelated to what we've been
+
+discussing in this video, until we kind of get to
+
+one very important point here.
+
+Whenever we make use of Redux inside of a React application,
+
+we have two options available to us.
+
+We can either make use of Redux,
+
+the Redux Library by itself.
+
+So that's option number one, and that's how we used to
+
+do things all the time, for every React Redux application
+
+we ever put together.
+
+But more recently, there's been a new library
+
+that's been released, and you are gonna see it very,
+
+very often whenever Redux is being used.
+
+This new library is called Redux Toolkit.
+
+This library is a wrapper around Redux.
+
+So if you are using Redux Toolkit,
+
+you are still using Redux.
+
+The goal of Redux Toolkit is specifically
+
+to simplify that action type creation process.
+
+It is to help us avoid having to write out all those
+
+action types and those really complicated switch statements
+
+inside of our reducers, as well.
+
+Redux Toolkit does several other very convenient things
+
+for us, but ultimately one immediate impact we are going
+
+to see, compared to making use of a useReducer,
+
+is that creating our different action types
+
+and our reducer functions is gonna look a little bit
+
+different, but behind the scenes,
+
+we're still technically making use of Redux.
+
+And so all the same ideas we learned from useReducer
+
+are still going to be applicable here,
+
+just a little bit of the syntax is gonna be
+
+a little bit different, that's all.
+
+Option number two, making use of Redux Toolkit,
+
+is the recommended way of creating Redux projects
+
+in the future, and so you and I, in this course,
+
+are gonna focus on option number two.
+
+We're going to be making use of Redux Toolkit a ton.
+
+And in the coming videos, whenever I refer to Redux,
+
+I'm usually actually referring to Redux Toolkit.
+
+Okay, so long story short, the entire purpose
+
+of this video was really to just highlight that,
+
+hey, this dispatch function, it's great, it's really nice
+
+having the central point of change, but a little issue
+
+with plain Redux is that having to write out
+
+all that boilerplate code just to tell the reducer
+
+what to do, yeah, that wasn't so great.
+
+And so as a solution to that, we very often
+
+make use of this Redux Toolkit library.
+
+One of the things it does for us is just simplify
+
+that action type creation process.
+
+It just means we have to write a little bit less code,
+
+which yeah, ultimately is probably a good thing.
+303
+nstructor: Let's get started working
+
+on our first Redux project.
+
+For this first project,
+
+I put together a little bit of boilerplate for us.
+
+You can find the boilerplate at this link right here.
+
+I put together a very small number of React components,
+
+so we can focus on just the Redux side of this application
+
+and not have to worry too much around a bunch of React code.
+
+So I would encourage you to open up your browser
+
+and navigate to this address right here.
+
+Once you do so, you should see a page like this.
+
+So on the left hand side, you'll see that a couple of files
+
+and folders have already been created.
+
+And on the right hand side,
+
+you'll see the preview window.
+
+So lemme tell you a little bit about this application
+
+because right now, you can click on these buttons
+
+but nothing happens just yet.
+
+All right, here's the goal.
+
+We're going to make a very simple playlist application.
+
+Whenever a user clicks on Add Movie,
+
+we are going to randomly generate a movie name
+
+and add it into a list.
+
+So you can see in this mockup,
+
+I have already generated two movies.
+
+Whenever a movie is added,
+
+we're going to see a red x button
+
+to the very right hand side here.
+
+If I click on that button, I want to delete that movie.
+
+So I could delete that one, I could delete that one.
+
+And then if I clicked on Add Movie twice,
+
+I would get two movies to appear.
+
+The song feature at the very bottom
+
+is gonna be absolutely identical,
+
+so we're going to have the ability to add in more songs
+
+and delete them as well.
+
+And then finally at the very top,
+
+there's going to be a Reset Both button.
+
+This button whenever clicked is going to delete everything
+
+in both lists.
+
+Now I know this seems like a really simple
+
+and basic application, and it is.
+
+But it's gonna expose us to some super important ideas
+
+in the world of Redux.
+
+So let me tell you
+
+a couple more things here really quickly
+
+around the application as it stands right now.
+
+The app is created with three different components.
+
+There's the App component, a MovieList component,
+
+and a SongList components.
+
+There are a couple of different event handlers
+
+that have already been created in each of them.
+
+So inside the app component,
+
+there's a handle reset event handler
+
+to deal with the user clicking on that reset button.
+
+And then in movie playlist and song playlist,
+
+we've got handle movie ad, handle movie remove,
+
+and both these do exactly what you would expect.
+
+Handle movie ad is called whenever a user clicks
+
+on the add button.
+
+And remove is called whenever a user clicks on the red x
+
+to delete a movie.
+
+Same thing over here with the song component as well.
+
+If we open up those movie and song components
+
+inside the components directory,
+
+you'll see that there is already a bunch of code
+
+inside of here.
+
+So at the very top,
+
+I've got a little bit of stand in code
+
+for giving a list of movies.
+
+And then I've got the two event handlers right here.
+
+All the JSX has already been taken care of.
+
+So we should not really have to do a whole bunch
+
+on the Redux side,
+
+we should be able to focus just on Redux.
+
+Okay, so that's it.
+
+That's what we're going to work on
+
+for our first project with Redux.
+
+So let's get started in just a moment.
+304
+Instructor: I think we've got a reasonable idea
+
+on what's going on on the React side of this project,
+
+so now let's take a look at the Redux side.
+
+We're gonna take a look at a couple of different diagrams.
+
+So as we go into the world of Redux,
+
+I really want you to keep in mind everything
+
+we learned around useReducer.
+
+The entire state updating flow is gonna be almost identical
+
+to what we went through with useReducer.
+
+So anytime that we want to update our state,
+
+we are going to create an action object,
+
+we're gonna pass it into the dispatch function.
+
+We're going to have more than one
+
+reducer function this time,
+
+and we'll go into a lot of detail
+
+on how that's going to work.
+
+We're going to have two separate reducers in total,
+
+one that's gonna manage a list of movies,
+
+and the other that's gonna manage a list of songs.
+
+Whenever an action gets dispatched,
+
+these reducers are going to run
+
+and produce some new state for us to use.
+
+So let's go through this flow a little bit more closely.
+
+First, I want you to understand the structure of state.
+
+So we are going to have one big state object
+
+for all the state of our entire application.
+
+This object is gonna have a shape like this,
+
+it's gonna be an object with a movie's property
+
+and a song's property.
+
+They're both going to be an array of strings.
+
+Every string is going to represent either a movie
+
+that we want to show on the list,
+
+or a song that we want to show on the list of songs.
+
+Each of these different arrays
+
+is going to be managed by a different reducer
+
+that we create.
+
+So again, we're going to have two separate reducers,
+
+one is gonna manage the list of movies,
+
+the other is going to manage the list of songs.
+
+Whenever we want to change these arrays,
+
+so whenever we want to say add a movie, remove a movie,
+
+add a song, remove a song,
+
+we're going to do the same thing we just discussed.
+
+So we are going to have our component,
+
+we're gonna have an event handler inside there,
+
+they'll be called whenever a user does something
+
+like clicking on a button or whatever else.
+
+Inside of that event handler,
+
+we will dispatch an action object to change our state.
+
+So whenever user clicks on handleSongAdd,
+
+we'll dispatch an action that tries to tell our reducers
+
+that it needs to make a very particular kind of update
+
+to our state.
+
+So that's going to flow into our reducer functions.
+
+They're going to run,
+
+they're going to produce some new state,
+
+that new state is going to be all kind of
+
+joined together into one big state object.
+
+And then this big updated state object
+
+will be made available
+
+to all of our different React components.
+
+So any React component that relies upon our state
+
+will be automatically updated
+
+and we'll see some new content on the screen.
+
+Now last thing I wanna mention
+
+is a little bit of project structure
+
+as we start to add in this new Redux code.
+
+For right now,
+
+we're going to add in a new folder into our project
+
+called Store.
+
+And inside there we're going to create a new file
+
+called index.js.
+
+For right now, we're gonna write out
+
+all of our Redux related code
+
+directly into this index.js file.
+
+Eventually, we're gonna add in some better structure,
+
+but for right now, it's just gonna be a lot easier
+
+if we write out a lot of code directly inside this one file,
+
+rather than trying to tab between several different files.
+
+The last thing I want to mention
+
+is that as soon as we create this file,
+
+we are going to have two different index.js files
+
+inside of our project.
+
+We're going to have the existing index.js file,
+
+which is where our React application starts up.
+
+So we're going to have the second new index.js file,
+
+where we start up all of our Redux related code.
+
+So again, just keep in mind two separate
+
+index.js files moving forward.
+305
+nstructor: Let's get started on some implementation.
+
+Back inside of our online code editor,
+
+I'm gonna find the SRC directory.
+
+Inside there, I will make a new folder called Store.
+
+And then inside of that new folder,
+
+I will create a new file called Index dot JS.
+
+So once again, we now have two separate Index dot JS files.
+
+Inside of the one that we just created,
+
+we're gonna write out a little bit of code
+
+to work with Redux.
+
+We're not gonna say what it does just yet.
+
+We're just gonna focus on writing all this code out.
+
+And then in the next video we'll come back
+
+and do a deep discussion on what's going on.
+
+So to get started at the very top of this file,
+
+I'm gonna add in an import statement
+
+with a set of curly braces.
+
+And we're gonna add in an import for
+
+configure store and create slice
+
+from at reduxjs slash toolkit.
+
+Notice that this is reduxjs, it is not Reactjs.
+
+After that I'm going to create a new variable
+
+called Songs Slice.
+
+I'm going to assign to that create Slice,
+
+I'm gonna call it,
+
+I'm gonna put in an options object
+
+and then inside of here
+
+we're going to add in three different properties.
+
+The first is going to be name.
+
+And I'll enter in song.
+
+Then initial state,
+
+I'm gonna put in an empty array and then reducers.
+
+I'm gonna put in an object.
+
+And in this object I'm gonna put in two different functions
+
+that are gonna look very much like a reducer function.
+
+So I will add in, Add Song.
+
+This is going to take arguments of state and action.
+
+I'll then add in Remove Song.
+
+And once again, this will take
+
+arguments of state and action.
+
+Inside of Remove Song, right now
+
+I'm gonna put in an empty comment.
+
+Inside of Add Song,
+
+I'm gonna add in a little bit of implementation here.
+
+So I will put in State dot Push, Action dot Payload.
+
+Okay. After we declare Song slice,
+
+I'll then go down to the bottom of the file.
+
+I'm going to create something down here called a store.
+
+I'm going to assign to this configure store.
+
+Once again, I'll pass in an options object.
+
+I'll then put in a key here of Reducer
+
+and really critical,
+
+notice that this is Reducer without an S.
+
+Whereas up here we had Reducers and there was an S.
+
+Inside of this object, I'll then add in songs
+
+and I'll assign to that songs Slice dot Reducer,
+
+and once again, notice that there is no S on here.
+
+Finally at the very bottom,
+
+I'm gonna add in a console log of store.
+
+And save the file.
+
+Now at present, this file is not going to be executed
+
+because we have not imported it
+
+anywhere else inside of our project.
+
+So to change that,
+
+I'm gonna open up my file Explorer once again.
+
+I'm going to go to the original index dot JS file
+
+inside the SRC directory.
+
+So this is where the React application starts up
+
+and at the very top I'm gonna add in an import
+
+for dot slash store.
+
+So that's gonna add in an import for the index dot js file
+
+that we just created.
+
+If I save both these files,
+
+I should then be able to
+
+go to the bottom right-hand corner of my screen,
+
+find console down here,
+
+open it
+
+and I should see a console log appear right here.
+
+This console log that we see
+
+is the console log we just added in
+
+at the bottom of the file we were working on a moment ago.
+
+If you do not see this console log,
+
+if you see an error instead,
+
+I can just about guarantee you,
+
+you have a typo somewhere inside of this index dot JS file.
+
+So I would encourage you to double check your spelling
+
+everywhere inside of here.
+
+Let me show you the full import statement
+
+at the top as well.
+
+Again, I just about guarantee you
+
+something is wrong inside of this file.
+
+Whenever you make use of Code Sandbox,
+
+that's where you're using here,
+
+you're always going to get
+
+the exact same version of dependencies
+
+that I am using inside of
+
+what you see on the screen right now.
+
+So again, if something is not working,
+
+chances are there is a typo.
+
+So once you see that console log,
+
+means everything is good to go.
+
+Alright, so we just added in a lot of code
+
+and a lot of it is a little bit mysterious.
+
+So quick pause here.
+
+We'll come back in just a moment
+
+and try to figure out what is going on.
+306
+Instructor: We just made use of Redux Toolkit
+
+to create something called a slice
+
+and something called a store.
+
+Let's take a look at a couple diagrams,
+
+and understand what these are all about.
+
+We're gonna first start off with the store.
+
+So the store is an object that's gonna hold
+
+all of our state for our entire application.
+
+Usually an application will only have one single store.
+
+It's extremely rare to have more than one store,
+
+but it happens every now and then,
+
+on extremely, extremely large projects.
+
+Usually when we create a store, we're not going
+
+to have to interact with it very directly.
+
+Usually to access the store, we're going to be making use
+
+of the React Redux library, and that library is going to
+
+deal with the store for us automatically.
+
+But in some cases, we might want to interact
+
+with the store manually just for debugging purposes,
+
+and to better understand what is going on inside of it.
+
+Whenever we want to interact with the store manually,
+
+for debugging purposes and whatnot,
+
+there are two very common things we will do.
+
+We will very often manually dispatch an action,
+
+which you can do by calling store.dispatch(),
+
+and then passing in an action object.
+
+And in some cases, we also might want to see
+
+what state exists inside the store,
+
+by calling store.getState().
+
+Again, writing out code that looks like this,
+
+these two operations right here, pretty rare.
+
+Usually we're going to interact with the store
+
+through the React Redux library.
+
+You're only gonna do these things if we are
+
+specifically trying to debug the store,
+
+and figure out what is going on inside of it.
+
+Nonetheless, let's try writing out code that looks
+
+like this, just so we can see what it's like to fetch
+
+all of our state that exists inside there,
+
+and change the state by calling dispatch.
+
+So back inside my editor, I'm gonna go back down
+
+to the bottom of the file.
+
+I'm going to remove that console.log(),
+
+and I'll create a new variable called startingState,
+
+and then call store.getState().
+
+I'll then console.log out startingState.
+
+If I save this, I'll then see a console log
+
+up here, right here.
+
+So it looks like the starting, or initial, state
+
+for my store is an object that has a songs key,
+
+that is assigned an empty array.
+
+Now you can kind of easily see the initial starting state
+
+right here inside the console, but another way that we
+
+can print this out, just to make it a little bit easier
+
+to read inside this console, is by taking this startingState
+
+variable right here, and turning it into JSON.
+
+So I'm going to wrap this with a JSON.stringify() call.
+
+Now this is absolutely, positively not necessary.
+
+I am only doing this so it's easier for you, in this video,
+
+to see what my startingState is, as plain text.
+
+So if I save this, I can now see my state, and again,
+
+I can just see it a little bit more easily.
+
+Okay, so that's an example of getting
+
+our state out of the store.
+
+Let's now try changing our state.
+
+To change our state, we're gonna do exactly what we did
+
+back in the useReducer world.
+
+So we're going to dispatch an action object,
+
+an action object that has a type,
+
+and optionally a payload, as well.
+
+So after we print out our startingState,
+
+I will call store.dispatch().
+
+I'm gonna put in a very specially crafted action object.
+
+So I'm gonna give it a type of "song/addSong."
+
+Notice that I have a capital S on song
+
+right there, or addSong.
+
+Now if you want to do the same thing as me,
+
+make sure you put in the exact same string
+
+I have right here.
+
+This is a very special string,
+
+you'll see why it's special in a little bit.
+
+I'm also gonna add on a payload of "New Song!!!"
+
+After we call dispatch, our state should be updated.
+
+And so I should be able to then get my state
+
+out of this store, console.log it, and see,
+
+hopefully, some updated state.
+
+So I'm gonna do the same thing I did up here,
+
+I'm gonna pull the state out, and console.log it.
+
+So I'll declare a new variable called finalState.
+
+I'll then do a console.log of JSON.stringify(finalState).
+
+I'll then save this, and now we see the initial
+
+starting state for our store,
+
+and then after I call dispatch, I've got a new string
+
+inside of that previously empty array.
+
+So I think it's pretty clear that this is actually
+
+doing something, it's actually changing the state
+
+within our store.
+
+You might also notice that if you change the type
+
+right here, let's say I add on, like, a couple of dashes
+
+or something like that, and save this again,
+
+I no longer get the updated array.
+
+So it turns out that the type that I have right here
+
+is very special, and clearly this is actually doing
+
+some change of state by dispatching an action
+
+that looks like this.
+
+And again, I'll show you why that is in just a moment.
+
+There's one last thing I want to cover around our store.
+
+You'll notice that, by default, we get a object
+
+that has that songs property that is an empty array.
+
+And then over time, that array seems to be growing,
+
+as we start to dispatch actions,
+
+we are inserting new strings into that array.
+
+So I want to go into just a little bit of detail
+
+on why our state object inside of our store
+
+looks how it does.
+
+In other words, why exactly is it an object
+
+with a songs property that is an array?
+
+Why is it not just a plain array, or something like that?
+
+Why is there the key songs here, and so on?
+
+Where is that key actually coming from?
+
+So here's how our big state object
+
+within the store is actually created.
+
+The actual keys for our state object, so in this little
+
+diagram right here, I've got keys of currentUser,
+
+videos, messages and notifications.
+
+These keys are set when the store is initially created.
+
+Then the values for each of these keys are being produced
+
+by the different reducers that you might have loaded
+
+into your store.
+
+So again, the keys of of your big state object
+
+are defined when the store is created,
+
+the values are defined by the different reducers.
+
+So in general, the keys are always gonna stay the same
+
+on this top-level object.
+
+The values inside are gonna change
+
+over time as your state changes.
+
+This is a little bit different than what we are used to
+
+inside of the useReducer world.
+
+With useReducer, we had one single object,
+
+and we just had a couple of keys and values on there,
+
+and the values were actual, immediately useful properties,
+
+so like a number, a string, and so on.
+
+With the Redux store, our data starts to get a little bit
+
+more nested, so we get the overall big object,
+
+and inside that object, on these little different
+
+values that we have, are the values being produced
+
+by our different reducers.
+
+As a reminder, it's usually nice to have
+
+all of our store, or excuse me, all of our state
+
+inside of one big object.
+
+It's not a hard requirement, it just makes it a little bit
+
+easier for us to console.log all of our state out
+
+at certain points, and it just makes it easier
+
+for us to debug our application
+
+and understand what is going on with it.
+
+So in our case, our state object doesn't quite
+
+look like that, ours is, again,
+
+a little bit more simple and straightforward.
+
+So we've got our state object that looks like this.
+
+It has the songs property, and a value of an empty array.
+
+The empty array right there, and well, the array that
+
+seems to be growing over time,
+
+is being produced by the songs reducer.
+
+Now we don't actually have anything called
+
+a songs reducer yet, we have a songs slice.
+
+We'll go into a little bit more detail
+
+on what the songs reducer is in just a moment,
+
+but essentially that empty array is being produced
+
+by a reducer specifically dedicated
+
+to maintaining that array.
+
+The key right here, the key of songs, is being defined
+
+when we initially create our store.
+
+So to create the store, we called configureStore(),
+
+we gave it that reducer property, and that was an object
+
+that had songs, songSlice.reducer.
+
+So that object right there is what determines what keys,
+
+or what the kind of general shape,
+
+of our state object is going to be.
+
+So because we have songs right there, that means our state
+
+object is going to have a key of songs.
+
+And because we set that equal to songSlice.reducer,
+
+the songs value is going to be produced
+
+by the songs reducer.
+
+Now this is kind of complicated stuff, and maybe
+
+the easiest way to understand it is to just
+
+change a little bit of code,
+
+and see how that changes our console logs.
+
+So let me show you a very quick example.
+
+I'm gonna go up to where I create my store right here,
+
+and instead of writing out songs right there,
+
+I'm just gonna put in some gibberish.
+
+If I save this, I'll then see my console log update.
+
+So now my big state object has a key of blah, blah, blah,
+
+and the value for that is coming from the songs reducer.
+
+So the takeaway here is if we ever want to change
+
+the overall structure of our big state object
+
+that is being maintained inside of a Redux store,
+
+we're going to go to where the store is created,
+
+we're gonna find this reducer property,
+
+and we're going to change that object right there
+
+to have all the different keys that we might want to see
+
+inside of our top-level, or big state, object.
+
+Okay, so that's a little bit on the store.
+
+We have not said anything yet around this slice thing
+
+up here, and what it's doing for us.
+
+So let's dive into the slice in just a moment
+307
+Instructor: The next thing we're going to take a look at
+
+is the createSlice call at the top of the file.
+
+The first thing I wanna point out around slices,
+
+and this is a really small distinction,
+
+but I just wanna say it.
+
+A slice is going to automatically create
+
+some of the different reducers inside of our store
+
+along with some of the different action types
+
+that we're going to use as well.
+
+So, a slice is not like a brand new part
+
+of the state updating flow.
+
+We're not really going to ever have a diagram where we say,
+
+"Oh yeah, the action is gonna flow into a slice,"
+
+or anything like that.
+
+So, a slice is not a new part of this flow.
+
+A slice is something that's going to create actions for us
+
+and create reducers for us.
+
+So, it's creating the things that are a part of this flow.
+
+Again, really small distinction.
+
+The only reason I mentioned that
+
+is to help you understand
+
+that the entire state updating process,
+
+the entire flow that we learned
+
+in the world of useReducer,
+
+is still the exact same over here in the world of Redux.
+
+And even though there's this new thing called a Slice,
+
+it's not changing the underlying state updating flow
+
+that we have already learned.
+
+Now, around slices,
+
+there are three important things we need to understand.
+
+So, the three things that slices do for us.
+
+First, slices are going to define some initial state.
+
+Second, they're gonna take a bunch of mini-reducer functions
+
+and combine them into a big reducer.
+
+And then third, they're gonna help us create action objects.
+
+For right now, we're just gonna focus on item number 1,
+
+defining some initial state.
+
+And then in the next video or two,
+
+we'll take a look at 2 and 3.
+
+Okay, so, defining initial state.
+
+Whenever we first create our store
+
+by calling configureStore,
+
+we need to put some initial starting state inside there.
+
+To define this initial starting state,
+
+we are going to attach it to our different slices.
+
+So, take a look at our Store Creation.
+
+Here's the line of code out of our editor right now.
+
+We've got songs: songsSlice.reducer.
+
+So, that means, right away, by looking at that line,
+
+we know that our state object
+
+is gonna be an object that has a songs key.
+
+There it is right there.
+
+There's the object, there's the songs key.
+
+And the value is going to be produced by the songs reducer.
+
+To figure out what the default value
+
+for this is going to be,
+
+we're gonna take a look
+
+at the songsSlice object that we created.
+
+And we're gonna look at that thing's initial state property.
+
+So, in our case,
+
+we provided an initialState of an empty array.
+
+So, that means that whenever our store first starts up,
+
+we're gonna end up with a initial state object,
+
+that is, an object with this songs property,
+
+and it's gonna have a value of an empty array.
+
+If we wanted to have some different initial state,
+
+for example, if we wanted to have some initial state
+
+that was an array with some strings inside there,
+
+we would just update initialState right there.
+
+So, now, I could save this,
+
+and I would see, I now start off with two songs,
+
+or two strings really, inside that array.
+
+We don't always have to have a plain array right here.
+
+We could instead have some initial state of a string.
+
+We could also have some initial state that is an object
+
+with some nested properties inside of here.
+
+So, I could have an object with a nested array of songs.
+
+But, in our case, just having a plain, simple array
+
+is really the most appropriate.
+
+We're gonna go into a lot more around state design
+
+on some other applications we work on later on.
+
+Okay, so, that is the initial state around slices.
+
+Now, we're gonna end this video right now,
+
+because items 2 and 3 are a little bit more complicated,
+
+I wanna have a lot of time to talk about them.
+308
+Instructor: The next item around slices.
+
+Number two, combining mini-reducers into a big reducer.
+
+Now this item right here, the text I put here is
+
+sounds kind of confusing, sounds crazy but
+
+honestly it's not the worst thing in the world.
+
+Let's take a look at a diagram or two
+
+and understand what is happening.
+
+Okay, so quick reminder.
+
+Couple videos ago
+
+when we are talking about this general dispatch pattern
+
+of updating state,
+
+I had a small complaint around it.
+
+I had said that a downside is that we have to add in
+
+all this extra boilerplate code
+
+around creating constant action types.
+
+We have to write out all these switch statements,
+
+all these cases.
+
+And the point of all this stuff
+
+was just so that the reducer function
+
+understood what we wanted to update about our state.
+
+Because remember when we call dispatch,
+
+there's one single dispatch function
+
+and that one single dispatch function runs a reducer.
+
+And so whenever the reducer runs,
+
+it's kind of sitting there saying
+
+well, I know I'm running but why am I running?
+
+So to tell the reducer what we wanted it to do,
+
+we added in this idea of action types.
+
+That was a lot of boilerplate code to write in.
+
+There's a lot of extra stuff.
+
+So one of the big points of these slices that we create
+
+is to save ourselves from having to write out
+
+all that boilerplate,
+
+from having to write out all the different action types,
+
+from having to write out the switch statements
+
+with the cases and so on.
+
+So here's what the slice does.
+
+Whenever we define a slice,
+
+we write out a set of mini-reducer functions
+
+on that reducer's property.
+
+So right here, this is where we created our slice.
+
+There's the reducer's property.
+
+We've got an object with a couple of reducing functions.
+
+You can view each of these functions right here
+
+as being like an individual case statement
+
+inside of a larger switch statement.
+
+That's how we really want to think about these things.
+
+So whenever we create a slice, that object is taken.
+
+That's the reducer's object.
+
+We feed it in to create slice and we get back songsSlice.
+
+songsSlice, that actual variable right there, is an object.
+
+It has a property called reducer.
+
+That reducer property is like a big mega reducer.
+
+It combines together all of the individual reducers
+
+we had written out.
+
+This combined reducer is what actually gets loaded
+
+into the Redux store
+
+and you can actually see all this stuff very, very easily
+
+by taking a look at our code.
+
+So lemme show you.
+
+So back over here,
+
+here's what we listed out all of our different
+
+mini-reducer functions.
+
+And again, we can think of these
+
+as each being like individual cases
+
+inside of a larger switch statement.
+
+Each one is gonna contain a very precise
+
+and particular state update.
+
+When we create the slice, we get back songsSlice
+
+and one of the properties on this object is called reducer.
+
+Notice that this is called reducer.
+
+It is not called reducers.
+
+So reducer right here.
+
+It's not the same thing as this object.
+
+Instead, this is a function
+
+and this function can be viewed as like a big mega reducer.
+
+It wraps up all the individual reducing functions
+
+we wrote out right here.
+
+Now this is to be honest way more detail
+
+than you need to know.
+
+The only reason I'm telling you all this
+
+kind of going into detail on what's going on here
+
+is so you understand what Redux Toolkit in particular
+
+is doing for you.
+
+And so that you understand that Redux Toolkit
+
+is specifically trying to help us
+
+and save us from having to write out all this boilerplate,
+
+from having to write out all the different action types,
+
+switch statement, case and so on.
+
+Now a little bit more information on the system.
+
+Inside of each of these different reducer functions,
+
+we're going to make one very particular state update.
+
+We can change of course multiple properties
+
+but the idea is that we're kind of doing one kind of
+
+major operation in here.
+
+So we can change multiple properties.
+
+It just has to be kind of all under the same umbrella.
+
+We'll see a good example of this in just a little bit
+
+so I'll just kind of stop with that thread right there.
+
+Inside this function,
+
+we are making use automatically of that Immer library.
+
+So we are allowed to mutate state directly
+
+as much as we want.
+
+We also do not have to return any state.
+
+So we have to do inside of each of these functions
+
+is apply our state update.
+
+That's pretty much it.
+
+Now last thing I wanna mention around this system
+
+is how does that mega reducer,
+
+so the one that is created by the slice
+
+and gets fed into the Redux store,
+
+how does it actually know when to run
+
+each of these individual functions?
+
+Well, there's a little pattern that createSlice applies.
+
+So here's what happens.
+
+There's a little template and the template is
+
+that the slice is gonna take the name of the slice,
+
+in this case it's song.
+
+So I'm gonna add in a forward slash
+
+and then the name of the function right here, so addSong.
+
+If you ran that code right there,
+
+you would end up with song/addSong.
+
+If there is ever an action dispatched
+
+with this type right here, then the songsSlice,
+
+the big reducer created by it,
+
+knows that it should run that function.
+
+The same thing is applied to all the other functions
+
+you place inside this reducer's object.
+
+So if we ever have an action with a type of song
+
+plus forward slash plus removeSong,
+
+that would give us song/removeSong.
+
+If we ever see an action with that type right there,
+
+this reducer function is going to be executed
+
+and so that's where a little bit lower on
+
+when we manually call dispatch,
+
+I mentioned that this was a very special
+
+action type right here,
+
+that's why it's special.
+
+This action type right here matches up
+
+with this reducer function
+
+because it's following this pattern.
+
+Now you do not need to memorize this pattern at all.
+
+This pattern and these different action types,
+
+they're going to be handled for you automatically
+
+using something we are about to cover
+
+in just a little bit in step number three around slices.
+
+Again, I'm just telling you this stuff
+
+so you kinda understand what is going on behind the scenes.
+
+Whew! Okay.
+
+Now last thing I wanna mention really quickly
+
+around these little reducer functions
+
+is that the state argument right here,
+
+that state variable,
+
+is only the piece of state that is managed by the slice.
+
+So just a little bit ago, I showed you a couple diagrams.
+
+We spoke about how, let's see right here.
+
+I told you that to determine the shape
+
+of this big state object managed by the store,
+
+the individual keys were determined
+
+when the store was created and the values were updated
+
+or handled by these different reducers.
+
+And so for us right now, our state kinda looks like this.
+
+We've got the key of songs
+
+because there's the key of songs right there
+
+when we create our store.
+
+And then the value for that
+
+is being produced by the songs reducer.
+
+This value right here, whatever is right there,
+
+that is what flows into this function as the state argument.
+
+This is not,
+
+I'm gonna put a comment here just to kind of illustrate,
+
+state is not the big state object in the store.
+
+It is the piece of state managed by this reducer.
+
+Now above everything we're talking about right now,
+
+this is something that you don't have to sweat
+
+too much right now
+
+because we're going to go into this in a lot more detail
+
+'cause it's a super important point
+
+and I'm gonna repeat this over and over
+
+and make sure that's crystal clear.
+
+I just wanna throw this in right now
+
+because it's something that we're gonna come back to
+
+very often.
+
+Okay, so that's it around these reducer functions
+
+for right now.
+
+There's one last thing we're going to talk around slices
+
+and we'll do a quick review
+
+on a lot of these different topics
+309
+Instructor: Onto the last big thing
+
+that slices do for us.
+
+They create a set of functions
+
+that are called action creators.
+
+Now, item number three right here,
+
+when you first look at this,
+
+it's gonna be a little bit confusing.
+
+At least I think it is,
+
+I think it's a little bit confusing.
+
+And so my advice to you as we talk
+
+about these action creator functions,
+
+don't overthink it.
+
+It is ultimately kind of a...
+
+I don't wanna say it's simple
+
+because that kind of implies that,
+
+"Hey, you should really figure this out instantly."
+
+That's not the case,
+
+all I mean to say is don't overthink this, okay?
+
+As we talk about action creators,
+
+just don't overthink it.
+
+So remember a moment ago,
+
+we spoke about how when we create a slice,
+
+a handful of very special action types
+
+are automatically created for us.
+
+So if we ever dispatch an action
+
+with a type of song/addSong,
+
+that reduced right there is going to run.
+
+And I told you that you do not have
+
+to actually memorize this pattern
+
+because there are some tools that are created
+
+when we make a slice that is gonna handle the creation
+
+of these action types for us automatically.
+
+The tools that are going to help us create
+
+these action types automatically
+
+and keep us from having to memorize this pattern,
+
+they are functions called action creators.
+
+So here's when action creator is.
+
+Whenever you create a slice,
+
+the slice function or the createSlice function
+
+is gonna take a look at the name
+
+of all these different reducers.
+
+So in our case, addSong and removeSong.
+
+In response to each of those,
+
+it's gonna create a new object.
+
+On this object are one function
+
+for each of those different reducers
+
+and they're gonna have the exact same name.
+
+These functions are called action creators.
+
+They are functions that are created for us automatically.
+
+Whenever you create these functions,
+
+they're gonna give you back an action
+
+that you can immediately dispatch.
+
+And the only goal these action creators,
+
+this is the important part,
+
+this is the critical part,
+
+and this is where I'm telling you,
+
+don't overthink this.
+
+The only goal these action creators
+
+is to save us from having to manually write out
+
+these action objects and memorize these different types.
+
+That's it, that's all these action creators are doing.
+
+So let's write out a little bit of code
+
+and see these action creators in action.
+
+That was not a pun by the way.
+
+Okay, down here,
+
+I'm gonna comment all this stuff out for a moment.
+
+And right above, I'm gonna add in: console.log
+
+songsSlice.actions.
+
+So this is also kind of a little point of confusion
+
+that I've found.
+
+The actual functions are called action creators.
+
+That's what they're called,
+
+they are functions that are going to create
+
+and return an action object.
+
+But for some reason,
+
+these functions are being placed
+
+on a property called actions.
+
+In my opinion, that's just not a good idea,
+
+this really should have been called action creators.
+
+But again, it's called actions.
+
+So let's run this,
+
+I'm gonna save a file and just see what happens.
+
+So here's my console log, songsSlice.actions,
+
+this object is created for us automatically.
+
+There's going to be one function on there
+
+for each of the different reducer functions we created.
+
+These functions that we just console logged out
+
+are not the same as these right here,
+
+totally different functions,
+
+they just have the same name.
+
+Whenever you call one of these functions,
+
+for example, if we call songSlice.actions.addSong,
+
+so addSong, I'm gonna save this,
+
+and we're going to get back an action object
+
+that we can immediately dispatch.
+
+So again, the entire point of these things
+
+is to just help you make these action objects
+
+and keep you from having to memorize these types.
+
+That's all they do.
+
+So our kind of key here,
+
+the kind of real takeaway
+
+is that if we ever want to dispatch an action
+
+that runs a particular reducer,
+
+if I ever want to run that reducer,
+
+or if I want to run that reducer,
+
+all we have to do is write out songSlice.actions,
+
+the name of the reducer we want to run,
+
+that's gonna give us an action object
+
+that we can then immediately dispatch.
+
+If we want our action object to have a payload,
+
+we will add it as the first
+
+and only argument to that function.
+
+So for example, whenever we dispatch addSong,
+
+we're kind of supposed to have a payload
+
+that has the name of the song we want to add in.
+
+So if I want to create a songAdd action that has a payload,
+
+I will add it in as the argument right there,
+
+so I'll put in "Some song".
+
+Now if I save this, there's my action object.
+
+I've got the correct type and the correct payload.
+
+So let's see this thing in action.
+
+I'm gonna comment that line out.
+
+I'm going to uncomment all the stuff underneath it.
+
+And now instead of manually creating that action object
+
+which is prone to typos,
+
+because I might forget the exact type to write right there,
+
+easy typo to make.
+
+Instead, I'm going to dispatch songsSlice.actions.addSong,
+
+and I'll put in whatever payload
+
+I want to send along with it.
+
+So how about "Some song",
+
+that's gonna create my action object,
+
+I dispatch it.
+
+The action that is created is gonna have a type
+
+that automatically sends it over
+
+to that reducer right there.
+
+We're going to update our state in this particular way.
+
+We're gonna get some new state,
+
+and then after that, we're going to console log it.
+
+Okay, let's save this.
+
+And there we go,
+
+we get the pretty much same exact thing as before.
+
+So again, action creators.
+
+Don't let these things be more confusing
+
+than they actually are.
+
+They are ultimately straightforward,
+
+they're a little shortcut,
+
+they just create action objects for us automatically,
+
+so we don't have to memorize these types.
+
+If we ever want to pass along a payload,
+
+we're gonna add it as the first
+
+and only argument.
+
+All these different action creators
+
+can be accessed on the slice.actions property,
+
+and the name of these action creators is gonna be exactly
+
+whatever the name of our reducers are.
+
+Okay, so that's it.
+
+So now we've got at least a reasonable idea
+
+of what's going on around slices and our store.
+
+So now we're gonna move on.
+
+We're gonna go into the world of React
+
+and we're gonna understand, 'kay,
+
+now that we understand how to do
+
+some of this simple stuff around Redux,
+
+like say dispatch actions and whatnot,
+
+how do we actually make use of this stuff
+
+in the React world?
+310
+Instructor: It's time for us to merge together
+
+the React side and the Redux sides of our projects.
+
+So right now there is no connection
+
+between our Redux store and the React app.
+
+And even though we could technically access the store
+
+from inside of a component by importing it directly,
+
+that's not really the recommended way.
+
+So lemme show you what we're going to do.
+
+We're going to use the library React-Redux
+
+which I've mentioned a couple times in passing.
+
+Remember this is a library,
+
+separate library from React separate library from Redux
+
+is a totally different library
+
+called specifically React-Redux.
+
+This library is all about making Redux
+
+and React play together nicely.
+
+The key part of this library
+
+is something called the Provider.
+
+The provider is a component.
+
+It creates the same kind of provider
+
+that we have seen before around the context system.
+
+When we create this provider,
+
+we're gonna pass in our Redux store to it.
+
+Then through the context system,
+
+the store and specifically the dispatch function
+
+and the state within it are going to be made available
+
+to all the different components inside of our application.
+
+So our song playlist, for example,
+
+will then be able to access the list of songs
+
+inside of our store
+
+and we'll also be able to access the dispatch function
+
+inside the store through the context system.
+
+Now we don't actually have to make direct use
+
+of the context system.
+
+Instead we're going to use a couple of different hooks
+
+to access dispatch and our state.
+
+It's gonna actually look really similar
+
+to some of the custom hooks
+
+we put together previously in this course around context
+
+and making accessing context a little bit easier.
+
+Okay, so lemme show you exactly what we're going to do
+
+in a little bit more detail.
+
+So connecting React to Redux
+
+and we only have to do this one time per project.
+
+So very clear and simple steps here, four in total.
+
+First thing we're going to do,
+
+find the file where we created our store
+
+and we're going to export it.
+
+So let's take care of step number one.
+
+Inside my index.js file that we've been working in,
+
+I'm gonna go down to the bottom.
+
+I'm gonna delete all those console logs down there,
+
+and I'm going to add in and export for store like so.
+
+I'm not going to export it as the default.
+
+You absolutely can,
+
+but you're gonna see that eventually
+
+we're gonna add in a couple of other exports from this file.
+
+And so whenever we have multiple different exports,
+
+personally, I like to export them as named exports
+
+which is what we're doing right here.
+
+This just means that whenever we write out an import
+
+we're going to import with curly braces store.
+
+Ultimately, the way you export this stuff
+
+doesn't make a difference.
+
+So you can do it any way you want.
+
+Don't let anyone tell you differently.
+
+Okay, that's step one.
+
+Step number two,
+
+we're gonna open up our root index.js file.
+
+That's the index.js file
+
+where we start up our React application.
+
+So I will go and find src, index.js, okay?
+
+Inside of here, I'm gonna make sure I import
+
+that actual store.
+
+I've already gotten an import for the store file
+
+but I'm not actually importing this store variable.
+
+So I'm going to update this import statement to be import
+
+curly braces store from ./store.
+
+Okay, that's step two.
+
+Step three, we're gonna import the provider component
+
+from the React-Redux library.
+
+So at the very top of the file,
+
+I'm gonna add in an import for provider.
+
+Notice I have curly braces here as well
+
+from the React-Redux library.
+
+And then finally step four,
+
+we're gonna wrap the app component with the provider,
+
+and we're gonna pass the store to the provider as a prop.
+
+So I'm gonna find where we display
+
+our app component down here.
+
+I'm going to wrap it with Provider
+
+and I'm gonna pass the store as a prop called store
+
+to the provider.
+
+So we'll say store is curly braces store.
+
+And that's it.
+
+So now save this, and I don't see any errors
+
+doesn't look like anything is different.
+
+But now in theory,
+
+I can access some information from my store
+
+from within any of my different components.
+
+So that's gonna be the next thing we work on.
+
+We're gonna work on making sure that we can import
+
+or get access to state from inside of SongPlaylist
+
+and make sure that we can also get access
+
+to the dispatch function as well.
+311
+Instructor: Now that we have connected React to Redux,
+
+we can start to access state inside of our store
+
+and print it out or make use of it
+
+from inside of our components.
+
+And we can also start to change our state
+
+in reaction to users doing stuff inside of our app.
+
+So we're gonna work on making sure
+
+that whenever a user clicks
+
+on add Song to playlist, we actually update our state.
+
+To get started, I'm gonna find the components directory.
+
+Inside there, I will find songPlaylist.
+
+And inside of this component,
+
+I'm gonna find the handleSongAdd event handler.
+
+So you'll notice
+
+that this event handler gets called with a song.
+
+This song has been randomly generated.
+
+It's a simple string.
+
+So somewhere else inside this file,
+
+down later on side some JSX down here,
+
+I created a song for us automatically
+
+and I make sure that I call this function
+
+for us with that randomly generated song.
+
+Just to make sure that it's working correctly,
+
+I'm gonna add in a console.log of song.
+
+If I save this and then click on add song to playlist,
+
+I'll see some console.logs start to appear.
+
+So these are all randomly generated songs.
+
+Okay, so we need to take that song
+
+and somehow add it into our Redux store.
+
+We want to update our state.
+
+So lemme show you how we're going to do that.
+
+So whenever a user clicks on that button,
+
+inside of songPlaylist, handleSongAdd is going to run.
+
+We need to update our state
+
+and to update our state, we're gonna create an action.
+
+We're gonna dispatch it.
+
+That is gonna cause our reducer to run
+
+and we'll get some updated state.
+
+Now, this does not really account for the fact
+
+that we need to get this updated state back
+
+into our component
+
+and use that state to render a list of songs on the screen.
+
+This flow right here, what I'm showing you right now
+
+is just about updating our state.
+
+That's all we're gonna focus on for right now.
+
+So to change our state, we're gonna do this eventually
+
+probably many times through a project.
+
+We got a series of different things we have to do here.
+
+And even though there are six steps,
+
+each of them ultimately,
+
+ends up being pretty straightforward.
+
+So step one, we're gonna go and find our slice
+
+and we're going to add in a reducer to it
+
+that's going to change our state in some desirable
+
+or particular way.
+
+So we've kind of already done this.
+
+If we go back to the store, index.js file
+
+and find songsSlice right here,
+
+here is our reducer function addSong.
+
+So this reducer is going to update our state
+
+in some desirable way.
+
+It's gonna take whatever's provided as action.payload
+
+and it's gonna add it into our state array.
+
+The list of songs essentially.
+
+So that's step one.
+
+Already taken care of.
+
+Whenever we create a reducer, an action creator
+
+is added automatically for us as the output from the slice.
+
+So we're gonna make sure that we export that action creator
+
+from the bottom of this file.
+
+As a reminder on this, because remember, action creators
+
+are just a tricky little thing.
+
+We're gonna go down to the bottom of the file
+
+and down here again, just as a quick reminder,
+
+if we do a console.log of songsSlice.actions.addSong
+
+and I'm gonna call that because it is a function.
+
+If I save this, I should then get my console.log here
+
+in just a moment.
+
+There we go.
+
+So there is an action object.
+
+That's what the action creator does for us.
+
+It just helps us create these action objects.
+
+We are going to export that function right there
+
+so we can eventually use it from inside of our component.
+
+So I'm going to add in and export or addSong.
+
+Excuse me, this should be export const addSong,
+
+songsSlice.actions like so.
+
+So there's my action creator.
+
+I am exporting it from this file
+
+so I can get access to it inside of my component.
+
+Step three, we're gonna find the component
+
+that we want to dispatch from.
+
+Once again, kind of already did this.
+
+So we want to dispatch from songPlaylist.
+
+It is specifically from this event handler right here
+
+that we want to call dispatch
+
+because we want to update our state.
+
+Step four, we're going to import the action creator
+
+and we're also going to import a hook
+
+from the React Redux library.
+
+The hook is called useDispatch.
+
+I'll show you what it does in just a moment.
+
+So at the top of this file, I'm gonna first add in an import
+
+for useDispatch from react-redux.
+
+I'll then add in an import for addSong
+
+from up one directory, store.
+
+Step five, we're going to add in a call
+
+to the useDispatch hook.
+
+That hook is going to make use of the context system
+
+to reach up our component hierarchy and get access
+
+to the dispatch function from the Redux store.
+
+So at the top of our component,
+
+I'm gonna add in const dispatch is useDispatch.
+
+That's it. That's all we have to do.
+
+So it's an extremely simple and straightforward hook.
+
+Dispatch is the same dispatch function that exists inside
+
+of our Redux store.
+
+So if we call that function right there and we pass
+
+in an action object, we're going to be updating our state
+
+in the same way that we updated our state back
+
+with that useReducer stuff.
+
+And now finally, number six,
+
+whenever the user does something.
+
+So in other words, whenever we are running an event handler,
+
+we're going to first call the action creator function.
+
+That's gonna give us an action object.
+
+We're then gonna take that action object and dispatch it.
+
+The action object is gonna be sent off to our reducers.
+
+They're gonna run, they're gonna update our state.
+
+So inside of our event handler,
+
+I'm going to first create my action by calling addSong.
+
+When I call this action creator, I want to pass
+
+along some information with the action that is created.
+
+I wanna pass along a payload
+
+so that the reducer knows exactly what song I want to add
+
+because remember, that is how we wrote our reducer.
+
+Back inside of index.js, here's addSong right here.
+
+We are specifically expecting
+
+that the action is going to have a payload property
+
+and whatever we pass along
+
+as the payload is going to be added into our list of songs.
+
+So back inside of our component
+
+when we call the action creator right here,
+
+we're going to specifically add in song.
+
+And now just to make sure this is super clear, once again,
+
+I'm gonna add in a console.log of action and save this.
+
+If I click on the button, I should see type: song/add
+
+and payload with the title of the song I'm trying to add.
+
+So that is a perfectly good looking
+
+action object right there.
+
+We want to dispatch that thing.
+
+So to dispatch it,
+
+I'm gonna replace the console.log with dispatch action.
+
+And that should be it.
+
+So now if I do a hard refresh, I should be able to click
+
+on add song to playlist and I shouldn't see any errors.
+
+I don't really see anything else.
+
+That is actually totally fine.
+
+Right now we have absolutely nothing
+
+inside of our application that is making use
+
+of our state right now.
+
+So at present, in theory,
+
+we are updating our state correctly.
+
+We're just not making use of that state in any way.
+
+But overall, that's pretty much it.
+
+That's how we update our state.
+
+So just these six steps or so
+
+is how we're going to update our state.
+
+And again, we're probably gonna end up
+
+doing this many, many times per project,
+
+any time we want to update our state.
+
+And just to be clear,
+
+if we want to update state in the same way,
+
+we don't always have to add in additional reducers.
+
+We can always reuse a reducer
+
+we have written out previously.
+
+So if for some reason somewhere else
+
+inside of our application we wanted to add a song,
+
+we would not have to add in a second addSong reducer,
+
+we would just reuse the one we already created.
+
+Okay, so this is looking good.
+
+One very small improvement we can make here.
+
+Usually we're not gonna write out our dispatches
+
+as two separate lines.
+
+Instead, we usually write it out as a single line.
+
+So I'm going to change this to addSong
+
+and put in song like so
+
+and that just looks a little bit more realistic.
+
+Okay, so this looks good.
+
+So now the last thing we really have to do here inside
+
+of our component, we need to get access to our state.
+
+We need to get access to the list of songs that is changing
+
+over time so we can actually render them out on the screen
+312
+Narrator: The last thing we have to do is get access
+
+to our state from inside of the song playlist component.
+
+We need to get access to that list of songs
+
+that is theoretically changing every time we click
+
+on this button.
+
+Once we get access to that state,
+
+we can then use it to re-render our component
+
+and show the list of songs on the screen.
+
+So let me show you how we're going to access state
+
+from inside of a component.
+
+This is something we're going to do many times per project.
+
+Any time that we need to access some state
+
+from inside of a component.
+
+So four steps in total.
+
+Pretty straightforward.
+
+First, we're gonna find the component that needs to
+
+access some state.
+
+Well, we've already done that.
+
+Inside that file, we're going to import
+
+the useSelector hook
+
+from the React-Redux library.
+
+This hook is what is going to allow us to reach up
+
+to the Redux store and access state from inside of it.
+
+So let's take care of step number two right away.
+
+At the very top, I'm gonna find the existing import
+
+that we have from React-Redux,
+
+and I'll add in useSelector.
+
+Next up, step number three.
+
+Inside of our component, we're gonna call that hook
+
+and when we call it, we're gonna pass in a selector function
+
+and I'll show you what that is in just a moment.
+
+So inside of my component,
+
+I'm gonna find const songPlaylist right here.
+
+Right now by default, that is an empty array.
+
+SongPlaylist is supposed to be a list of songs.
+
+A lot of code inside this component,
+
+for example, later on down here
+
+depends upon that being our array of songs.
+
+So we want to reach into our store,
+
+we want to get the array of songs,
+
+and we want to assign it to that variable.
+
+So I'm going to replace that empty array with useSelector.
+
+Whenever we call useSelector,
+
+we're gonna pass in a selector function.
+
+The selector function is gonna be called
+
+with all of the state out of our entire store.
+
+And then from this function,
+
+we're going to return just the part
+
+of state that our component cares about.
+
+So for you and I, we don't really care
+
+about the entire state object.
+
+We just care about the array of songs inside this component.
+
+So from the selector function
+
+I'm going to return state.songs.
+
+And then if I save that
+
+I should see my list of songs appear.
+
+If you don't, you can always refresh the page
+
+and then try adding on some songs again.
+
+Okay, so it looks like it is working.
+
+But let me give you a little bit more information
+
+and help you understand what is going on here.
+
+First, we have taken care of this to-do,
+
+so I'm going to remove it.
+
+Second, inside of the selector function,
+
+I'm gonna add in a console log
+
+of state.
+
+And as soon as I do so, I'm gonna see
+
+the entire state object that is stored inside
+
+of our Redux store console log down here.
+
+So we can see very easily that our state object is an object
+
+with a song's property that is an array of strings.
+
+Whenever we make use of the useSelector function,
+
+we pass in this selector function,
+
+and once again, the goal
+
+of this thing is to make sure that we are only putting data
+
+into our component that the component actually cares about.
+
+That it actually needs.
+
+So our component doesn't need the entire state object.
+
+It only needs that list of songs.
+
+That's why we are only returning
+
+the list of songs right here.
+
+Okay, I'm gonna remove that console log.
+
+There's one other thing I wanna mention
+
+and this is going to kind of touch back
+
+on something that I mentioned very briefly a little bit ago
+
+and was probably a little bit confusing.
+
+I'm gonna go back into our reducer file or the slice file.
+
+So that's store index.js.
+
+Inside of here,
+
+I want to remind you that inside of this first reducer
+
+we wrote out this comment where I said
+
+"state is not the big state object in the store".
+
+Let's fix that.
+
+It is the piece of state managed by this reducer.
+
+So I want to elaborate on this comment a little bit more.
+
+This is something that I really just
+
+wanna give you a warning.
+
+This is kind of a confusing thing
+
+and it's something that's probably gonna be a issue
+
+or result in a little bit of a bug
+
+on some project that you work on at some point in time.
+
+So we are gonna see the word "state" used inside
+
+of our projects very very often
+
+when we are making use of Redux.
+
+And the confusing thing here
+
+is that in some locations,
+
+"state" means something very different than other locations.
+
+So whenever you are inside of a slice
+
+and you see the word "state",
+
+that means we are referring to the state
+
+that is being controlled
+
+or managed or produced by that slice.
+
+So inside of our reducer functions,
+
+we see the word "state" right there.
+
+"State", that variable is talking about the piece
+
+of state that is managed by this slice,
+
+which for us is just this plain array of strings.
+
+Everywhere else inside of our project.
+
+So everywhere outside of these reducers,
+
+everywhere outside of this slice,
+
+whenever you see the word "state"
+
+it means the whole state object in the store.
+
+So it would basically mean this entire object.
+
+And we can check this very easily.
+
+If we go back over
+
+and find addSong with state right here,
+
+I'm gonna add in a console log.
+
+And if you do a console log of state,
+
+you're gonna see something really, really confusing.
+
+So if I save this and click on the button,
+
+you'll see in this case I actually get an error
+
+when we do it in CodeSandbox.
+
+This is because when we are running a reducer,
+
+we're making use of that Immer library,
+
+and so this is not exactly our state object right here.
+
+But let's try putting in state.length.
+
+That's kind of a good approximation.
+
+So now if I click on the button,
+
+I'm gonna see 0, 1, 2, 3, 4, 5.
+
+And so it's clear that in this context,
+
+inside of my reducer,
+
+state is an array.
+
+And that's why I see this length number
+
+increasing over time.
+
+So inside of our slice,
+
+state is just that array.
+
+That's what state is referring to.
+
+I'm gonna clean up that console log,
+
+and then go back over to our useSelector hook over here.
+
+So everywhere else outside of that slice,
+
+whenever you see the word "state",
+
+again, it is referring
+
+to all the states within the entire Redux store.
+
+And we can see that very easily
+
+with these console logs over here.
+
+Okay, so again
+
+this is something that I'm going to give you a couple
+
+of reminders on,
+
+as I mentioned with that original comment,
+
+because it is a confusing thing
+
+and it's something that is probably gonna lead to bugs
+
+even if I mention it a ton of times in this course.
+
+It's something that eventually is probably gonna get you.
+
+So just remember this little
+
+kind of gotcha here around the word "state".
+313
+Instructor: We have now seen the flow
+
+of changing our state from inside of a component
+
+and how we can access state inside of a component.
+
+We are going to practice these flows
+
+many, many times
+
+because it turns out you're going to be doing these things
+
+a incredible number of times on professional projects.
+
+It turns out that a lot of your time
+
+spent on professional projects,
+
+it's just spent writing out code to access state
+
+inside of a component and change state
+
+from inside of a component.
+
+And so it is extremely important
+
+for us to memorize these flows and be able to write them out
+
+or go through them many, many times probably per day.
+
+So that's what this first project
+
+is all about that we're currently working on.
+
+We're going to add in a little bit more
+
+of the state changing operation.
+
+So whenever a user clicks on these red x's next to a song,
+
+we want to change our state.
+
+We want to delete that song.
+
+To do so, we're going to make sure
+
+that we dispatch an action
+
+from inside of the appropriate event handler.
+
+And the goal of that action
+
+is going to be to update our state
+
+by removing that particular song right there.
+
+So again, this is an example of changing state
+
+and initiating that from inside of a component.
+
+Once we finish this feature,
+
+we're then going to repeat all this stuff a second time.
+
+So we're going to implement the movie playlist
+
+and this is going to have the same
+
+kind of change state behavior,
+
+we're going to have to access state,
+
+and we're gonna have to change state
+
+whenever user clicks on the red x.
+
+So totally identical feature up here.
+
+And again, it's just to practice these flows.
+
+So let's get to it.
+
+Let's make sure that we can remove a song
+
+whenever user clicks on these red x's.
+
+So we need to implement the changing state flow.
+
+To get started, we're gonna add a reducer
+
+into one of our slices
+
+that changes our state in a particular way.
+
+And for us, we want to take some song
+
+that user just clicked on and remove it from our state.
+
+So inside of our store index.js file,
+
+I've got a lot of comments inside of here right now.
+
+I'm gonna clean these comments up
+
+just so you can see what I'm doing on the screen
+
+a little bit more easily.
+
+Inside of our slice,
+
+we have already defined a reducer function to remove a song.
+
+Whenever this thing gets called,
+
+we need to know what song we are supposed to remove.
+
+So we're going to make a big assumption here.
+
+We're going to assume that the action object
+
+on its payload property is gonna be a string
+
+and that's gonna be the title of the song we want to remove.
+
+So if I have a song of Purple Rain right here
+
+and I click on the red x next to it,
+
+we're going to make sure that when we dispatch an action,
+
+we include Purple Rain on the action.payload property.
+
+So as a reminder to myself, I will add in a comment.
+
+I'm gonna say action.payload
+
+is going to be string, the song we want to remove.
+
+So then inside of here,
+
+our state is going to be the array of songs.
+
+So we need to go through that array.
+
+We need to find the appropriate song and remove it.
+
+Now to remove an element out of an array
+
+when we are using immer,
+
+because remember Redux toolkit automatically includes immer
+
+inside of all your reducer functions for you.
+
+So we are directly allowed to
+
+or absolutely allowed to mutate the state object.
+
+And so to remove an element with immer,
+
+easiest way to do it
+
+is by using the built-in splice function.
+
+The splice function allows us to take out or delete elements
+
+from an array very easily.
+
+So let me show you how we're going to do this.
+
+I'm gonna first get the index of the song
+
+inside of the existing state array.
+
+So I'll say state.indexOf action.payload.
+
+Once I've got the index of the string
+
+or really the song out of that array,
+
+I'm then going to call state.splice index.
+
+And I only want to remove one element,
+
+so I'll put in one right there.
+
+And that's pretty much it.
+
+So this code right here,
+
+it's going to remove the particular song
+
+out of our state array.
+
+All right, so that's step one.
+
+Next, step two, we're gonna go down to the bottom
+
+of this file and we're going to export the action creator
+
+that the slice automatically creates for us.
+
+So remember whenever we create a slice,
+
+every reducer that we add into this function right here,
+
+we'll get an action creator made along with it.
+
+And we use these action creators
+
+just to automate the process
+
+of making those action functions.
+
+So I'm going to go to the bottom of the file,
+
+I'm gonna find where we are already exporting
+
+the addSong action creator
+
+and I'm going to also export removeSong.
+
+Next up, step number three.
+
+We're gonna find the component we want to dispatch from.
+
+Well, that's gonna be the song list component.
+
+So we'll skip over number three.
+
+Number four, we need to import
+
+the action creator function and useDispatch.
+
+We have already imported useDispatch into that component
+
+so we don't have to worry about that,
+
+but we do have to import our action creator.
+
+So let's go back over to SongPlaylist.
+
+At the top up here,
+
+it looks like I accidentally added it in already.
+
+So we're gonna find the import for addSong.
+
+We're going to also import removeSong, like so.
+
+So that's our action creator function.
+
+Again, a function that's going to create
+
+an action object for us.
+
+Moving on step number five,
+
+we have already called useDispatch inside of our component.
+
+We do not have to do that again.
+
+We've already got access to the dispatch function.
+
+So step number six, we're gonna find our event handler.
+
+We're whenever the user does something,
+
+we're gonna call our action creator to get the action
+
+and then we're going to dispatch it.
+
+So down inside of handleSongRemove,
+
+this event handler is going to be called
+
+with the song that the user wants to delete.
+
+So inside of here, we will call dispatch
+
+and we're going to pass in removeSong.
+
+Remember, this is our action creator.
+
+For the third time in this video,
+
+this is a function
+
+that's gonna create an action object for us.
+
+And when we make that action,
+
+we want it to have a payload
+
+of the song we are trying to delete
+
+because our reducer assumes
+
+it is going to receive that payload.
+
+So I'm gonna make sure I pass in song like so.
+
+And that should be it.
+
+So let's save this.
+
+And now if I go over here, I'm gonna do a refresh
+
+just to make sure I'm totally starting fresh.
+
+I'll then add in some songs
+
+and I should be able to click on these red x's
+
+and see them deleted.
+
+And yep, looks perfect.
+
+So I can add any number of songs and delete them
+
+one at a time.
+
+All right, fantastic.
+
+So that is it.
+
+We've got some more practice with changing our state.
+
+As I mentioned, we're going to now pretty much repeat
+
+all this stuff up inside of movie playlist.
+
+So inside a movie playlist,
+
+we're going to have to one time
+
+for this button right here, change our state.
+
+We're going to have to put in
+
+some more changing state behavior.
+
+And then to show the list of movies,
+
+we're going to have to access some state.
+
+So let's get some more practice
+
+around these very basic flows in the next couple of videos.
+314
+Speaker: Time to work on the movie playlist component.
+
+So I've mentioned this thing a couple times.
+
+It's gonna be absolutely identical to song playlist.
+
+The only difference is it's gonna show a list of movies.
+
+So we're going to essentially have a total copy, almost,
+
+of all the code we already have added into our project.
+
+We need to add in a second slice
+
+to manage the list of movies.
+
+That new slice we create is gonna have a reducer
+
+to add a movie and remove a movie.
+
+After creating the slice,
+
+we need to make sure we also connect the slice
+
+to our Redux store.
+
+So again, pretty much completely identical
+
+to what we have already gone through.
+
+Let's get started right away by creating our new slice.
+
+And right now, once again, we're gonna make it inside
+
+of the index dot JS file, but we will very shortly
+
+refactor all this stuff out into separate files
+
+just to clean things up a little bit.
+
+So at the top of my store, index dot JS file,
+
+I'm going to define movies slice.
+
+I'm going to give this a name of movie.
+
+Remember the name right here is really just used
+
+for action types.
+
+So we could call this movie, we could call it movies,
+
+my movies, really doesn't make a difference.
+
+It can be anything we want.
+
+It just needs to be unique.
+
+So it can't really be used
+
+by any other slice that we create.
+
+I'll then give this an initial state of an empty array.
+
+I'll then add in my set of reducers,
+
+and in this case, I want to have a reducer called add movie,
+
+and one called remove movie.
+
+Right now I'm going to leave these reducers empty,
+
+and we'll come back and add in some implementation
+
+in just a little bit.
+
+Once we have created slice,
+
+we then need to connect the combined reducer
+
+that is created by it to our Redux store.
+
+So we'll go down to the bottom here,
+
+I'll find where we create our slice, and I'm going to add
+
+in to the reducer object, movies, is going to be
+
+movies slice dot reducer.
+
+Now really quick, right after we create our store,
+
+let's do a console log of store dot get state,
+
+and we'll see what our initial state is
+
+when the store is first created.
+
+If I save this file, I'll get the console log,
+
+and if I can,
+
+this is like a one pixel little drag e-bar
+
+thing right here, so hard to click on.
+
+There we go.
+
+No, there we go.
+
+Okay, got it.
+
+Alright, so there's the console log of our state.
+
+So now you'll notice that we have two pieces
+
+of state in this big overall state object.
+
+We've got the list of songs, and the list of movies.
+
+So now as we start to work with our state,
+
+just keep in mind, yeah,
+
+there's gonna be a movies property in there as well.
+
+I'm going to remove that console log.
+
+Alright, let's get started on some implementation.
+
+So the first thing we need to do is make sure
+
+that whenever a user clicks on a button to add a movie,
+
+we add a movie into our list of movies.
+
+So once again, we need to change some state.
+
+Step number one, we need to add a reducer
+
+into our slice that's gonna change our state.
+
+So I'm gonna go up to our movies slice right here.
+
+This is the reducer we want to implement.
+
+It's gonna be absolutely identical
+
+to what we did down inside of songs slice.
+
+So whenever this thing is called,
+
+we're going to make a big assumption.
+
+We're going to assume that the action dot payload property
+
+has a string,
+
+and that's gonna be the movie we want to add into
+
+our list of movies.
+
+So we're going to add some implementation
+
+of state dot push, action dot payload.
+
+Okay, that's simple enough.
+
+Next up, number two,
+
+we're gonna make sure that we export that action creator.
+
+So down at the bottom of the file,
+
+next to all of our other action exports,
+
+I'm going to also add in another set of exports
+
+for add movie.
+
+And that's going to come from movies, slice dot actions.
+
+Next step, we're gonna find the component
+
+we want to dispatch from.
+
+So of course that is gonna be our movie playlist component.
+
+Let's open that up right away.
+
+Inside of SRC components movie playlist.
+
+Here we go.
+
+This is where we want to dispatch from.
+
+So inside of this file,
+
+we're going to import the action creator function,
+
+and use dispatch from react-redux.
+
+So at the top of the file,
+
+let's import first use dispatch from react-redux.
+
+I'll then import add movie from up one directory store.
+
+Okay, next step we're going to call the use dispatch hook
+
+inside of our component to get access
+
+to that dispatch function.
+
+So at the top of our component right here,
+
+I'll get my dispatch function by calling use dispatch.
+
+And remember, all this use dispatch thing does
+
+is use the contact system to reach up to the provider
+
+at the very top of our component hierarchy,
+
+and get access to the dispatch function
+
+from the redux store.
+
+And then finally, step number six,
+
+whenever the user does something,
+
+so in other words, inside of an event handler,
+
+we're gonna call our action creator to get the action
+
+and then we're going to dispatch it.
+
+So I will find handle movie add right here.
+
+This gets called whenever a user clicks
+
+on the add movie to playlist button,
+
+and it's going to be called
+
+with the movie that we want to add.
+
+So that's gonna be a plain string.
+
+So inside of here, I'm gonna first create my action
+
+by calling create, or excuse me, it's add movie,
+
+and I'll pass in the movie that should be used
+
+as the payload.
+
+Just to make sure that is working,
+
+Let's do a quick console log of action.
+
+And now if I click on the button, yep, there we go.
+
+There's my action object, definitely has a payload.
+
+I'm going to remove the console log,
+
+and instead I'm gonna make sure that I dispatch the action.
+
+So now we should be able to click
+
+on add movie to playlist.
+
+And again, we don't see anything actually happen
+
+on the screen just yet.
+
+That is because we are not actually making use
+
+of the movie state inside of this component yet.
+
+But in theory, our state is being updated.
+
+So now that we've added in this flow,
+
+we need to do the other flow.
+
+We need to get access to our state
+
+from inside of our component.
+
+Before we do that,
+
+I'm going to make a very small change here.
+
+I'm gonna do the same change we had before.
+
+Usually we do not write out two separate lines
+
+of code like this to dispatch an action.
+
+Usually we just put it all on one line, like so.
+
+And that's it.
+
+Alright, quick pause right here.
+
+We'll come back in just a moment,
+
+and we're gonna go through our other flow.
+
+The flow where we access state inside of a component.
+
+315
+
+316
+
+317
+
+318
+
+319
+
+320
+
+321
+
+322
+
+323
+
+324
