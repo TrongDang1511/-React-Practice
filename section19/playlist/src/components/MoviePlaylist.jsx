@@ -1,23 +1,23 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { addMovie, removeMovie } from '../store';
 import { createRandomMovie } from '../data';
 
 function MoviePlaylist() {
-    // To Do:
-    // Get list of movies
-    const moviePlaylist = [];
+    const dispatch = useDispatch();
+    const moviePlaylist = useSelector((state) => state.movies);
 
     const handleMovieAdd = (movie) => {
-        // To Do:
-        // Add movie to list of movies
+        dispatch(addMovie(movie));
     };
+
     const handleMovieRemove = (movie) => {
-        // To Do:
-        // Remove movie from list of movies
+        dispatch(removeMovie(movie));
     };
 
     const renderedMovies = moviePlaylist.map((movie) => {
         return (
-            <li key={movie}>
-                {movie}
+            <li key={movie} className="flex justify-between items-center py-2 border-b">
+                <span>{movie}</span>
                 <button
                     onClick={() => handleMovieRemove(movie)}
                     className="button is-danger"
