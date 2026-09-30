@@ -3,8 +3,34 @@
     {
       "id": 1,
       "name": "Myra"
+    },
+    {
+      "name": "Inez Hoeger",
+      "id": 3
+    },
+    {
+      "name": "Lucy Dare",
+      "id": 5
+    },
+    {
+      "name": "Angel Cronin",
+      "id": 6
+    },
+    {
+      "name": "Pat Cole",
+      "id": 7
+    },
+    {
+      "name": "Nathaniel McKenzie",
+      "id": 8
     }
   ],
-  "albums": [],
+  "albums": [
+    {
+      "userId": 1,
+      "title": "Bespoke Frozen Chair",
+      "id": 1
+    }
+  ],
   "photos": []
 }
