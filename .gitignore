@@ -32,3 +32,4 @@ yarn-error.log*
 note/
 **/note/
 *.txt
+/section23
